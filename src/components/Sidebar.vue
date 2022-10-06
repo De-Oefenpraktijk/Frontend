@@ -7,43 +7,43 @@
     </div>
     <div class="sidebar__menu">
       <ul>
-        <router-link to="/about">
+        <router-link to="/">
           <li>
             <font-awesome-icon icon="fa-solid fa-chart-pie" />
             <span>Overview</span>
           </li>
         </router-link>
-        <router-link to="/about">
+        <router-link to="/search">
           <li>
             <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
             <span>Search</span>
           </li>
         </router-link>
-        <router-link to="/about">
+        <router-link to="/rooms">
           <li>
             <font-awesome-icon icon="fa-solid fa-people-roof" />
             <span>Rooms</span>
           </li>
         </router-link>
-        <router-link to="/about">
+        <router-link to="/messages">
           <li>
             <font-awesome-icon icon="fa-solid fa-message" />
             <span>Messages</span>
           </li>
         </router-link>
-        <router-link to="/about">
+        <router-link to="/calendar">
           <li>
             <font-awesome-icon icon="fa-regular fa-calendar" />
             <span>Calendar</span>
           </li>
         </router-link>
-        <router-link to="/about">
+        <router-link to="/articles">
           <li>
             <font-awesome-icon icon="fa-solid fa-book" />
             <span>Articles</span>
           </li>
         </router-link>
-        <router-link to="/about">
+        <router-link to="/forum">
           <li>
             <font-awesome-icon icon="fa-solid fa-rectangle-list" />
             <span>Forum</span>
@@ -51,13 +51,13 @@
         </router-link>
       </ul>
       <ul>
-        <router-link to="/about">
+        <router-link to="/settings">
           <li>
             <font-awesome-icon icon="fa-solid fa-gear" />
             <span>Settings</span>
           </li>
         </router-link>
-        <router-link to="/about">
+        <router-link to="/organisation">
           <li>
             <font-awesome-icon icon="fa-solid fa-users" />
             <span>Organisation</span>

@@ -1,7 +1,13 @@
+<script setup>
+defineProps({
+  title: String,
+});
+</script>
+
 <template>
   <div class="topbar">
     <div>
-      <h1>Overview</h1>
+      <h1>{{ title }}</h1>
     </div>
     <div>
       <div class="topbar__profile">
@@ -46,10 +52,6 @@ img {
   height: 50px;
   border-radius: 50%;
   margin-right: 10px;
-}
-
-h1 {
-  margin-left: 50px;
 }
 
 .topbar__profile {
