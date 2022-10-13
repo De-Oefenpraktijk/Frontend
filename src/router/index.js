@@ -12,14 +12,24 @@ const routes = [
     component: () => import('../views/Search.vue'),
   },
   {
-    path: '/rooms',
-    name: 'rooms',
+    path: '/categories',
+    name: 'categories',
+    component: () => import('../views/Categories.vue'),
+  },
+  {
+    path: '/category/:category',
+    name: 'category',
     component: () => import('../views/Rooms.vue'),
   },
   {
-    path: '/room/:id',
+    path: '/category/:category/room',
     name: 'room',
     component: () => import('../views/Room.vue'),
+  },
+  {
+    path: '/rooms',
+    name: 'rooms',
+    component: () => import('../views/Rooms.vue'),
   },
   {
     path: '/messages',

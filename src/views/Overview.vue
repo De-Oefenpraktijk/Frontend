@@ -40,7 +40,7 @@
       <div class="overview__cards">
         <div class="overview__cards__card">
           <div class="overview__cards__card__header">
-            <span>Rooms</span>
+            <span>Categories</span>
           </div>
           <div class="overview__cards__card__body">
             <div class="overview__cards">
@@ -222,7 +222,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .overview {
   margin-right: 50px;
 }

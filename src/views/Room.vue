@@ -1,7 +1,7 @@
 <template>
   <Sidebar />
   <div class="main">
-    <Topbar :title="'Room - ' + $route.params.id" />
+    <Topbar :title="'Room - ' + $route.query.id" />
     <div id="meet"></div>
   </div>
 </template>
@@ -37,7 +37,7 @@ export default {
       try {
         const domain = 'meet.jit.si';
         const options = {
-          roomName: this.$route.params.id,
+          roomName: this.$route.query.id,
           height: 600,
           parentNode: document.querySelector('#meet'),
           interfaceConfigOverwrite: {
@@ -73,4 +73,4 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped></style>

@@ -19,10 +19,10 @@
             <span>Search</span>
           </li>
         </router-link>
-        <router-link to="/rooms">
+        <router-link to="/categories">
           <li>
             <font-awesome-icon icon="fa-solid fa-people-roof" />
-            <span>Rooms</span>
+            <span>Categories</span>
           </li>
         </router-link>
         <router-link to="/messages">
