@@ -9,7 +9,7 @@
             <span>Messages</span>
           </div>
           <div class="overview__cards__card__body">
-            <h1>2</h1>
+            <h1>{{ this.$root.mockData.overview.messages }}</h1>
           </div>
         </div>
         <div class="overview__cards__card">
@@ -17,7 +17,7 @@
             <span>Notifications</span>
           </div>
           <div class="overview__cards__card__body">
-            <h1>0</h1>
+            <h1>{{ this.$root.mockData.overview.notifications }}</h1>
           </div>
         </div>
         <div class="overview__cards__card">
@@ -25,7 +25,7 @@
             <span>Active posts</span>
           </div>
           <div class="overview__cards__card__body">
-            <h1>1</h1>
+            <h1>{{ this.$root.mockData.overview.activePosts }}</h1>
           </div>
         </div>
         <div class="overview__cards__card">
@@ -33,14 +33,14 @@
             <span>Upcoming events</span>
           </div>
           <div class="overview__cards__card__body">
-            <h1>3</h1>
+            <h1>{{ this.$root.mockData.overview.upcomingEvents }}</h1>
           </div>
         </div>
       </div>
       <div class="overview__cards">
         <div class="overview__cards__card">
           <div class="overview__cards__card__header">
-            <span>Categories</span>
+            <span>Workspaces</span>
           </div>
           <div class="overview__cards__card__body">
             <div class="overview__cards">
