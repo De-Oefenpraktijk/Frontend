@@ -1,7 +1,7 @@
 <template>
   <Sidebar />
   <div class="main">
-    <Topbar :title="$route.params.category" />
+    <Topbar :title="$route.params.workspace" />
     <div class="card">
       <div class="card__header">
         <h2>Private rooms</h2>
@@ -349,7 +349,7 @@ import Topbar from '../components/Topbar.vue';
 import Modal from '../components/Modal.vue';
 
 export default {
-  name: 'Rooms',
+  name: 'Workspace',
   components: {
     Topbar,
     Sidebar,

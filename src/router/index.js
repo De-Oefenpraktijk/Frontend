@@ -12,24 +12,19 @@ const routes = [
     component: () => import('../views/Search.vue'),
   },
   {
-    path: '/categories',
-    name: 'categories',
-    component: () => import('../views/Categories.vue'),
+    path: '/workspaces',
+    name: 'workspaces',
+    component: () => import('../views/WorkspaceOverview.vue'),
   },
   {
-    path: '/category/:category',
-    name: 'category',
-    component: () => import('../views/Rooms.vue'),
+    path: '/workspace/:workspace',
+    name: 'workspace',
+    component: () => import('../views/Workspace.vue'),
   },
   {
-    path: '/category/:category/room',
+    path: '/workspace/:workspace/room',
     name: 'room',
     component: () => import('../views/Room.vue'),
-  },
-  {
-    path: '/rooms',
-    name: 'rooms',
-    component: () => import('../views/Rooms.vue'),
   },
   {
     path: '/messages',

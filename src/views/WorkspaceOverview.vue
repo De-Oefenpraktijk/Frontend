@@ -1,7 +1,7 @@
 <template>
   <Sidebar />
   <div class="main">
-    <Topbar title="Categories" />
+    <Topbar title="Workspaces" />
     <!-- <div class="categories">
       <div class="categories__content">
         <div class="categories__content__item">
@@ -60,8 +60,8 @@
             <div class="overview__cards">
               <router-link
                 :to="{
-                  name: 'category',
-                  params: { category: 'Couple and Family' },
+                  name: 'workspace',
+                  params: { workspace: 'Couple and Family' },
                 }"
               >
                 <div class="overview__cards__card">
@@ -143,7 +143,7 @@
 import Sidebar from '../components/Sidebar.vue';
 import Topbar from '../components/Topbar.vue';
 export default {
-  name: 'Categories',
+  name: 'Workspaces',
   components: {
     Sidebar,
     Topbar,
