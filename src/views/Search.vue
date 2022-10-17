@@ -8,32 +8,32 @@
       </div>
       <input type="text" class="searchbar-input" placeholder="Search..." />
     </div>
-    <div class="card">
-      <div class="card__header">
+    <div class="mainCard">
+      <div class="mainCard__header">
         <h2>Related people</h2>
       </div>
-      <div class="card__body">
-        <div class="card__body__item">
-          <div class="card__body__item__image">
+      <div class="mainCard__body persons">
+        <div class="card person">
+          <div class="card__image">
             <img src="https://via.placeholder.com/150" alt="profile picture" />
           </div>
-          <div class="card__body__item__name">
+          <div class="card__name">
             <h3>John Doe</h3>
           </div>
-          <div class="card__body__item__details">
+          <div class="card__details">
             <h3>Stress</h3>
             <h3>Depression</h3>
             <h3>GGZ Helmond</h3>
           </div>
         </div>
-        <div class="card__body__item">
-          <div class="card__body__item__image">
+        <div class="card person">
+          <div class="card__image">
             <img src="https://via.placeholder.com/150" alt="profile picture" />
           </div>
-          <div class="card__body__item__name">
+          <div class="card__name">
             <h3>John Doe</h3>
           </div>
-          <div class="card__body__item__details">
+          <div class="card__details">
             <h3>Stress</h3>
             <h3>Depression</h3>
             <h3>GGZ Helmond</h3>
@@ -41,13 +41,61 @@
         </div>
       </div>
     </div>
-    <div class="card">
-      <div class="card__header">
+    <div class="mainCard">
+      <div class="mainCard__header">
         <h2>Related news</h2>
       </div>
+      <div class="mainCard__body news">
+        <div class="card">
+          <img
+            src="https://via.placeholder.com/200x100?text=News"
+            alt="profile picture"
+          />
+          <p>
+            In life you need colors. From all of us here, I want to wish you
+            happy painting and God bless, my friends. The least little bit can
+            do so much. Isn't that fantastic that you can make whole mountains
+            in minutes?
+          </p>
+        </div>
+        <div class="card">
+          <img
+            src="https://via.placeholder.com/200x100?text=News"
+            alt="profile picture"
+          />
+          <p>
+            In life you need colors. From all of us here, I want to wish you
+            happy painting and God bless, my friends. The least little bit can
+            do so much. Isn't that fantastic that you can make whole mountains
+            in minutes?
+          </p>
+        </div>
+        <div class="card">
+          <img
+            src="https://via.placeholder.com/200x100?text=News"
+            alt="profile picture"
+          />
+          <p>
+            In life you need colors. From all of us here, I want to wish you
+            happy painting and God bless, my friends. The least little bit can
+            do so much. Isn't that fantastic that you can make whole mountains
+            in minutes?
+          </p>
+        </div>
+        <div class="card">
+          <img
+            src="https://via.placeholder.com/200x100?text=News"
+            alt="profile picture"
+          />
+          <p>
+            In life you need colors. From all of us here, I want to wish you
+            happy painting and God bless, my friends. The least little bit can
+            do so much. Isn't that fantastic that you can make whole mountains
+            in minutes?
+          </p>
+        </div>
 
-      <div class="overview__cards">
-        <div class="overview__cards__card">
+        <div class="card">
           <img
             src="https://via.placeholder.com/200x100?text=News"
             alt="profile picture"
@@ -59,7 +107,7 @@
             in minutes?
           </p>
         </div>
-        <div class="overview__cards__card">
+        <div class="card">
           <img
             src="https://via.placeholder.com/200x100?text=News"
             alt="profile picture"
@@ -71,7 +119,7 @@
             in minutes?
           </p>
         </div>
-        <div class="overview__cards__card">
+        <div class="card">
           <img
             src="https://via.placeholder.com/200x100?text=News"
             alt="profile picture"
@@ -83,57 +131,7 @@
             in minutes?
           </p>
         </div>
-        <div class="overview__cards__card">
-          <img
-            src="https://via.placeholder.com/200x100?text=News"
-            alt="profile picture"
-          />
-          <p>
-            In life you need colors. From all of us here, I want to wish you
-            happy painting and God bless, my friends. The least little bit can
-            do so much. Isn't that fantastic that you can make whole mountains
-            in minutes?
-          </p>
-        </div>
-      </div>
-      <div class="overview__cards">
-        <div class="overview__cards__card">
-          <img
-            src="https://via.placeholder.com/200x100?text=News"
-            alt="profile picture"
-          />
-          <p>
-            In life you need colors. From all of us here, I want to wish you
-            happy painting and God bless, my friends. The least little bit can
-            do so much. Isn't that fantastic that you can make whole mountains
-            in minutes?
-          </p>
-        </div>
-        <div class="overview__cards__card">
-          <img
-            src="https://via.placeholder.com/200x100?text=News"
-            alt="profile picture"
-          />
-          <p>
-            In life you need colors. From all of us here, I want to wish you
-            happy painting and God bless, my friends. The least little bit can
-            do so much. Isn't that fantastic that you can make whole mountains
-            in minutes?
-          </p>
-        </div>
-        <div class="overview__cards__card">
-          <img
-            src="https://via.placeholder.com/200x100?text=News"
-            alt="profile picture"
-          />
-          <p>
-            In life you need colors. From all of us here, I want to wish you
-            happy painting and God bless, my friends. The least little bit can
-            do so much. Isn't that fantastic that you can make whole mountains
-            in minutes?
-          </p>
-        </div>
-        <div class="overview__cards__card">
+        <div class="card">
           <img
             src="https://via.placeholder.com/200x100?text=News"
             alt="profile picture"
@@ -147,30 +145,27 @@
         </div>
       </div>
     </div>
-    <div class="card">
-      <div class="card__header">
+    <div class="mainCard">
+      <div class="mainCard__header">
         <h2>Related forum questions</h2>
       </div>
-
-      <div class="overview__cards">
-        <div class="overview__cards__card">
+      <div class="mainCard__body forum">
+        <div class="card">
           <p>It's a super day, so why not make a beautiful sky?</p>
         </div>
-        <div class="overview__cards__card">
+        <div class="card">
           <p>It's a super day, so why not make a beautiful sky?</p>
         </div>
-        <div class="overview__cards__card">
+        <div class="card">
           <p>It's a super day, so why not make a beautiful sky?</p>
         </div>
-      </div>
-      <div class="overview__cards">
-        <div class="overview__cards__card">
+        <div class="card">
           <p>It's a super day, so why not make a beautiful sky?</p>
         </div>
-        <div class="overview__cards__card">
+        <div class="card">
           <p>It's a super day, so why not make a beautiful sky?</p>
         </div>
-        <div class="overview__cards__card">
+        <div class="card">
           <p>It's a super day, so why not make a beautiful sky?</p>
         </div>
       </div>
@@ -222,31 +217,22 @@ export default {
   color: transparent;
 }
 
-.card {
-  margin-top: 50px;
-  border-radius: 20px;
-  overflow: hidden;
-  margin-right: 50px;
-  background-color: #f2f2f2;
+.persons {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.card__header {
-  padding: 5px 0 5px 30px;
-}
-
-.card__body {
-  padding: 20px;
-}
-
-.card__body__item {
+.person {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
-  border-radius: 20px;
   background-color: #ebe9e9;
+  width: 100%;
+  margin: 10px 0;
 }
 
-.card__body__item__image {
+.card__image {
   width: 50px;
   height: 50px;
   border-radius: 50%;
@@ -254,56 +240,24 @@ export default {
   margin: 20px;
 }
 
-.card__body__item__details h3 {
+.card__details h3 {
   background-color: #cccccc;
   border-radius: 20px;
   padding: 5px 10px;
   margin: 10px;
 }
 
-.card__body__item__details h3:first-of-type {
+.card__details h3:first-of-type {
   margin-left: 100px;
 }
 
-.card__body__item__details {
+.card__details {
   display: flex;
   align-items: center;
 }
 
-.overview__cards {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
-}
-
-.overview__cards__card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
-  background-color: #fff;
-  border-radius: 10px;
-  margin: 10px;
+.forum > .card,
+.news > .card {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  margin: 20px;
-}
-
-.overview__cards__card img {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-}
-
-.overview__cards__card p {
-  margin: 15px;
-  text-align: center;
 }
 </style>

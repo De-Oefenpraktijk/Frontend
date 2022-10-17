@@ -2,6 +2,7 @@
   <div class="sidebar">
     <div class="sidebar__header">
       <div class="sidebar__header__title">
+        <img src="../../public/logo.svg" alt="logo" />
         <h1>Oefenpraktijk</h1>
       </div>
     </div>
@@ -70,7 +71,6 @@
 
 <style scoped>
 .sidebar {
-  width: 250px;
   height: 100vh;
   background-color: #363740;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -89,7 +89,15 @@
 }
 
 .sidebar__header__title {
+  display: flex;
+  align-items: center;
   color: #a4a6b3;
+}
+
+.sidebar__header__title img {
+  width: 40px;
+  height: 40px;
+  margin-right: 5px;
 }
 
 .sidebar__menu ul {

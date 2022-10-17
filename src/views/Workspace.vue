@@ -2,12 +2,12 @@
   <Sidebar />
   <div class="main">
     <Topbar :title="$route.params.workspace" />
-    <div class="card">
-      <div class="card__header">
-        <h2>Private rooms</h2>
+    <div class="mainCard">
+      <div class="mainCard__header">
+        <span>Private rooms</span>
       </div>
-      <div class="overview__cards">
-        <div class="overview__cards__card" @click="showModal = true">
+      <div class="mainCard__body">
+        <div class="card" @click="showModal = true">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             x="0px"
@@ -23,8 +23,8 @@
           </svg>
           <p>Create new room</p>
         </div>
-        <router-link :to="{ name: 'room', query: { id: 'testroom1' } }">
-          <div class="overview__cards__card">
+        <div class="card">
+          <router-link :to="{ name: 'room', query: { id: 'testroom1' } }">
             <svg
               version="1.1"
               id="Layer_1"
@@ -45,9 +45,9 @@
               </g>
             </svg>
             <p>Test room 1</p>
-          </div>
-        </router-link>
-        <div class="overview__cards__card">
+          </router-link>
+        </div>
+        <div class="card">
           <svg
             version="1.1"
             id="Layer_1"
@@ -69,7 +69,7 @@
           </svg>
           <p>Test room 2</p>
         </div>
-        <div class="overview__cards__card">
+        <div class="card">
           <svg
             version="1.1"
             id="Layer_1"
@@ -93,12 +93,12 @@
         </div>
       </div>
     </div>
-    <div class="card">
-      <div class="card__header">
-        <h2>Most recent attachments</h2>
+    <div class="mainCard">
+      <div class="mainCard__header">
+        <span>Most recent attachments</span>
       </div>
-      <div class="overview__cards">
-        <div class="overview__cards__card">
+      <div class="mainCard__body">
+        <div class="card">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             x="0px"
@@ -122,7 +122,7 @@
           </svg>
           <p>effectiveness_ techniques.xslx</p>
         </div>
-        <div class="overview__cards__card">
+        <div class="card">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             x="0px"
@@ -152,7 +152,7 @@
           </svg>
           <p>evaluation_ of_ effectiveness_ techniques.pptx</p>
         </div>
-        <div class="overview__cards__card">
+        <div class="card">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             x="0px"
@@ -178,7 +178,7 @@
           </svg>
           <p>word_file.docx</p>
         </div>
-        <div class="overview__cards__card">
+        <div class="card">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             x="0px"
@@ -201,12 +201,12 @@
         </div>
       </div>
     </div>
-    <div class="card">
-      <div class="card__header">
-        <h2>Most recent forms</h2>
+    <div class="mainCard">
+      <div class="mainCard__header">
+        <span>Most recent forms</span>
       </div>
-      <div class="overview__cards">
-        <div class="overview__cards__card">
+      <div class="mainCard__body">
+        <div class="card">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             x="0px"
@@ -232,7 +232,7 @@
           </svg>
           <p>standard_form.docx</p>
         </div>
-        <div class="overview__cards__card">
+        <div class="card">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             x="0px"
@@ -258,7 +258,7 @@
           </svg>
           <p>form2.docx</p>
         </div>
-        <div class="overview__cards__card">
+        <div class="card">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             x="0px"
@@ -284,7 +284,7 @@
           </svg>
           <p>another_form.docx</p>
         </div>
-        <div class="overview__cards__card">
+        <div class="card">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             x="0px"
@@ -373,57 +373,21 @@ export default {
 
 <style scoped>
 .card {
-  margin-top: 50px;
-  border-radius: 20px;
-  overflow: hidden;
-  margin-right: 50px;
-  background-color: #f2f2f2;
-}
-
-.card__header {
-  padding: 5px 0 5px 30px;
-}
-
-.overview__cards {
   display: flex;
-  flex-direction: row;
+  flex-flow: column;
   align-items: center;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
 }
 
-.overview__cards__card,
-a {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-  height: 100%;
-  width: 100%;
-  background-color: #fff;
-  border-radius: 10px;
-  margin: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  margin: 20px;
-  min-height: 300px;
-}
-
-.overview__cards__card svg {
+.card svg {
   height: 50%;
   width: 50%;
 }
 
-.overview__cards__card p {
-  margin: 15px;
+.card p,
+.card a {
   text-align: center;
-}
-
-.overview__cards__card b {
-  font-size: 20px;
-  font-weight: 700;
-  text-align: center;
+  text-decoration: none;
+  color: #000;
 }
 
 .form__group {
