@@ -1,4 +1,5 @@
 import { createApp } from 'vue';
+import { createAuth0 } from '@auth0/auth0-vue';
 import './style.css';
 import App from './App.vue';
 import router from './router';
@@ -41,5 +42,12 @@ library.add(
 
 createApp(App)
   .use(router)
+  .use(
+    createAuth0({
+      domain: 'oefenpraktijk.eu.auth0.com',
+      client_id: 'CzLZTVeBEJ4cRvuMDuQvwOI0320x8Leo',
+      redirect_uri: window.location.origin,
+    })
+  )
   .component('font-awesome-icon', FontAwesomeIcon)
   .mount('#app');
