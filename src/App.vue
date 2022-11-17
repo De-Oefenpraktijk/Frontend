@@ -1,10 +1,23 @@
 <template>
-  <router-view />
+  <router-view v-if="isAuthenticated" />
+  <Login v-else />
 </template>
 
 <script>
+import { useAuth0 } from '@auth0/auth0-vue';
+import Login from './views/Login.vue';
+
 export default {
   name: 'App',
+  setup() {
+    const { isAuthenticated } = useAuth0();
+    return {
+      isAuthenticated,
+    };
+  },
+  components: {
+    Login,
+  },
   data() {
     return {
       mockData: {

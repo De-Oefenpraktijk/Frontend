@@ -1,4 +1,8 @@
 <script setup>
+import { useAuth0 } from '@auth0/auth0-vue';
+
+const { logout, user } = useAuth0();
+
 defineProps({
   title: String,
 });
@@ -13,7 +17,7 @@ defineProps({
       <div class="topbar__profile">
         <div class="topbar__profile__dropdown">
           <div class="topbar__profile__dropdown__button">
-            <span>John Doe</span>
+            <span>{{ user.name }}</span>
             <font-awesome-icon icon="fa-solid fa-chevron-down" />
           </div>
           <div class="topbar__profile__dropdown__content">
@@ -24,7 +28,7 @@ defineProps({
                   <span>Profile</span>
                 </li>
               </router-link>
-              <li>
+              <li @click="logout">
                 <font-awesome-icon
                   icon="fa-solid fa-arrow-right-from-bracket"
                 />
