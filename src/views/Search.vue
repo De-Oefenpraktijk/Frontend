@@ -47,10 +47,7 @@
       </div>
       <div class="mainCard__body news">
         <div class="card">
-          <img
-            src="https://via.placeholder.com/200x100?text=News"
-            alt="profile picture"
-          />
+          <img src="https://via.placeholder.com/200x100?text=News" alt="profile picture" />
           <p>
             In life you need colors. From all of us here, I want to wish you
             happy painting and God bless, my friends. The least little bit can
@@ -59,10 +56,7 @@
           </p>
         </div>
         <div class="card">
-          <img
-            src="https://via.placeholder.com/200x100?text=News"
-            alt="profile picture"
-          />
+          <img src="https://via.placeholder.com/200x100?text=News" alt="profile picture" />
           <p>
             In life you need colors. From all of us here, I want to wish you
             happy painting and God bless, my friends. The least little bit can
@@ -71,10 +65,7 @@
           </p>
         </div>
         <div class="card">
-          <img
-            src="https://via.placeholder.com/200x100?text=News"
-            alt="profile picture"
-          />
+          <img src="https://via.placeholder.com/200x100?text=News" alt="profile picture" />
           <p>
             In life you need colors. From all of us here, I want to wish you
             happy painting and God bless, my friends. The least little bit can
@@ -83,10 +74,7 @@
           </p>
         </div>
         <div class="card">
-          <img
-            src="https://via.placeholder.com/200x100?text=News"
-            alt="profile picture"
-          />
+          <img src="https://via.placeholder.com/200x100?text=News" alt="profile picture" />
           <p>
             In life you need colors. From all of us here, I want to wish you
             happy painting and God bless, my friends. The least little bit can
@@ -96,10 +84,7 @@
         </div>
 
         <div class="card">
-          <img
-            src="https://via.placeholder.com/200x100?text=News"
-            alt="profile picture"
-          />
+          <img src="https://via.placeholder.com/200x100?text=News" alt="profile picture" />
           <p>
             In life you need colors. From all of us here, I want to wish you
             happy painting and God bless, my friends. The least little bit can
@@ -108,10 +93,7 @@
           </p>
         </div>
         <div class="card">
-          <img
-            src="https://via.placeholder.com/200x100?text=News"
-            alt="profile picture"
-          />
+          <img src="https://via.placeholder.com/200x100?text=News" alt="profile picture" />
           <p>
             In life you need colors. From all of us here, I want to wish you
             happy painting and God bless, my friends. The least little bit can
@@ -120,10 +102,7 @@
           </p>
         </div>
         <div class="card">
-          <img
-            src="https://via.placeholder.com/200x100?text=News"
-            alt="profile picture"
-          />
+          <img src="https://via.placeholder.com/200x100?text=News" alt="profile picture" />
           <p>
             In life you need colors. From all of us here, I want to wish you
             happy painting and God bless, my friends. The least little bit can
@@ -132,10 +111,7 @@
           </p>
         </div>
         <div class="card">
-          <img
-            src="https://via.placeholder.com/200x100?text=News"
-            alt="profile picture"
-          />
+          <img src="https://via.placeholder.com/200x100?text=News" alt="profile picture" />
           <p>
             In life you need colors. From all of us here, I want to wish you
             happy painting and God bless, my friends. The least little bit can
@@ -171,19 +147,50 @@
       </div>
     </div>
   </div>
+  {{ewa}}
 </template>
 
 <script>
 import Sidebar from '../components/Sidebar.vue';
 import Topbar from '../components/Topbar.vue';
-
+import { useAuth0 } from '@auth0/auth0-vue';
+import Axios from 'axios';
 export default {
   name: 'Search',
   components: {
     Topbar,
     Sidebar,
   },
+  setup() {
+    const { getAccessTokenSilently} = useAuth0();
+    return {
+      getAccessTokenSilently
+    };
+  },
+  data() {
+    return {
+      ewa: '',
+    },
+
+      Axios.get('http://20.126.206.207/Person/getUser?username=Rense013', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Imp2M0F6YndkMzFmWmFldzJOcW1GVSJ9.eyJpc3MiOiJodHRwczovL29lZmVucHJha3RpamsuZXUuYXV0aDAuY29tLyIsInN1YiI6IlNab0NFWkJvMDVCc21DWW1TZmMwYTR0Q3VCZXZzTkM0QGNsaWVudHMiLCJhdWQiOiJodHRwczovL2FwaS5vZWZlbnByYWt0aWprLm5sIiwiaWF0IjoxNjcwMjMyODM4LCJleHAiOjE2NzAzMTkyMzgsImF6cCI6IlNab0NFWkJvMDVCc21DWW1TZmMwYTR0Q3VCZXZzTkM0Iiwic2NvcGUiOiJyZWFkOnVzZXIiLCJndHkiOiJjbGllbnQtY3JlZGVudGlhbHMiLCJwZXJtaXNzaW9ucyI6WyJyZWFkOnVzZXIiXX0.KvhlhywFiBliyLx0g3GVcWLPQVzsRFyhkf9Ou8fMRA0yS6CY3e3RL2tMDEj1B2fX-aSLyU5mzic49oI-Fo6os3bMej9EzAnztaclz1h_rHtdV9J_vTKMbzKmGRSsY9zX7enlLj0DMOQ4FbvrBH-_p2iCNt0VBin-DR__Tzym7LEpy4JlXHGieHeIbB4D6G5pBww0TzbPsueqKtl0OZqrmtG0AIekuCyzXcxMjKtsmr_RIoHWRo0SJOLDfqcsE9pdtAYc825bIFG2SsjNS-WF25rXsyPkGk7IJ9Q83e07dJH_L84oYVW55SBSiFFCeJmUz2m4FiidcbSSsUmNXax3DQ',
+        }
+      })
+        .then(response => (this.ewa = response))
+        .catch((error) => {
+          console.log(error);
+        });
+  },
+  methods: {
+    async getAccessToken() {
+      const token = await this.getAccessTokenSilently();
+      // localStorage.setItem('token', token);
+    },
+  },
 };
+
 </script>
 
 <style scoped>
@@ -256,8 +263,8 @@ export default {
   align-items: center;
 }
 
-.forum > .card,
-.news > .card {
+.forum>.card,
+.news>.card {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 </style>
