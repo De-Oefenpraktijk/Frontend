@@ -24,6 +24,9 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 
+// Make BootstrapVue available throughout your project
+
+
 /* add icons to the library */
 library.add(
   faChartPie,
@@ -39,7 +42,6 @@ library.add(
   faChevronDown,
   faArrowRightFromBracket
 );
-
 createApp(App)
   .use(router)
   .use(

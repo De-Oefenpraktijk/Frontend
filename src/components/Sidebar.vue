@@ -64,6 +64,12 @@
             <span>Organisation</span>
           </li>
         </router-link>
+        <router-link to="/profile">
+          <li>
+            <font-awesome-icon icon="fa-solid fa-users" />
+            <span>Profile</span>
+          </li>
+        </router-link>
       </ul>
     </div>
   </div>
