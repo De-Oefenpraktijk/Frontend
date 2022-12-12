@@ -198,10 +198,13 @@ export default {
                     headers: { Authorization: `Bearer ${token}` }
                 };
     const userId = this.user.sub.split('|')[1];
-    await axios.get('https://localhost:7147/api/v1/User/GetUserById/' + userId, config);
-    console.log('ai');
-    console.log(i);
-
+    var request = await axios.get('https://localhost:7147/api/v1/User/GetUserById/' + userId, config);
+    if(request.status == 200){
+      console.log('user has got account')
+    }
+    else{
+      this.$router.push({ path: '/createProfile' });
+    }
   },
 };
 </script>
