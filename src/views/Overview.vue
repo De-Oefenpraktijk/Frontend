@@ -177,12 +177,31 @@
 <script>
 import Sidebar from '../components/Sidebar.vue';
 import Topbar from '../components/Topbar.vue';
+import { useAuth0 } from '@auth0/auth0-vue';
+import axios from 'axios';
 
 export default {
   name: 'Overview',
   components: {
     Topbar,
     Sidebar,
+  },
+  setup(){
+    const { user } = useAuth0();
+    return {
+      user
+    };
+  },
+  async mounted(){
+    var token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Imp2M0F6YndkMzFmWmFldzJOcW1GVSJ9.eyJpc3MiOiJodHRwczovL29lZmVucHJha3RpamsuZXUuYXV0aDAuY29tLyIsInN1YiI6IlNab0NFWkJvMDVCc21DWW1TZmMwYTR0Q3VCZXZzTkM0QGNsaWVudHMiLCJhdWQiOiJodHRwczovL2FwaS5vZWZlbnByYWt0aWprLm5sIiwiaWF0IjoxNjcwODM0MDM2LCJleHAiOjE2NzA5MjA0MzYsImF6cCI6IlNab0NFWkJvMDVCc21DWW1TZmMwYTR0Q3VCZXZzTkM0Iiwic2NvcGUiOiJyZWFkOnVzZXIiLCJndHkiOiJjbGllbnQtY3JlZGVudGlhbHMiLCJwZXJtaXNzaW9ucyI6WyJyZWFkOnVzZXIiXX0.AQ0CWIGwKnni-bQzsEIHN3MdZm7JdtKKlE1L972JEDSPo0WnVn9UW3wNTYmzBdhPhiliPp4o7WFMdIKz_W_StsdHEq9nC8INdctStn-xnE5vUdOnIvKXlgZsKWvsiZkrLOOA1oqymeyB3Zg1WGozuG8Ma7BDY5wk6czNj_rDNUv7IjDdZuARCA8uu1XYZ1urjVIIP_xiahjDpuLYrG7N7n02Po99QHVNQJWpey8wa2f7VYQODJ87ahYwRlpMMRRsdBJCrz2so2OXmNNyEfZeBm_OsXzzzHwLPRSH3GLwBj9Z1jbbPu37m5N-kGAbh5tG2-ONYaoadndgt-rdPlSHmw"
+    const config = {
+                    headers: { Authorization: `Bearer ${token}` }
+                };
+    const userId = this.user.sub.split('|')[1];
+    await axios.get('https://localhost:7147/api/v1/User/GetUserById/' + userId, config);
+    console.log('ai');
+    console.log(i);
+
   },
 };
 </script>
