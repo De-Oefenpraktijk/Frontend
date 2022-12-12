@@ -9,7 +9,8 @@
             <img src="https://i.imgur.com/4Z5wQ0x.jpg" alt="profile" />
             </div>
             <div class="profile__header__left__name">
-                <h1>{{ user }}</h1>
+                <h1>{{ user.name }}</h1>
+                <h1>{{user}}</h1> 
             <p>Software Engineer</p>
             </div>
         </div>
@@ -50,24 +51,14 @@
             </div>
 
 </template>
-<script>
+<script setup>
 import Sidebar from '../components/Sidebar.vue';
 import Topbar from '../components/Topbar.vue';
 import { useAuth0 } from '@auth0/auth0-vue';
 
 
-export default {
-  name: 'Forum',
-  components: {
-    Topbar,
-    Sidebar,
-  },
-  setup(){
-    const { user } = useAuth0();
+const {user } = useAuth0();
 
-
-  }
-};
 </script>
 <style scoped>
 .profile {
