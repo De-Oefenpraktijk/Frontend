@@ -193,17 +193,17 @@ export default {
     };
   },
   async mounted(){
-    var token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Imp2M0F6YndkMzFmWmFldzJOcW1GVSJ9.eyJpc3MiOiJodHRwczovL29lZmVucHJha3RpamsuZXUuYXV0aDAuY29tLyIsInN1YiI6IlNab0NFWkJvMDVCc21DWW1TZmMwYTR0Q3VCZXZzTkM0QGNsaWVudHMiLCJhdWQiOiJodHRwczovL2FwaS5vZWZlbnByYWt0aWprLm5sIiwiaWF0IjoxNjcwODM0MDM2LCJleHAiOjE2NzA5MjA0MzYsImF6cCI6IlNab0NFWkJvMDVCc21DWW1TZmMwYTR0Q3VCZXZzTkM0Iiwic2NvcGUiOiJyZWFkOnVzZXIiLCJndHkiOiJjbGllbnQtY3JlZGVudGlhbHMiLCJwZXJtaXNzaW9ucyI6WyJyZWFkOnVzZXIiXX0.AQ0CWIGwKnni-bQzsEIHN3MdZm7JdtKKlE1L972JEDSPo0WnVn9UW3wNTYmzBdhPhiliPp4o7WFMdIKz_W_StsdHEq9nC8INdctStn-xnE5vUdOnIvKXlgZsKWvsiZkrLOOA1oqymeyB3Zg1WGozuG8Ma7BDY5wk6czNj_rDNUv7IjDdZuARCA8uu1XYZ1urjVIIP_xiahjDpuLYrG7N7n02Po99QHVNQJWpey8wa2f7VYQODJ87ahYwRlpMMRRsdBJCrz2so2OXmNNyEfZeBm_OsXzzzHwLPRSH3GLwBj9Z1jbbPu37m5N-kGAbh5tG2-ONYaoadndgt-rdPlSHmw"
+    var token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Imp2M0F6YndkMzFmWmFldzJOcW1GVSJ9.eyJpc3MiOiJodHRwczovL29lZmVucHJha3RpamsuZXUuYXV0aDAuY29tLyIsInN1YiI6IlNab0NFWkJvMDVCc21DWW1TZmMwYTR0Q3VCZXZzTkM0QGNsaWVudHMiLCJhdWQiOiJodHRwczovL2FwaS5vZWZlbnByYWt0aWprLm5sIiwiaWF0IjoxNjcxMDA5NTkxLCJleHAiOjE2NzEwOTU5OTEsImF6cCI6IlNab0NFWkJvMDVCc21DWW1TZmMwYTR0Q3VCZXZzTkM0Iiwic2NvcGUiOiJyZWFkOnVzZXIiLCJndHkiOiJjbGllbnQtY3JlZGVudGlhbHMiLCJwZXJtaXNzaW9ucyI6WyJyZWFkOnVzZXIiXX0.hjXh4Rx_V4hPkOWm2ok_w2IAufpsYTV95TXWpFrYiI3CQG_hBFdQ3a-XPQgTg2jeym7oRt_n5iNhLIDwODJY69SN-w6oWqE4GnVPGTyVxnPXIkMzVkuruj2fgTWLqgAvk5nIKovOoI6I5slm_Vh_wkessnrGanRi8XpUo0oIloGrBT8dFHWrVpwVVfXxEn0nd8fS96jcNbmZSZJgWF6a_0LXu8oOUqOrSYK_vZTY5Eu36GXFlLB3Nv6WTbmfkS0q9ewX6AIrAlgXM6DUHxkCssviJeeAT5PQ9RyMritx7XdPmK-nyxBnsdJG_jiP6pSho5VEnGFZbBMASjIMHBxnVQ"
     const config = {
                     headers: { Authorization: `Bearer ${token}` }
                 };
     const userId = this.user.sub.split('|')[1];
-    //var request = await axios.get('https://localhost:7147/api/v1/User/GetUserById/' + userId, config);
-    if(axios.get('https://localhost:7147/api/v1/User/GetUserById/' + userId, config) == 200){
-      console.log('user has got account')
+    console.log('test1');
+    try{
+      await axios.get('https://localhost:7147/api/v1/User/GetUserById/' + userId, config);
     }
-    else{
-      console.log('user has not got account');
+    catch(error){
+      console.log(error);
       this.$router.push({ path: '/createProfile' });
     }
   },
