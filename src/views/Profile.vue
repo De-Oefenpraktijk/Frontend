@@ -10,16 +10,16 @@
             </div>
             <div class="profile__header__left__name">
                 <h1>{{ user.name }}</h1>
-                <h1>{{user}}</h1> 
+              
             <p>Software Engineer</p>
             </div>
         </div>
         <div class="profile__header__right">
             <div class="profile__header__right__button">
-            <button>Follow</button>
+            <button @click="">Follow</button>
             </div>
             <div class="profile__header__right__button">
-            <button>Message</button>
+            <button @click="this.$router.push({ path: '/messages' });">Message</button>
             </div>
         </div>
         </div>
@@ -28,8 +28,10 @@
             <div class="profile__body__left__info">
             <div class="profile__body__left__info__item">
                 <h1>John Doe</h1>
-                <p>Software Engineer</p>
+
             </div>
+            <p>Software Engineer</p>
+            <p>Residence place</p>
             </div>
             <div class="profile__body__left__about">
             <h1>About</h1>
@@ -41,13 +43,15 @@
         </div>
         <div class="profile__body__right">
             <div class="profile__body__right__item">
-            <h1>Experience</h1>
+            <h1>Specializations</h1>
             </div>
             <div class="profile__body__right__item">
+            <h1>Education</h1>
                 </div>
                 </div>
                 </div>
                 </div>
+            <div class="profile__body__right__item"></div>
             </div>
 
 </template>
@@ -55,6 +59,7 @@
 import Sidebar from '../components/Sidebar.vue';
 import Topbar from '../components/Topbar.vue';
 import { useAuth0 } from '@auth0/auth0-vue';
+import axios from 'axios';
 
 
 const {user } = useAuth0();

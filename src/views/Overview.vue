@@ -5,7 +5,7 @@
     <div class="statistics">
       <div class="statistics__card">
         <div class="statistics__card__header">
-          <span>Messages</span>
+          <span @click="">Messages</span>
         </div>
         <h1>{{ this.$root.mockData.overview.messages }}</h1>
       </div>
@@ -193,20 +193,7 @@ export default {
     };
   },
   async mounted(){
-    var token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Imp2M0F6YndkMzFmWmFldzJOcW1GVSJ9.eyJpc3MiOiJodHRwczovL29lZmVucHJha3RpamsuZXUuYXV0aDAuY29tLyIsInN1YiI6IlNab0NFWkJvMDVCc21DWW1TZmMwYTR0Q3VCZXZzTkM0QGNsaWVudHMiLCJhdWQiOiJodHRwczovL2FwaS5vZWZlbnByYWt0aWprLm5sIiwiaWF0IjoxNjcxMDA5NTkxLCJleHAiOjE2NzEwOTU5OTEsImF6cCI6IlNab0NFWkJvMDVCc21DWW1TZmMwYTR0Q3VCZXZzTkM0Iiwic2NvcGUiOiJyZWFkOnVzZXIiLCJndHkiOiJjbGllbnQtY3JlZGVudGlhbHMiLCJwZXJtaXNzaW9ucyI6WyJyZWFkOnVzZXIiXX0.hjXh4Rx_V4hPkOWm2ok_w2IAufpsYTV95TXWpFrYiI3CQG_hBFdQ3a-XPQgTg2jeym7oRt_n5iNhLIDwODJY69SN-w6oWqE4GnVPGTyVxnPXIkMzVkuruj2fgTWLqgAvk5nIKovOoI6I5slm_Vh_wkessnrGanRi8XpUo0oIloGrBT8dFHWrVpwVVfXxEn0nd8fS96jcNbmZSZJgWF6a_0LXu8oOUqOrSYK_vZTY5Eu36GXFlLB3Nv6WTbmfkS0q9ewX6AIrAlgXM6DUHxkCssviJeeAT5PQ9RyMritx7XdPmK-nyxBnsdJG_jiP6pSho5VEnGFZbBMASjIMHBxnVQ"
-    const config = {
-                    headers: { Authorization: `Bearer ${token}` }
-                };
-    const userId = this.user.sub.split('|')[1];
-    console.log('test1');
-    try{
-      await axios.get('https://localhost:7147/api/v1/User/GetUserById/' + userId, config);
-    }
-    catch(error){
-      console.log(error);
-      this.$router.push({ path: '/createProfile' });
-    }
-  },
+  }
 };
 </script>
 
