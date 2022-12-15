@@ -1,13 +1,9 @@
 <template>
-  <router-view v-if="isAuthenticated" />
-  <Login v-else />
-
+  <router-view />
 </template>
 
 <script>
 import { useAuth0 } from '@auth0/auth0-vue';
-import Login from './views/Login.vue';
-import axios from 'axios';
 
 
 export default {
@@ -18,9 +14,6 @@ export default {
       isAuthenticated,
       user
     };
-  },
-  components: {
-    Login,
   },
   data() {
     return {
