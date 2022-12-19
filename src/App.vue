@@ -23,6 +23,8 @@ export default {
     async getAccessToken() {
       const token = await this.getAccessTokenSilently();
       store.token = token;
+      const { user } = useAuth0();
+      store.user = user;
     },
   },
   data() {

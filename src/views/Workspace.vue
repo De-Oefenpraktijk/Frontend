@@ -1,7 +1,7 @@
 <template>
   <Sidebar />
   <div class="main">
-    <Topbar :title="$route.params.workspace" />
+    <Topbar :title="workspace.name" />
     <div class="mainCard">
       <div class="mainCard__header">
         <span>Private rooms</span>
@@ -347,6 +347,8 @@
 import Sidebar from '../components/Sidebar.vue';
 import Topbar from '../components/Topbar.vue';
 import Modal from '../components/Modal.vue';
+import axios from 'axios';
+import {store} from '../store';
 
 export default {
   name: 'Workspace',
@@ -358,7 +360,18 @@ export default {
   data() {
     return {
       showModal: false,
+      workspace,
     };
+  },
+    methods:{
+    async getData(){
+      const config = {
+            headers: { Authorization: `Bearer ${store.token}` }};
+     this.workspace = await axios.get('http://20.126.206.207/room/' + route.params.workspace, + "/" + store.user.id, config)
+    }
+  },
+  mounted(){
+    this.getData();
   },
   created() {
     this.$watch(

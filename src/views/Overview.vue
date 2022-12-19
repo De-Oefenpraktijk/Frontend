@@ -162,6 +162,7 @@ import Sidebar from '../components/Sidebar.vue';
 import Topbar from '../components/Topbar.vue';
 import { useAuth0 } from '@auth0/auth0-vue';
 import axios from 'axios';
+import {store} from '../store';
 
 export default {
   name: 'Overview',
@@ -169,18 +170,26 @@ export default {
     Topbar,
     Sidebar,
   },
+  data(){
+    return{
+    workspaces: []
+    }
+  },
+  methods:{
+    async getData(){
+      const config = {
+            headers: { Authorization: `Bearer ${store.token}` }};
+     this.workspaces = await axios.get('http://20.126.206.207/workspace/getworkspaces', config)
+    }
+  },
   setup(){
     const { user } = useAuth0();
-     const token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Imp2M0F6YndkMzFmWmFldzJOcW1GVSJ9.eyJpc3MiOiJodHRwczovL29lZmVucHJha3RpamsuZXUuYXV0aDAuY29tLyIsInN1YiI6IlNab0NFWkJvMDVCc21DWW1TZmMwYTR0Q3VCZXZzTkM0QGNsaWVudHMiLCJhdWQiOiJodHRwczovL2FwaS5vZWZlbnByYWt0aWprLm5sIiwiaWF0IjoxNjcxMTAxNjgyLCJleHAiOjE2NzExODgwODIsImF6cCI6IlNab0NFWkJvMDVCc21DWW1TZmMwYTR0Q3VCZXZzTkM0Iiwic2NvcGUiOiJyZWFkOnVzZXIiLCJndHkiOiJjbGllbnQtY3JlZGVudGlhbHMiLCJwZXJtaXNzaW9ucyI6WyJyZWFkOnVzZXIiXX0.0_rZRzHP9DMC-6gfzPO130EkdenLLjXocXui4pECcVLIITobi5GHF5N2C0Ug5-_FUC7T2Qq-GSZ5cELAlMhg-QMsWRu9g1CX9gnfNIvoqSqg4VPu_wZ9BWMQ7NtdgxJyp6mxdToVerR_0q7A1KSYXwodwQEkEqMmh3aTA9Wh8pKPhVvZCe9iTW-sGd7LIUnxaA7zojZk-2yGPAzNr5a-8RU40zOVDa5yJLsyz1PSdD2f2RITbkaOEX_DWSkLFvwdqqZBx1Eihh4rFxwK9n0jYYiuxCz7M_B3NHMIyxnsU8sbRdjaJ6vvwE4I2smYVYwncuDLEKqOMpZeXjmWgimRUQ";
-      const config = {
-            headers: { Authorization: `Bearer ${token}` }};
-    const workspaces = axios.get('http://20.126.206.207/workspace/getworkspaces', config)
     return {
-      workspaces,
       user
     };
   },
-  async mounted(){
+  mounted(){
+    this.getData();
   }
 };
 </script>
