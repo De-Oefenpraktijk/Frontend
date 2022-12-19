@@ -32,8 +32,8 @@
 import { useAuth0 } from '@auth0/auth0-vue';
 import axios from 'axios';
   // Initialize Userfront
-  Userfront.init("demo1234");
-  const {user } = useAuth0();
+ // Userfront.init("demo1234");
+ // const {user } = useAuth0();
   export default {
     data() {
       return {

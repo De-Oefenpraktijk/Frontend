@@ -10,6 +10,7 @@
             </div>
             <div class="profile__header__left__name">
                 <h1>{{ user.name }}</h1>
+                <h1> {{ user }}</h1>
               
             <p>Software Engineer</p>
             </div>
