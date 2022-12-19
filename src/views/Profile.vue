@@ -3,6 +3,16 @@
   <div class="main">
     <Topbar :title="Profile" />
     <div class="profile">
+        <div class="profile__header">
+        <div class="profile__header__left">
+            <div class="profile__header__left__image">
+            <img src="https://i.imgur.com/4Z5wQ0x.jpg" alt="profile" />
+            </div>
+            <div class="profile__header__left__name">
+                <h1>{{ user.name }}</h1>
+              
+            <p>Software Engineer</p>
+            </div>
       <div class="left">
         <div class="profile_image">
           <img

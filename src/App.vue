@@ -5,6 +5,8 @@
 <script>
 import { useAuth0 } from '@auth0/auth0-vue';
 import { store } from './store';
+import jwt_decode from 'jwt-decode';
+import axios from 'axios';
 
 export default {
   name: 'App',
@@ -18,12 +20,31 @@ export default {
   },
   async created() {
     await this.getAccessToken();
+    this.HasUserProfile(store.token);
   },
   methods: {
     async getAccessToken() {
       const token = await this.getAccessTokenSilently();
       store.token = token;
+
     },
+    async HasUserProfile(token){
+      var decoded = jwt_decode(token);
+      var userId = decoded.sub.split('|')[1];
+      var user = axios.get('http://20.126.206.207/user/getuserbyid/' + userId, {
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
+      }).then((response) => {
+        console.log(response.data);
+        if(response.data.firstName == "undefined" || response.data.lastName == "undefined"){
+          console.log("User has no profile yet")
+          //means that the user has no profile yet
+        //this.$router.push('/createProfile');
+      }
+      });
+
+      }   
   },
   data() {
     return {
