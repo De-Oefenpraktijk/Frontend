@@ -44,7 +44,7 @@
                 />
               </g>
             </svg>
-            <p>{{Workspace.name}}</p>
+            <p>{{ Workspace.name }}</p>
           </router-link>
         </div>
       </div>
@@ -300,15 +300,15 @@
 </template>
 
 <script>
-import Sidebar from '../components/Sidebar.vue';
-import Topbar from '../components/Topbar.vue';
-import Modal from '../components/Modal.vue';
-import axios from 'axios';
-import {store} from '../store';
-import { useAuth0 } from '@auth0/auth0-vue';
+import Sidebar from "../components/Sidebar.vue";
+import Topbar from "../components/Topbar.vue";
+import Modal from "../components/Modal.vue";
+import axios from "axios";
+import { store } from "../store";
+import { useAuth0 } from "@auth0/auth0-vue";
 
 export default {
-  name: 'Workspace',
+  name: "Workspace",
   components: {
     Topbar,
     Sidebar,
@@ -322,20 +322,27 @@ export default {
       workspace: {},
     };
   },
-    methods:{
-    async getData(){
-    console.log(this.user);
+  methods: {
+    async getData() {
+      console.log(this.user);
       const config = {
-            headers: { Authorization: `Bearer ${store.token}` }};
-            console.log(this.user?.email);
-            var idlist = this.user.sub.split("auth0|");
-            console.log(idlist);
-          var test = await axios.get('http://20.126.206.207/room/' + this.$route.params.workspace + "/" + idlist[1], config);
-     console.log(test.data);
-     this.workspace = test.data;
-    }
+        headers: { Authorization: `Bearer ${store.token}` },
+      };
+      console.log(this.user?.email);
+      var idlist = this.user.sub.split("auth0|");
+      console.log(idlist);
+      var test = await axios.get(
+        "http://20.126.206.207/room/" +
+          this.$route.params.workspace +
+          "/" +
+          idlist[1],
+        config
+      );
+      console.log(test.data);
+      this.workspace = test.data;
+    },
   },
-  mounted(){
+  mounted() {
     this.getData();
   },
   created() {

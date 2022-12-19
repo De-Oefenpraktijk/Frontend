@@ -40,7 +40,7 @@ export default {
         if(response.data.firstName == "undefined" || response.data.lastName == "undefined"){
           console.log("User has no profile yet")
           //means that the user has no profile yet
-        //this.$router.push('/createProfile');
+        this.$router.push('/createProfile');
       }
       });
 
