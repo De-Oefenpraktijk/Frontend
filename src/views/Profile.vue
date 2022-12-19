@@ -21,30 +21,34 @@
           <input type="text" placeholder="Last Name" v-model="user.lastName" />
           <label>Email</label>
           <input type="text" placeholder="Email" v-model="user.emailAddress" />
+          <label>Residence place</label>
+          <input
+            type="text"
+            placeholder="Residence"
+            v-model="user.residencePlace"
+          />
           <div class="buttons">
-            <button>Save changes</button>
-            <button>Change password</button>
+            <button @click="saveChanges">Save changes</button>
+            <button @click="changePassword">Change password</button>
           </div>
         </div>
       </div>
       <div class="right">
         <h1>Educations</h1>
         <div class="educations">
-          <div v-for="education in user.educations" :key="education">
+          <div v-for="education in educations" :key="education">
             <div class="education">
-              <p>{{ education }}</p>
+              <p>{{ education.name }} -</p>
+              <p>{{ education.location }}</p>
             </div>
           </div>
           <p class="newEducation">+</p>
         </div>
         <h1>Specializations</h1>
         <div class="educations">
-          <div
-            v-for="specialization in user.specializations"
-            :key="specialization"
-          >
+          <div v-for="specialization in specializations" :key="specialization">
             <div class="education">
-              <p>{{ specialization }}</p>
+              <p>{{ specialization.name }}</p>
             </div>
           </div>
           <p class="newEducation">+</p>
@@ -70,6 +74,8 @@ export default {
   data() {
     return {
       user: {},
+      educations: [],
+      specializations: [],
     };
   },
   async mounted() {
@@ -95,6 +101,90 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+
+      this.user.educations.forEach(async (education) => {
+        await axios
+          .get(`http://20.126.206.207/education/geteducation/${education}`, {
+            headers: {
+              Authorization: `Bearer ${store.token}`,
+            },
+          })
+          .then((res) => {
+            this.educations.push(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
+
+      this.user.specializations.forEach(async (specialization) => {
+        await axios
+          .get(
+            `http://20.126.206.207/specialization/getspecialization/${specialization}`,
+            {
+              headers: {
+                Authorization: `Bearer ${store.token}`,
+              },
+            }
+          )
+          .then((res) => {
+            this.specializations.push(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
+    },
+    async saveChanges() {
+      await axios
+        .put(
+          `http://20.126.206.207/user/updateuser/${this.$route.params.id}`,
+          {
+            emailAddress: this.user.emailAddress,
+            firstName: this.user.firstName,
+            lastName: this.user.lastName,
+            residencePlace: this.user.residencePlace,
+            enrollmentDate: this.user.enrollmentDate,
+            id: this.user.id,
+            residencePlace: this.user.residencePlace,
+            role: this.user.role,
+            username: this.user.username,
+            educations: this.educations,
+            specializations: this.specializations,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${store.token}`,
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    changePassword() {
+      var options = {
+        method: 'POST',
+        url: 'https://oefenpraktijk.eu.auth0.com/dbconnections/change_password',
+        headers: { 'content-type': 'application/json' },
+        data: {
+          client_id: 'CzLZTVeBEJ4cRvuMDuQvwOI0320x8Leo',
+          email: this.user.emailAddress,
+          connection: 'Username-Password-Authentication',
+        },
+      };
+
+      axios
+        .request(options)
+        .then(function (response) {
+          alert(response.data);
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
     },
   },
 };
@@ -107,7 +197,6 @@ export default {
   align-items: center;
   justify-content: center;
   margin-top: 50px;
-  height: 80vh;
 }
 
 .left {
@@ -162,6 +251,12 @@ export default {
   padding: 10px;
   background-color: #f5f5f5;
   color: #5e5e5e;
+}
+
+.personal_details button:hover {
+  background-color: #5e5e5e;
+  color: #ffffff;
+  cursor: pointer;
 }
 
 .right {
