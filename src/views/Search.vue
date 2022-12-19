@@ -176,12 +176,16 @@
 <script>
 import Sidebar from '../components/Sidebar.vue';
 import Topbar from '../components/Topbar.vue';
+import { store } from '../store.js';
 
 export default {
   name: 'Search',
   components: {
     Topbar,
     Sidebar,
+  },
+  mounted() {
+    console.log(store.token);
   },
 };
 </script>

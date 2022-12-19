@@ -5,7 +5,7 @@
     <div class="statistics">
       <div class="statistics__card">
         <div class="statistics__card__header">
-          <span>Messages</span>
+          <span @click="">Messages</span>
         </div>
         <h1>{{ this.$root.mockData.overview.messages }}</h1>
       </div>
@@ -177,6 +177,8 @@
 <script>
 import Sidebar from '../components/Sidebar.vue';
 import Topbar from '../components/Topbar.vue';
+import { useAuth0 } from '@auth0/auth0-vue';
+import axios from 'axios';
 
 export default {
   name: 'Overview',
@@ -184,6 +186,14 @@ export default {
     Topbar,
     Sidebar,
   },
+  setup(){
+    const { user } = useAuth0();
+    return {
+      user
+    };
+  },
+  async mounted(){
+  }
 };
 </script>
 
