@@ -6,8 +6,14 @@
       <div class="searchbar-icon">
         <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
       </div>
-      <input type="text" class="searchbar-input" placeholder="Search..." />
+      <form>
+        <input type="text" class="searchbar-input" v-model="search" />
+        <button type="button" class="searchbar-button" v-on:click="getData">
+          Search
+        </button>
+      </form>
     </div>
+
     <div class="mainCard">
       <div class="mainCard__header">
         <h2>Related people</h2>
@@ -47,10 +53,7 @@
       </div>
       <div class="mainCard__body news">
         <div class="card">
-          <img
-            src="https://via.placeholder.com/200x100?text=News"
-            alt="profile picture"
-          />
+          <img src="https://via.placeholder.com/200x100?text=News" alt="profile picture" />
           <p>
             In life you need colors. From all of us here, I want to wish you
             happy painting and God bless, my friends. The least little bit can
@@ -59,10 +62,7 @@
           </p>
         </div>
         <div class="card">
-          <img
-            src="https://via.placeholder.com/200x100?text=News"
-            alt="profile picture"
-          />
+          <img src="https://via.placeholder.com/200x100?text=News" alt="profile picture" />
           <p>
             In life you need colors. From all of us here, I want to wish you
             happy painting and God bless, my friends. The least little bit can
@@ -71,10 +71,7 @@
           </p>
         </div>
         <div class="card">
-          <img
-            src="https://via.placeholder.com/200x100?text=News"
-            alt="profile picture"
-          />
+          <img src="https://via.placeholder.com/200x100?text=News" alt="profile picture" />
           <p>
             In life you need colors. From all of us here, I want to wish you
             happy painting and God bless, my friends. The least little bit can
@@ -83,10 +80,7 @@
           </p>
         </div>
         <div class="card">
-          <img
-            src="https://via.placeholder.com/200x100?text=News"
-            alt="profile picture"
-          />
+          <img src="https://via.placeholder.com/200x100?text=News" alt="profile picture" />
           <p>
             In life you need colors. From all of us here, I want to wish you
             happy painting and God bless, my friends. The least little bit can
@@ -96,10 +90,7 @@
         </div>
 
         <div class="card">
-          <img
-            src="https://via.placeholder.com/200x100?text=News"
-            alt="profile picture"
-          />
+          <img src="https://via.placeholder.com/200x100?text=News" alt="profile picture" />
           <p>
             In life you need colors. From all of us here, I want to wish you
             happy painting and God bless, my friends. The least little bit can
@@ -108,10 +99,7 @@
           </p>
         </div>
         <div class="card">
-          <img
-            src="https://via.placeholder.com/200x100?text=News"
-            alt="profile picture"
-          />
+          <img src="https://via.placeholder.com/200x100?text=News" alt="profile picture" />
           <p>
             In life you need colors. From all of us here, I want to wish you
             happy painting and God bless, my friends. The least little bit can
@@ -120,10 +108,7 @@
           </p>
         </div>
         <div class="card">
-          <img
-            src="https://via.placeholder.com/200x100?text=News"
-            alt="profile picture"
-          />
+          <img src="https://via.placeholder.com/200x100?text=News" alt="profile picture" />
           <p>
             In life you need colors. From all of us here, I want to wish you
             happy painting and God bless, my friends. The least little bit can
@@ -132,10 +117,7 @@
           </p>
         </div>
         <div class="card">
-          <img
-            src="https://via.placeholder.com/200x100?text=News"
-            alt="profile picture"
-          />
+          <img src="https://via.placeholder.com/200x100?text=News" alt="profile picture" />
           <p>
             In life you need colors. From all of us here, I want to wish you
             happy painting and God bless, my friends. The least little bit can
@@ -176,6 +158,8 @@
 <script>
 import Sidebar from '../components/Sidebar.vue';
 import Topbar from '../components/Topbar.vue';
+import axios from 'axios';
+import { store } from '../store.js'
 
 export default {
   name: 'Search',
@@ -183,7 +167,41 @@ export default {
     Topbar,
     Sidebar,
   },
-};
+  methods: {
+    getData: function () {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${store.token} `
+        }
+      }
+      fetch(
+        "http://20.126.206.207/Person/getUser?username=${this.search}", config
+      ).then(response => response.json())
+        .then(data => {
+          this.result = data.results;
+          console.log(data);
+        });
+
+    },
+    watch: {
+      search: function (val) {
+        if (!val) {
+          this.result = [];
+        }
+      }
+    },
+    data: function () {
+      return {
+        title: "Simple Search",
+        intro: "This is a simple hero unit, a simple jumbotron-style.",
+        subintro:
+          "It uses utility classes for typography and spacing to space content out.",
+        result: [],
+        search: ""
+      };
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -256,8 +274,8 @@ export default {
   align-items: center;
 }
 
-.forum > .card,
-.news > .card {
+.forum>.card,
+.news>.card {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 </style>
