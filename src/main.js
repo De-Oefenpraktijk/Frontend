@@ -2,7 +2,7 @@ import { createApp } from 'vue';
 import { createAuth0 } from '@auth0/auth0-vue';
 import './style.css';
 import App from './App.vue';
-import { createRouter } from "./router";
+import { createRouter } from './router';
 
 /* import the fontawesome core */
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -26,7 +26,6 @@ import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 
 // Make BootstrapVue available throughout your project
 
-
 /* add icons to the library */
 library.add(
   faChartPie,
@@ -48,8 +47,9 @@ createApp(App)
     createAuth0({
       domain: 'oefenpraktijk.eu.auth0.com',
       client_id: 'CzLZTVeBEJ4cRvuMDuQvwOI0320x8Leo',
+      audience: 'https://api.oefenpraktijk.nl',
       redirect_uri: window.location.origin,
-      cacheLocation: 'localstorage'
+      cacheLocation: 'localstorage',
     })
   )
   .component('font-awesome-icon', FontAwesomeIcon)
