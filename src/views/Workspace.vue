@@ -23,8 +23,8 @@
           </svg>
           <p>Create new room</p>
         </div>
-        <div class="card">
-          <router-link :to="{ name: 'room', query: { id: 'testroom1' } }">
+        <div class="card" v-for="room in workspace.rooms || []" :key="room.id">
+          <router-link :to="{ name: 'room', query: { id: room.id } }">
             <svg
               version="1.1"
               id="Layer_1"
@@ -44,52 +44,8 @@
                 />
               </g>
             </svg>
-            <p>Test room 1</p>
+            <p>{{Workspace.name}}</p>
           </router-link>
-        </div>
-        <div class="card">
-          <svg
-            version="1.1"
-            id="Layer_1"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            x="0px"
-            y="0px"
-            viewBox="0 0 512 512"
-            style="enable-background: new 0 0 512 512"
-            xml:space="preserve"
-          >
-            <g id="XMLID_1_">
-              <path
-                id="XMLID_5_"
-                d="M175.9,256H15.8v-64.2h160.1v-64.2l95.9,95.9l-95.9,96.8V256z M496.2,0v416.1L304.4,512v-95.9H111.7V287.7
-		h32.6v95.9h160.1V95.9l128.5-64.2H144.3v128.5h-31.7V0H496.2z"
-              />
-            </g>
-          </svg>
-          <p>Test room 2</p>
-        </div>
-        <div class="card">
-          <svg
-            version="1.1"
-            id="Layer_1"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            x="0px"
-            y="0px"
-            viewBox="0 0 512 512"
-            style="enable-background: new 0 0 512 512"
-            xml:space="preserve"
-          >
-            <g id="XMLID_1_">
-              <path
-                id="XMLID_5_"
-                d="M175.9,256H15.8v-64.2h160.1v-64.2l95.9,95.9l-95.9,96.8V256z M496.2,0v416.1L304.4,512v-95.9H111.7V287.7
-		h32.6v95.9h160.1V95.9l128.5-64.2H144.3v128.5h-31.7V0H496.2z"
-              />
-            </g>
-          </svg>
-          <p>Test room 3</p>
         </div>
       </div>
     </div>
@@ -349,6 +305,7 @@ import Topbar from '../components/Topbar.vue';
 import Modal from '../components/Modal.vue';
 import axios from 'axios';
 import {store} from '../store';
+import { useAuth0 } from '@auth0/auth0-vue';
 
 export default {
   name: 'Workspace',
@@ -358,16 +315,24 @@ export default {
     Modal,
   },
   data() {
+    const auth0 = useAuth0();
     return {
+      user: auth0.user,
       showModal: false,
-      workspace,
+      workspace: {},
     };
   },
     methods:{
     async getData(){
+    console.log(this.user);
       const config = {
             headers: { Authorization: `Bearer ${store.token}` }};
-     this.workspace = await axios.get('http://20.126.206.207/room/' + route.params.workspace, + "/" + store.user.id, config)
+            console.log(this.user?.email);
+            var idlist = this.user.sub.split("auth0|");
+            console.log(idlist);
+          var test = await axios.get('http://20.126.206.207/room/' + this.$route.params.workspace + "/" + idlist[1], config);
+     console.log(test.data);
+     this.workspace = test.data;
     }
   },
   mounted(){

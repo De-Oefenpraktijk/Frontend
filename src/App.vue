@@ -10,7 +10,7 @@ export default {
   name: 'App',
   setup() {
     const { getAccessTokenSilently } = useAuth0();
-
+          
     return {
       getAccessTokenSilently,
       store,
@@ -18,13 +18,13 @@ export default {
   },
   async created() {
     await this.getAccessToken();
+    const { user } = useAuth0();
+    store.user = user;
   },
   methods: {
     async getAccessToken() {
       const token = await this.getAccessTokenSilently();
       store.token = token;
-      const { user } = useAuth0();
-      store.user = user;
     },
   },
   data() {
