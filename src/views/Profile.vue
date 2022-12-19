@@ -1,7 +1,7 @@
 <template>
-    <Sidebar />
+  <Sidebar />
   <div class="main">
-    <Topbar :title="$route.params.workspace" />
+    <Topbar :title="Profile" />
     <div class="profile">
         <div class="profile__header">
         <div class="profile__header__left">
@@ -10,294 +10,309 @@
             </div>
             <div class="profile__header__left__name">
                 <h1>{{ user.name }}</h1>
-                <h1> {{ user }}</h1>
               
             <p>Software Engineer</p>
             </div>
+      <div class="left">
+        <div class="profile_image">
+          <img
+            src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+            alt="profile_image"
+          />
         </div>
-        <div class="profile__header__right">
-            <div class="profile__header__right__button">
-            <button @click="">Follow</button>
-            </div>
-            <div class="profile__header__right__button">
-            <button @click="this.$router.push({ path: '/messages' });">Message</button>
-            </div>
+        <div class="personal_details">
+          <label>First Name</label>
+          <input
+            type="text"
+            placeholder="First Name"
+            v-model="user.firstName"
+          />
+          <label>Last Name</label>
+          <input type="text" placeholder="Last Name" v-model="user.lastName" />
+          <label>Email</label>
+          <input type="text" placeholder="Email" v-model="user.emailAddress" />
+          <label>Residence place</label>
+          <input
+            type="text"
+            placeholder="Residence"
+            v-model="user.residencePlace"
+          />
+          <div class="buttons">
+            <button @click="saveChanges">Save changes</button>
+            <button @click="changePassword">Change password</button>
+          </div>
         </div>
+      </div>
+      <div class="right">
+        <h1>Educations</h1>
+        <div class="educations">
+          <div v-for="education in educations" :key="education">
+            <div class="education">
+              <p>{{ education.name }} -</p>
+              <p>{{ education.location }}</p>
+            </div>
+          </div>
+          <p class="newEducation">+</p>
         </div>
-        <div class="profile__body">
-        <div class="profile__body__left">
-            <div class="profile__body__left__info">
-            <div class="profile__body__left__info__item">
-                <h1>John Doe</h1>
-
+        <h1>Specializations</h1>
+        <div class="educations">
+          <div v-for="specialization in specializations" :key="specialization">
+            <div class="education">
+              <p>{{ specialization.name }}</p>
             </div>
-            <p>Software Engineer</p>
-            <p>Residence place</p>
-            </div>
-            <div class="profile__body__left__about">
-            <h1>About</h1>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                condimentum, nisl ut aliquam luctus.
-            </p>
-            </div>
+          </div>
+          <p class="newEducation">+</p>
         </div>
-        <div class="profile__body__right">
-            <div class="profile__body__right__item">
-            <h1>Specializations</h1>
-            </div>
-            <div class="profile__body__right__item">
-            <h1>Education</h1>
-                </div>
-                </div>
-                </div>
-                </div>
-            <div class="profile__body__right__item"></div>
-            </div>
-
+      </div>
+    </div>
+  </div>
 </template>
-<script setup>
+
+<script>
 import Sidebar from '../components/Sidebar.vue';
 import Topbar from '../components/Topbar.vue';
 import { useAuth0 } from '@auth0/auth0-vue';
+import { store } from '../store.js';
 import axios from 'axios';
 
+export default {
+  name: 'Profile',
+  components: {
+    Sidebar,
+    Topbar,
+  },
+  data() {
+    return {
+      user: {},
+      educations: [],
+      specializations: [],
+    };
+  },
+  async mounted() {
+    await this.getUserDetails();
+  },
+  methods: {
+    getUserId() {
+      console.log(this.$route.params.id);
+    },
+    async getUserDetails() {
+      await axios
+        .get(
+          `http://20.126.206.207/user/getuserbyid/${this.$route.params.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${store.token}`,
+            },
+          }
+        )
+        .then((res) => {
+          this.user = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
 
-const {user } = useAuth0();
+      this.user.educations.forEach(async (education) => {
+        await axios
+          .get(`http://20.126.206.207/education/geteducation/${education}`, {
+            headers: {
+              Authorization: `Bearer ${store.token}`,
+            },
+          })
+          .then((res) => {
+            this.educations.push(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
 
+      this.user.specializations.forEach(async (specialization) => {
+        await axios
+          .get(
+            `http://20.126.206.207/specialization/getspecialization/${specialization}`,
+            {
+              headers: {
+                Authorization: `Bearer ${store.token}`,
+              },
+            }
+          )
+          .then((res) => {
+            this.specializations.push(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
+    },
+    async saveChanges() {
+      await axios
+        .put(
+          `http://20.126.206.207/user/updateuser/${this.$route.params.id}`,
+          {
+            emailAddress: this.user.emailAddress,
+            firstName: this.user.firstName,
+            lastName: this.user.lastName,
+            residencePlace: this.user.residencePlace,
+            enrollmentDate: this.user.enrollmentDate,
+            id: this.user.id,
+            residencePlace: this.user.residencePlace,
+            role: this.user.role,
+            username: this.user.username,
+            educations: this.educations,
+            specializations: this.specializations,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${store.token}`,
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    changePassword() {
+      var options = {
+        method: 'POST',
+        url: 'https://oefenpraktijk.eu.auth0.com/dbconnections/change_password',
+        headers: { 'content-type': 'application/json' },
+        data: {
+          client_id: 'CzLZTVeBEJ4cRvuMDuQvwOI0320x8Leo',
+          email: this.user.emailAddress,
+          connection: 'Username-Password-Authentication',
+        },
+      };
+
+      axios
+        .request(options)
+        .then(function (response) {
+          alert(response.data);
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+    },
+  },
+};
 </script>
+
 <style scoped>
 .profile {
   display: flex;
-  flex-direction: column;
-  width: 90%;
-  height: 90%;
-  background-color: #f5f5f5;
-}
-
-.profile__header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  height: 100px;
-  background-color: #fff;   
-}
-
-.profile__header__left {
-  display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
+  margin-top: 50px;
 }
 
-.profile__header__left__image {
+.left {
+  width: 50%;
+  height: 100%;
+  background-color: #c8c8c8;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.profile_image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile_image img {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  overflow: hidden;
 }
 
-.profile__header__left__image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.profile__header__left__name {
-  margin-left: 20px;
-}
-
-.profile__header__left__name h1 {
-  font-size: 24px;
-  font-weight: 600;
-  color: #333;
-}
-
-.profile__header__left__name p {
-  font-size: 16px;
-  font-weight: 400;
-  color: #777;
-}
-
-.profile__header__right {
-  display: flex;
-  flex-direction: row;
-}
-
-.profile__header__right__button {
-  margin-left: 20px;
-}
-
-.profile__header__right__button button {
-  width: 100px;
-  height: 40px;
-  border: none;
-  border-radius: 5px;
-  background-color: #333;
-  color: #fff;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.profile__body {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 92%;
-  height: calc(100% - 100px);
-  padding: 20px;
-}
-
-.profile__body__left {
-  width: 30%;
-}
-
-.profile__body__left__info {
+.personal_details {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 200px;
-  background-color: #fff;
-  padding: 20px;
-  margin-bottom: 20px;
-}
-
-.profile__body__left__info__item {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   align-items: center;
-  width: 100%;
-  height: 50px;
-  margin-bottom: 20px;
+  justify-content: center;
+  margin-top: 20px;
 }
 
-.profile__body__left__info__item h1 {
-  font-size: 18px;
-  font-weight: 600;
-  color: #333;
-}
-
-.profile__body__left__info__item p {
-  font-size: 16px;
-  font-weight: 400;
-  color: #777;
-}
-
-.profile__body__left__about {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 200px;
-  background-color: #fff;
-  padding: 20px;
-}
-
-.profile__body__left__about h1 {
-  font-size: 18px;
-  font-weight: 600;
-  color: #333;
-}
-
-.profile__body__left__about p {
-  font-size: 16px;
-  font-weight: 400;
-  color: #777;
-}
-
-.profile__body__right {
-  width: 65%;
-}
-
-.profile__body__right__item {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 200px;
-  background-color: #fff;
-  padding: 20px;
-  margin-bottom: 20px;
-}
-
-.profile__body__right__item h1 {
-  font-size: 18px;
-  font-weight: 600;
-  color: #333;
-}
-
-.profile__body__right__item__articles {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
-  height: 100%;
-}
-
-.profile__body__right__item__articles__item {
-  display: flex;
-  flex-direction: row;
-  width: 30%;
-  height: 100%;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+.personal_details input {
+  width: 300px;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  margin: 10px;
   padding: 10px;
+}
+
+.personal_details .buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.personal_details button {
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  margin: 10px;
+  padding: 10px;
+  background-color: #f5f5f5;
+  color: #5e5e5e;
+}
+
+.personal_details button:hover {
+  background-color: #5e5e5e;
+  color: #ffffff;
   cursor: pointer;
 }
 
-.profile__body__right__item__articles__item:hover {
-  border: 1px solid #333;
+.right {
+  width: 50%;
+  height: 100%;
+  background-color: #c8c8c8;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px;
 }
 
-.profile__body__right__item__articles__item img {
-  width: 100px;
-  height: 100px;
-  border-radius: 5px;
-  object-fit: cover;
+.right h1 {
+  font-size: 20px;
 }
 
-.profile__body__right__item__articles__item__info {
+.educations,
+.specializations {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  margin-left: 10px;
+  flex-direction: row;
+  margin-top: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  height: 180px;
 }
 
-.profile__body__right__item__articles__item__info h1 {
-  font-size: 16px;
-  font-weight: 600;
-  color: #333;
+.educations .education {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #d1d1d1;
+  border-radius: 10px;
+  margin: 10px;
+  height: 40px;
+  padding: 0 10px;
 }
 
-.profile__body__right__item__articles__item__info p {
-  font-size: 14px;
-  font-weight: 400;
-  color: #777;
+.educations .newEducation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #d1d1d1;
+  border-radius: 10px;
+  margin: 10px;
+  width: 40px;
+  height: 40px;
+  font-size: 30px;
+  color: #5e5e5e;
 }
-
-@media screen and (max-width: 768px) {
-  .profile {
-    width: 100%;
-    height: 100%;
-  }
-
-  .profile__body {
-    flex-direction: column;
-  }
-
-  .profile__body__left {
-    width: 100%;
-    margin-bottom: 20px;
-  }
-
-  .profile__body__right {
-    width: 100%;
-  }
-}
-
-
-
-
-
 </style>
