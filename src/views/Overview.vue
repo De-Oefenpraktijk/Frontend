@@ -5,7 +5,7 @@
     <div class="statistics">
       <div class="statistics__card">
         <div class="statistics__card__header">
-          <span @click="">Messages</span>
+          <span>Messages</span>
         </div>
         <h1>{{ this.$root.mockData.overview.messages }}</h1>
       </div>
@@ -186,14 +186,13 @@ export default {
     Topbar,
     Sidebar,
   },
-  setup(){
+  setup() {
     const { user } = useAuth0();
     return {
-      user
+      user,
     };
   },
-  async mounted(){
-  }
+  async mounted() {},
 };
 </script>
 

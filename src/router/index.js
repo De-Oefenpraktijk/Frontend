@@ -1,8 +1,7 @@
-import { authGuard } from "@auth0/auth0-vue";
-import { createRouter as createVueRouter, createWebHistory } from "vue-router";
+import { authGuard } from '@auth0/auth0-vue';
+import { createRouter as createVueRouter, createWebHistory } from 'vue-router';
 
 export function createRouter(app) {
-
   return new createVueRouter({
     routes: [
       // {
@@ -77,7 +76,7 @@ export function createRouter(app) {
         beforeEnter: authGuard,
       },
       {
-        path: '/profile',
+        path: '/profile/:id',
         name: 'Profile',
         component: () => import('../views/Profile.vue'),
         beforeEnter: authGuard,
@@ -87,8 +86,8 @@ export function createRouter(app) {
         name: 'CreateProfile',
         component: () => import('../views/CreateProfile.vue'),
         beforeEnter: authGuard,
-      }
+      },
     ],
     history: createWebHistory(),
-  })
+  });
 }
