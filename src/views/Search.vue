@@ -7,12 +7,29 @@
         <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
       </div>
       <form>
-        <input type="text" class="searchbar-input" v-model="search" />
+        <input type="search" class="searchbar-input" v-model="search" />
         <button type="button" class="searchbar-button" v-on:click="getData">
           Search
         </button>
       </form>
     </div>
+    <!-- Testing purposes -->
+    <!-- <table class="table table-sm table-light table-bordered">
+      <tbody>
+        <tr v-for="(result, index) in results" :key="index">
+          <td>{{ result.Firstname }}</td>
+          <td>{{ result.Username }}</td>
+          <td>{{ result.Email }}</td>
+          <td>{{ result.Role }}</td>
+        </tr>
+      </tbody>
+    </table> -->
+    <input type="text" v-model="search">
+    <p v-if="noResults">Sorry, no results for {{ search }}</p>
+    <div v-for="(r, i) in results" :key="i">
+      {{ r.Firstname }}
+    </div>
+
 
     <div class="mainCard">
       <div class="mainCard__header">
@@ -160,6 +177,8 @@ import Sidebar from '../components/Sidebar.vue';
 import Topbar from '../components/Topbar.vue';
 import axios from 'axios';
 import { store } from '../store.js'
+import { computed } from "vue";
+import { useVueFuse } from 'vue-fuse'
 
 export default {
   name: 'Search',
@@ -167,38 +186,83 @@ export default {
     Topbar,
     Sidebar,
   },
+  setup() {
+    let userdata = []
+    const testdata = [
+                { ID: 1, Naam: "Bar", School: "Fontys Hogescholen" },
+                { ID: 2, Naam: "Bob Ross", School: "Avans Hogeschool" },
+                { ID: 3, Naam: "John Doe", School: "Technische Universiteit Eindhoven" },
+                { ID: 4, Naam: "Qux Baz", School: "Hogeschool Zuyd" },
+                { ID: 5, Naam: "Foo", School: "Expivi University" },
+                { ID: 6, Naam: "Lorem", School: "Hogeschool Ipsum" }
+            ]
+
+    //Get Request
+    axios.get('http://20.126.206.207/Person/getAllUsers', {
+      headers: {
+  Authorization: `Bearer ${store.token} `
+}
+}).then((response) => {
+      response.data.collection.forEach(element => {
+        //Data gets pushed to empty list testdata
+        userdata.push(element.Values.n.Properties);
+      });
+      console.log(userdata);
+      console.log(testdata);
+    }).catch((error) => {
+      console.log(error);
+    });
+
+//Vue fuse magic
+    let sort = false;
+    let updatedList = []
+    let searchQuery = "";
+
+    const currentRow =
+      [];
+    const sortTable = (col) => {
+      sort.value = true
+      // Use of _.sortBy() method
+      updatedList.value = sortBy(testdata, col)
+    }
+    //sort the list
+    const sortedList = computed(() => {
+      if (sort.value) {
+        return updatedList.value
+      }
+      else {
+        return testdata;
+      }
+    });
+    // Filter Search
+    const { search, results, noResults } = useVueFuse(sortedList, {
+      keys: [
+        { name: 'ID', weight: 1 },
+        { name: 'Naam', weight: 1 },
+      ],
+
+    });
+    return {
+      sortedList, sortTable, searchQuery, currentRow, search, results, noResults
+    }
+  },
+
+  // data: function () {
+  //   return {
+  //     result: [],
+  //     // search: ""
+  //   };
+  // },
+  // watch: {
+  //   search: function (val) {
+  //     if (!val) {
+  //       this.result = [];
+  //     }
+  //   }
+  // },
   methods: {
     getData: function () {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${store.token} `
-        }
-      }
-      fetch(
-        "http://20.126.206.207/Person/getUser?username=${this.search}", config
-      ).then(response => response.json())
-        .then(data => {
-          this.result = data.results;
-          console.log(data);
-        });
 
-    },
-    watch: {
-      search: function (val) {
-        if (!val) {
-          this.result = [];
-        }
-      }
-    },
-    data: function () {
-      return {
-        title: "Simple Search",
-        intro: "This is a simple hero unit, a simple jumbotron-style.",
-        subintro:
-          "It uses utility classes for typography and spacing to space content out.",
-        result: [],
-        search: ""
-      };
     }
   }
 }
