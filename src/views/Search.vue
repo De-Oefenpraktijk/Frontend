@@ -186,9 +186,9 @@ export default {
     Topbar,
     Sidebar,
   },
-  async setup() {
-    let testdata = []
-    const userdata = [
+  setup() {
+    let userdata = []
+    const testdata = [
                 { ID: 1, Naam: "Bar", School: "Fontys Hogescholen" },
                 { ID: 2, Naam: "Bob Ross", School: "Avans Hogeschool" },
                 { ID: 3, Naam: "John Doe", School: "Technische Universiteit Eindhoven" },
@@ -196,29 +196,28 @@ export default {
                 { ID: 5, Naam: "Foo", School: "Expivi University" },
                 { ID: 6, Naam: "Lorem", School: "Hogeschool Ipsum" }
             ]
-            const fields = [
-                'ID', 'Naam'
-            ]
-    await axios.get('http://20.126.206.207/Person/getAllUsers', {
+
+    //Get Request
+    axios.get('http://20.126.206.207/Person/getAllUsers', {
       headers: {
   Authorization: `Bearer ${store.token} `
 }
 }).then((response) => {
       response.data.collection.forEach(element => {
-        //console.log(element.Values.n);
-        testdata.push(element.Values.n.Properties);
+        //Data gets pushed to empty list testdata
+        userdata.push(element.Values.n.Properties);
       });
-      console.log(testdata);
       console.log(userdata);
+      console.log(testdata);
     }).catch((error) => {
       console.log(error);
     });
+
+//Vue fuse magic
     let sort = false;
     let updatedList = []
     let searchQuery = "";
 
-    console.log('testdaat');
-    console.log(testdata);
     const currentRow =
       [];
     const sortTable = (col) => {
@@ -226,6 +225,7 @@ export default {
       // Use of _.sortBy() method
       updatedList.value = sortBy(testdata, col)
     }
+    //sort the list
     const sortedList = computed(() => {
       if (sort.value) {
         return updatedList.value
