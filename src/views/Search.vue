@@ -24,6 +24,12 @@
         </tr>
       </tbody>
     </table>
+    <input type="text" v-model="search">
+    <p v-if="noResults">Sorry, no results for {{search}}</p>
+    <div v-for="(r, i) in results" :key="i">
+      {{ r }}
+    </div>
+
 
     <div class="mainCard">
       <div class="mainCard__header">
@@ -171,6 +177,8 @@ import Sidebar from '../components/Sidebar.vue';
 import Topbar from '../components/Topbar.vue';
 import axios from 'axios';
 import { store } from '../store.js'
+import { defineComponent } from 'vue'
+import { useVueFuse } from 'vue-fuse'
 
 export default {
   name: 'Search',
@@ -178,6 +186,17 @@ export default {
     Topbar,
     Sidebar,
   },
+  setup(){
+
+    const myList = ['aaaa', 'bbbb', 'cccc', 'abc', 'xyz']
+    const { search, results, noResults } = useVueFuse(myList)
+    return {
+      search,
+      results,
+      noResults,
+    }
+  },
+
   data: function () {
     return {
       result: [],
