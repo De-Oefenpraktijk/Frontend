@@ -64,7 +64,11 @@
             <span>Organisation</span>
           </li>
         </router-link>
-        <router-link to="/profile">
+        <router-link
+          :to="{
+            path: `/profile/${this.store.userId}`,
+          }"
+        >
           <li>
             <font-awesome-icon icon="fa-solid fa-users" />
             <span>Profile</span>
@@ -140,3 +144,16 @@
   background-color: #eee;
 }
 </style>
+
+<script>
+import { store } from '../store';
+
+export default {
+  name: 'Sidebar',
+  data() {
+    return {
+      store,
+    };
+  },
+};
+</script>
