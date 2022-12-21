@@ -56,6 +56,37 @@
       </div>
     </div>
   </div>
+  <Teleport to="body">
+    <modal :show="showModal" @close="showModal = false" @save="save">
+      <template #header>
+        <h3>Create new room</h3>
+      </template>
+      <template #body>
+        <form>
+          <div class="form__group">
+            <label for="roomName">Room name</label>
+            <input type="text" id="roomName" />
+          </div>
+          <div class="form__group">
+            <label for="userName">Invite user</label>
+            <select id="userName" v-model="selected">
+              <option
+                v-for="user in users || []"
+                :key="user.Values.b.Properties.Id"
+                :value="user.Values.b.Properties.Id"
+              >
+                {{ user.Values.b.Properties.Username }}
+              </option>
+            </select>
+          </div>
+          <div class="form__group">
+            <label for="date">Date and time</label>
+            <input v-model="inviteDate" type="datetime-local" />
+          </div>
+        </form>
+      </template>
+    </modal>
+  </Teleport>
 </template>
 
 <script>
