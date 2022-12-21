@@ -270,7 +270,7 @@
     </div>
   </div>
   <Teleport to="body">
-    <modal :show="showModal" @close="showModal = false">
+    <modal :show="showModal" @close="showModal = false" @save="saveRoom">
       <template #header>
         <h3>Create new room</h3>
       </template>
@@ -282,16 +282,13 @@
           </div>
           <div class="form__group">
             <label for="userName">Invite user</label>
-            <select id="userName">
-              <option value="marietje">Marietje</option>
-              <option value="elise">Elise</option>
-              <option value="johan">Johan</option>
-              <option value="frits">Frits</option>
+            <select id="userName" v-model="selected">
+              <option v-for="user in users || []" :key="user.Values.b.Properties.Id" :value="user.Values.b.Properties.Id">{{user.Values.b.Properties.Username}}</option>
             </select>
           </div>
           <div class="form__group">
             <label for="date">Date and time</label>
-            <input type="datetime-local" id="date" />
+            <input v-model="inviteDate" type="datetime-local" />
           </div>
         </form>
       </template>
@@ -320,18 +317,19 @@ export default {
       user: auth0.user,
       showModal: false,
       workspace: {},
+      users: [],
+      selected: "",
+      inviteDate: Date.now(),
     };
   },
   methods: {
-    async getData() {
+    async getWorkspaceData() {
       console.log(this.user);
       const config = {
         headers: { Authorization: `Bearer ${store.token}` },
       };
-      console.log(this.user?.email);
       var idlist = this.user.sub.split("auth0|");
-      console.log(idlist);
-      var test = await axios.get(
+var test = await axios.get(
         "http://20.126.206.207/room/" +
           this.$route.params.workspace +
           "/" +
@@ -341,9 +339,48 @@ export default {
       console.log(test.data);
       this.workspace = test.data;
     },
+    async saveRoom(){
+            const config = {
+        headers: { Authorization: `Bearer ${store.token}` },
+      };
+      const userId = this.user.sub.split("|")[1];
+      var body = {
+        hostId: userId,
+        invitedIds: [this.selected.split("|")[1]],
+        scheduledDate: this.inviteDate,
+        workspaceId: this.workspace.id
+      };
+      console.log(body);
+      var request = await axios.post(
+        "http://20.126.206.207/room/createroom",
+        body,
+        config
+      ).then(()=>{
+      }
+      ).catch(() =>{
+        console.error("Error creating room");
+        this.alert = "Error";
+      })
+    },
+    async getFollowingUsers(){
+      const userId = this.user.sub.split("|")[1];
+                  const config = {
+        headers: { Authorization: `Bearer ${store.token}` },
+      };
+            var test = await axios.get(
+        "http://20.126.206.207/person/getfollowingusers?person=" +
+          userId,
+        config
+      );
+
+
+      console.log(test.data);
+      this.users = test.data.collection;
+    }
   },
   mounted() {
-    this.getData();
+    this.getWorkspaceData();
+    this.getFollowingUsers();
   },
   created() {
     this.$watch(
