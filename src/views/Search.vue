@@ -14,20 +14,20 @@
       </form>
     </div>
     <!-- Testing purposes -->
-    <table class="table table-sm table-light table-bordered">
+    <!-- <table class="table table-sm table-light table-bordered">
       <tbody>
-        <tr v-for="(result, index) in result" :key="index">
+        <tr v-for="(result, index) in results" :key="index">
           <td>{{ result.Firstname }}</td>
           <td>{{ result.Username }}</td>
           <td>{{ result.Email }}</td>
           <td>{{ result.Role }}</td>
         </tr>
       </tbody>
-    </table>
+    </table> -->
     <input type="text" v-model="search">
-    <p v-if="noResults">Sorry, no results for {{search}}</p>
+    <p v-if="noResults">Sorry, no results for {{ search }}</p>
     <div v-for="(r, i) in results" :key="i">
-      {{ r }}
+      {{ r.Firstname }}
     </div>
 
 
@@ -186,10 +186,32 @@ export default {
     Topbar,
     Sidebar,
   },
-  setup(){
-
-    const myList = ['aaaa', 'bbbb', 'cccc', 'abc', 'xyz']
+  setup() {
+    const myList = []
+    let result = [];
+    const config = {
+      headers: {
+        Authorization: `Bearer ${store.token} `
+      }
+    }
+    const url = `http://20.126.206.207/Person/getAllUsers`;
+    axios.get(url, config)
+      .then(data => {
+        data.data.collection.forEach(element => {
+          result.push(element.Values.n.Properties)
+        });
+        console.log(result)
+        result.forEach(element => {
+          myList.push(element)
+        });
+      });
+    console.log("before initialize")
+    console.log(myList)
     const { search, results, noResults } = useVueFuse(myList)
+    console.log("after initialize")
+    console.log(results)
+
+
     return {
       search,
       results,
@@ -197,34 +219,22 @@ export default {
     }
   },
 
-  data: function () {
-    return {
-      result: [],
-      search: ""
-    };
-  },
-  watch: {
-    search: function (val) {
-      if (!val) {
-        this.result = [];
-      }
-    }
-  },
+  // data: function () {
+  //   return {
+  //     result: [],
+  //     // search: ""
+  //   };
+  // },
+  // watch: {
+  //   search: function (val) {
+  //     if (!val) {
+  //       this.result = [];
+  //     }
+  //   }
+  // },
   methods: {
     getData: function () {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${store.token} `
-        }
-      }
-      const url = `http://20.126.206.207/Person/getAllUsers`;
-      axios.get(url, config)
-        .then(data => {
-          data.data.collection.forEach(element => {
-            this.result.push(element.Values.n.Properties)
-          });
-          console.log(this.result)
-        });
+
     }
   }
 }
