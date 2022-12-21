@@ -177,7 +177,7 @@ import Sidebar from '../components/Sidebar.vue';
 import Topbar from '../components/Topbar.vue';
 import axios from 'axios';
 import { store } from '../store.js'
-import { defineComponent } from 'vue'
+import { computed } from "vue";
 import { useVueFuse } from 'vue-fuse'
 
 export default {
@@ -187,35 +187,63 @@ export default {
     Sidebar,
   },
   setup() {
-    const myList = []
-    let result = [];
-    const config = {
+    let userdata = []
+    const testdata = [
+                { ID: 1, Naam: "Bar", School: "Fontys Hogescholen" },
+                { ID: 2, Naam: "Bob Ross", School: "Avans Hogeschool" },
+                { ID: 3, Naam: "John Doe", School: "Technische Universiteit Eindhoven" },
+                { ID: 4, Naam: "Qux Baz", School: "Hogeschool Zuyd" },
+                { ID: 5, Naam: "Foo", School: "Expivi University" },
+                { ID: 6, Naam: "Lorem", School: "Hogeschool Ipsum" }
+            ]
+
+    //Get Request
+    axios.get('http://20.126.206.207/Person/getAllUsers', {
       headers: {
-        Authorization: `Bearer ${store.token} `
-      }
-    }
-    const url = `http://20.126.206.207/Person/getAllUsers`;
-    axios.get(url, config)
-      .then(data => {
-        data.data.collection.forEach(element => {
-          result.push(element.Values.n.Properties)
-        });
-        console.log(result)
-        result.forEach(element => {
-          myList.push(element)
-        });
+  Authorization: `Bearer ${store.token} `
+}
+}).then((response) => {
+      response.data.collection.forEach(element => {
+        //Data gets pushed to empty list testdata
+        userdata.push(element.Values.n.Properties);
       });
-    console.log("before initialize")
-    console.log(myList)
-    const { search, results, noResults } = useVueFuse(myList)
-    console.log("after initialize")
-    console.log(results)
+      console.log(userdata);
+      console.log(testdata);
+    }).catch((error) => {
+      console.log(error);
+    });
 
+//Vue fuse magic
+    let sort = false;
+    let updatedList = []
+    let searchQuery = "";
 
+    const currentRow =
+      [];
+    const sortTable = (col) => {
+      sort.value = true
+      // Use of _.sortBy() method
+      updatedList.value = sortBy(testdata, col)
+    }
+    //sort the list
+    const sortedList = computed(() => {
+      if (sort.value) {
+        return updatedList.value
+      }
+      else {
+        return testdata;
+      }
+    });
+    // Filter Search
+    const { search, results, noResults } = useVueFuse(sortedList, {
+      keys: [
+        { name: 'ID', weight: 1 },
+        { name: 'Naam', weight: 1 },
+      ],
+
+    });
     return {
-      search,
-      results,
-      noResults,
+      sortedList, sortTable, searchQuery, currentRow, search, results, noResults
     }
   },
 
