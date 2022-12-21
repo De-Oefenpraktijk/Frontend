@@ -5,7 +5,7 @@
     <div class="statistics">
       <div class="statistics__card">
         <div class="statistics__card__header">
-          <span @click="">Messages</span>
+          <span>Messages</span>
         </div>
         <h1>{{ this.$root.mockData.overview.messages }}</h1>
       </div>
@@ -35,29 +35,16 @@
         <span>Workspaces</span>
       </div>
       <div class="mainCard__body">
-        <div class="card">
-          <img
-            src="https://via.placeholder.com/200x300?text=Couple+And+Family"
-            alt="profile picture"
-          />
-        </div>
-        <div class="card">
-          <img
-            src="https://via.placeholder.com/200x300?text=Sleep"
-            alt="profile picture"
-          />
-        </div>
-        <div class="card">
-          <img
-            src="https://via.placeholder.com/200x300?text=Forensic"
-            alt="profile picture"
-          />
-        </div>
-        <div class="card">
-          <img
-            src="https://via.placeholder.com/200x300?text=Gero"
-            alt="profile picture"
-          />
+
+       <div class="card" v-for="workspace in workspaces.slice(0,4) || []" :key="workspace.id">
+                    <router-link
+            :to="{
+              name: 'workspace',
+              params: { workspace: workspace.id },
+            }"
+          >
+<img :src="'https://via.placeholder.com/200x300?text=' + workspace.name" alt="profile picture">
+          </router-link>
         </div>
       </div>
     </div>
@@ -179,6 +166,7 @@ import Sidebar from '../components/Sidebar.vue';
 import Topbar from '../components/Topbar.vue';
 import { useAuth0 } from '@auth0/auth0-vue';
 import axios from 'axios';
+import {store} from '../store';
 
 export default {
   name: 'Overview',
@@ -186,13 +174,28 @@ export default {
     Topbar,
     Sidebar,
   },
+  data(){
+    return{
+    workspaces: []
+    }
+  },
+  methods:{
+    async getData(){
+      const config = {
+            headers: { Authorization: `Bearer ${store.token}` }};
+     var test = await axios.get('http://20.126.206.207/workspace/getworkspaces', config)
+     console.log(test.data.collection);
+     this.workspaces = test.data.collection;
+    }
+  },
   setup(){
     const { user } = useAuth0();
     return {
-      user
+      user,
     };
   },
-  async mounted(){
+  mounted(){
+    this.getData();
   }
 };
 </script>
