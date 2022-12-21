@@ -23,9 +23,9 @@
       </tbody>
     </table>
     <input type="text" v-model="search">
-    <p v-if="noResults">Sorry, no results for {{search}}</p>
+    <p v-if="noResults">Sorry, no results for {{ search }}</p>
     <div v-for="(r, i) in results" :key="i">
-      {{ r }}
+      {{ r.Naam }}
     </div>
 
 
@@ -175,7 +175,7 @@ import Sidebar from '../components/Sidebar.vue';
 import Topbar from '../components/Topbar.vue';
 import axios from 'axios';
 import { store } from '../store.js'
-import { defineComponent } from 'vue'
+import { computed } from "vue";
 import { useVueFuse } from 'vue-fuse'
 
 export default {
@@ -184,14 +184,64 @@ export default {
     Topbar,
     Sidebar,
   },
-  setup(){
+  async setup() {
+    let testdata = []
+    const userdata = [
+                { ID: 1, Naam: "Bar", School: "Fontys Hogescholen" },
+                { ID: 2, Naam: "Bob Ross", School: "Avans Hogeschool" },
+                { ID: 3, Naam: "John Doe", School: "Technische Universiteit Eindhoven" },
+                { ID: 4, Naam: "Qux Baz", School: "Hogeschool Zuyd" },
+                { ID: 5, Naam: "Foo", School: "Expivi University" },
+                { ID: 6, Naam: "Lorem", School: "Hogeschool Ipsum" }
+            ]
+            const fields = [
+                'ID', 'Naam'
+            ]
+    await axios.get('http://20.126.206.207/Person/getAllUsers', {
+      headers: {
+  Authorization: `Bearer ${store.token} `
+}
+}).then((response) => {
+      response.data.collection.forEach(element => {
+        //console.log(element.Values.n);
+        testdata.push(element.Values.n.Properties);
+      });
+      console.log(testdata);
+      console.log(userdata);
+    }).catch((error) => {
+      console.log(error);
+    });
+    let sort = false;
+    let updatedList = []
+    let searchQuery = "";
 
-    const myList = ['aaaa', 'bbbb', 'cccc', 'abc', 'xyz']
-    const { search, results, noResults } = useVueFuse(myList)
+    console.log('testdaat');
+    console.log(testdata);
+    const currentRow =
+      [];
+    const sortTable = (col) => {
+      sort.value = true
+      // Use of _.sortBy() method
+      updatedList.value = sortBy(testdata, col)
+    }
+    const sortedList = computed(() => {
+      if (sort.value) {
+        return updatedList.value
+      }
+      else {
+        return testdata;
+      }
+    });
+    // Filter Search
+    const { search, results, noResults } = useVueFuse(sortedList, {
+      keys: [
+        { name: 'ID', weight: 1 },
+        { name: 'Naam', weight: 1 },
+      ],
+
+    });
     return {
-      search,
-      results,
-      noResults,
+      sortedList, sortTable, searchQuery, currentRow, search, results, noResults
     }
   },
 
