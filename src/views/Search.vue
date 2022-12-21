@@ -13,17 +13,6 @@
         </button>
       </form>
     </div>
-    <!-- Testing purposes -->
-    <!-- <table class="table table-sm table-light table-bordered">
-      <tbody>
-        <tr v-for="(result, index) in results" :key="index">
-          <td>{{ result.Firstname }}</td>
-          <td>{{ result.Username }}</td>
-          <td>{{ result.Email }}</td>
-          <td>{{ result.Role }}</td>
-        </tr>
-      </tbody>
-    </table> -->
     <input type="text" v-model="search">
     <p v-if="noResults">Sorry, no results for {{ search }}</p>
     <div v-for="(r, i) in results" :key="i">
@@ -186,7 +175,7 @@ export default {
     Topbar,
     Sidebar,
   },
-  setup() {
+  async setup() {
     let userdata = []
     const testdata = [
                 { ID: 1, Naam: "Bar", School: "Fontys Hogescholen" },
@@ -198,7 +187,7 @@ export default {
             ]
 
     //Get Request
-    axios.get('http://20.126.206.207/Person/getAllUsers', {
+  await axios.get('http://20.126.206.207/Person/getAllUsers', {
       headers: {
   Authorization: `Bearer ${store.token} `
 }
@@ -206,24 +195,22 @@ export default {
       response.data.collection.forEach(element => {
         //Data gets pushed to empty list testdata
         userdata.push(element.Values.n.Properties);
+        
       });
-      console.log(userdata);
-      console.log(testdata);
-    }).catch((error) => {
-      console.log(error);
     });
-
 //Vue fuse magic
     let sort = false;
     let updatedList = []
     let searchQuery = "";
 
+    console.log(userdata);
+    console.log(testdata);
     const currentRow =
       [];
     const sortTable = (col) => {
       sort.value = true
       // Use of _.sortBy() method
-      updatedList.value = sortBy(testdata, col)
+      updatedList.value = sortBy(userdata, col)
     }
     //sort the list
     const sortedList = computed(() => {
@@ -231,14 +218,16 @@ export default {
         return updatedList.value
       }
       else {
-        return testdata;
+        return userdata;
       }
     });
+    
     // Filter Search
     const { search, results, noResults } = useVueFuse(sortedList, {
       keys: [
-        { name: 'ID', weight: 1 },
-        { name: 'Naam', weight: 1 },
+        { name: 'Firstname', weight: 1 },
+        { name: 'Username', weight: 1 },  
+        { name: 'Lastname', weight:  1},
       ],
 
     });
