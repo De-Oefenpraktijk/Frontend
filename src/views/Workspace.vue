@@ -1,7 +1,7 @@
 <template>
   <Sidebar />
   <div class="main">
-    <Topbar :title="$route.params.workspace" />
+    <Topbar :title="workspace.name" />
     <div class="mainCard">
       <div class="mainCard__header">
         <span>Private rooms</span>
@@ -23,8 +23,8 @@
           </svg>
           <p>Create new room</p>
         </div>
-        <div class="card">
-          <router-link :to="{ name: 'room', query: { id: 'testroom1' } }">
+        <div class="card" v-for="room in workspace.rooms || []" :key="room.id">
+          <router-link :to="{ name: 'room', query: { id: room.id } }">
             <svg
               version="1.1"
               id="Layer_1"
@@ -44,52 +44,8 @@
                 />
               </g>
             </svg>
-            <p>Test room 1</p>
+            <p>{{ Workspace.name }}</p>
           </router-link>
-        </div>
-        <div class="card">
-          <svg
-            version="1.1"
-            id="Layer_1"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            x="0px"
-            y="0px"
-            viewBox="0 0 512 512"
-            style="enable-background: new 0 0 512 512"
-            xml:space="preserve"
-          >
-            <g id="XMLID_1_">
-              <path
-                id="XMLID_5_"
-                d="M175.9,256H15.8v-64.2h160.1v-64.2l95.9,95.9l-95.9,96.8V256z M496.2,0v416.1L304.4,512v-95.9H111.7V287.7
-		h32.6v95.9h160.1V95.9l128.5-64.2H144.3v128.5h-31.7V0H496.2z"
-              />
-            </g>
-          </svg>
-          <p>Test room 2</p>
-        </div>
-        <div class="card">
-          <svg
-            version="1.1"
-            id="Layer_1"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            x="0px"
-            y="0px"
-            viewBox="0 0 512 512"
-            style="enable-background: new 0 0 512 512"
-            xml:space="preserve"
-          >
-            <g id="XMLID_1_">
-              <path
-                id="XMLID_5_"
-                d="M175.9,256H15.8v-64.2h160.1v-64.2l95.9,95.9l-95.9,96.8V256z M496.2,0v416.1L304.4,512v-95.9H111.7V287.7
-		h32.6v95.9h160.1V95.9l128.5-64.2H144.3v128.5h-31.7V0H496.2z"
-              />
-            </g>
-          </svg>
-          <p>Test room 3</p>
         </div>
       </div>
     </div>
@@ -314,7 +270,7 @@
     </div>
   </div>
   <Teleport to="body">
-    <modal :show="showModal" @close="showModal = false">
+    <modal :show="showModal" @close="showModal = false" @save="saveRoom">
       <template #header>
         <h3>Create new room</h3>
       </template>
@@ -326,16 +282,13 @@
           </div>
           <div class="form__group">
             <label for="userName">Invite user</label>
-            <select id="userName">
-              <option value="marietje">Marietje</option>
-              <option value="elise">Elise</option>
-              <option value="johan">Johan</option>
-              <option value="frits">Frits</option>
+            <select id="userName" v-model="selected">
+              <option v-for="user in users || []" :key="user.Values.b.Properties.Id" :value="user.Values.b.Properties.Id">{{user.Values.b.Properties.Username}}</option>
             </select>
           </div>
           <div class="form__group">
             <label for="date">Date and time</label>
-            <input type="datetime-local" id="date" />
+            <input v-model="inviteDate" type="datetime-local" />
           </div>
         </form>
       </template>
@@ -344,21 +297,90 @@
 </template>
 
 <script>
-import Sidebar from '../components/Sidebar.vue';
-import Topbar from '../components/Topbar.vue';
-import Modal from '../components/Modal.vue';
+import Sidebar from "../components/Sidebar.vue";
+import Topbar from "../components/Topbar.vue";
+import Modal from "../components/Modal.vue";
+import axios from "axios";
+import { store } from "../store";
+import { useAuth0 } from "@auth0/auth0-vue";
 
 export default {
-  name: 'Workspace',
+  name: "Workspace",
   components: {
     Topbar,
     Sidebar,
     Modal,
   },
   data() {
+    const auth0 = useAuth0();
     return {
+      user: auth0.user,
       showModal: false,
+      workspace: {},
+      users: [],
+      selected: "",
+      inviteDate: Date.now(),
     };
+  },
+  methods: {
+    async getWorkspaceData() {
+      console.log(this.user);
+      const config = {
+        headers: { Authorization: `Bearer ${store.token}` },
+      };
+      var idlist = this.user.sub.split("auth0|");
+var test = await axios.get(
+        "http://20.126.206.207/room/" +
+          this.$route.params.workspace +
+          "/" +
+          idlist[1],
+        config
+      );
+      console.log(test.data);
+      this.workspace = test.data;
+    },
+    async saveRoom(){
+            const config = {
+        headers: { Authorization: `Bearer ${store.token}` },
+      };
+      const userId = this.user.sub.split("|")[1];
+      var body = {
+        hostId: userId,
+        invitedIds: [this.selected.split("|")[1]],
+        scheduledDate: this.inviteDate,
+        workspaceId: this.workspace.id
+      };
+      console.log(body);
+      var request = await axios.post(
+        "http://20.126.206.207/room/createroom",
+        body,
+        config
+      ).then(()=>{
+      }
+      ).catch(() =>{
+        console.error("Error creating room");
+        this.alert = "Error";
+      })
+    },
+    async getFollowingUsers(){
+      const userId = this.user.sub.split("|")[1];
+                  const config = {
+        headers: { Authorization: `Bearer ${store.token}` },
+      };
+            var test = await axios.get(
+        "http://20.126.206.207/person/getfollowingusers?person=" +
+          userId,
+        config
+      );
+
+
+      console.log(test.data);
+      this.users = test.data.collection;
+    }
+  },
+  mounted() {
+    this.getWorkspaceData();
+    this.getFollowingUsers();
   },
   created() {
     this.$watch(
