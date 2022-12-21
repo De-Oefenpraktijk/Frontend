@@ -7,12 +7,21 @@
         <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
       </div>
       <form>
-        <input type="text" class="searchbar-input" v-model="search" />
+        <input type="search" class="searchbar-input" v-model="search" />
         <button type="button" class="searchbar-button" v-on:click="getData">
           Search
         </button>
       </form>
     </div>
+    <table class="table table-sm table-light table-bordered">
+      <tbody>
+        <tr v-for="(result, index) in result" :key="index">
+          <td>{{ result.Firstname }}</td>
+          <td>{{ result.Username }}</td>
+          <td>{{ result.Email }}</td>
+        </tr>
+      </tbody>
+    </table>
 
     <div class="mainCard">
       <div class="mainCard__header">
@@ -167,6 +176,19 @@ export default {
     Topbar,
     Sidebar,
   },
+  data: function () {
+    return {
+      result: [],
+      search: ""
+    };
+  },
+  watch: {
+    search: function (val) {
+      if (!val) {
+        this.result = [];
+      }
+    }
+  },
   methods: {
     getData: function () {
       const config = {
@@ -174,31 +196,12 @@ export default {
           Authorization: `Bearer ${store.token} `
         }
       }
-      fetch(
-        "http://20.126.206.207/Person/getUser?username=${this.search}", config
-      ).then(response => response.json())
+      const url = `http://20.126.206.207/Person/getRecommendation?username=${this.search}`;
+      axios.get(url, config)
         .then(data => {
-          this.result = data.results;
-          console.log(data);
+          this.result = data.data.collection[0].Values.n;
+          console.log(this.result)
         });
-
-    },
-    watch: {
-      search: function (val) {
-        if (!val) {
-          this.result = [];
-        }
-      }
-    },
-    data: function () {
-      return {
-        title: "Simple Search",
-        intro: "This is a simple hero unit, a simple jumbotron-style.",
-        subintro:
-          "It uses utility classes for typography and spacing to space content out.",
-        result: [],
-        search: ""
-      };
     }
   }
 }
