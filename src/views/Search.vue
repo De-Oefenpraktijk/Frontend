@@ -4,14 +4,18 @@
     <Topbar title="Search" />
     <div class="searchbar">
       <div class="searchbar-icon">
-        <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
+        <font-awesome-icon
+          icon="fa-solid fa-magnifying-glass"
+          class="searchbar-button"
+          @click="getData"
+        />
       </div>
-      <form>
-        <input type="search" class="searchbar-input" v-model="search" />
-        <button type="button" class="searchbar-button" v-on:click="getData">
-          Search
-        </button>
-      </form>
+      <input
+        type="search"
+        class="searchbar-input"
+        placeholder="Search..."
+        v-model="search"
+      />
     </div>
     <!-- Testing purposes -->
     <!-- <table class="table table-sm table-light table-bordered">
@@ -24,12 +28,33 @@
         </tr>
       </tbody>
     </table> -->
-    <input type="text" v-model="search">
-    <p v-if="noResults">Sorry, no results for {{ search }}</p>
-    <div v-for="(r, i) in results" :key="i">
-      {{ r.Firstname }}
-    </div>
 
+    <!-- <input type="text" v-model="search" /> -->
+
+    <div class="results">
+      <p v-if="noResults">Sorry, no results for {{ search }}</p>
+      <ul v-for="(r, i) in results" :key="i">
+        <li>
+          <div class="result">
+            <div style="background-color: transparent">
+              <img
+                src="https://via.placeholder.com/150"
+                alt="profile picture"
+              />
+            </div>
+            <div>
+              {{ r.Naam }}
+            </div>
+            <div>
+              {{ r.School }}
+            </div>
+            <div>
+              {{ r.Ervaringen }}
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
 
     <div class="mainCard">
       <div class="mainCard__header">
@@ -70,7 +95,10 @@
       </div>
       <div class="mainCard__body news">
         <div class="card">
-          <img src="https://via.placeholder.com/200x100?text=News" alt="profile picture" />
+          <img
+            src="https://via.placeholder.com/200x100?text=News"
+            alt="profile picture"
+          />
           <p>
             In life you need colors. From all of us here, I want to wish you
             happy painting and God bless, my friends. The least little bit can
@@ -79,7 +107,10 @@
           </p>
         </div>
         <div class="card">
-          <img src="https://via.placeholder.com/200x100?text=News" alt="profile picture" />
+          <img
+            src="https://via.placeholder.com/200x100?text=News"
+            alt="profile picture"
+          />
           <p>
             In life you need colors. From all of us here, I want to wish you
             happy painting and God bless, my friends. The least little bit can
@@ -88,7 +119,10 @@
           </p>
         </div>
         <div class="card">
-          <img src="https://via.placeholder.com/200x100?text=News" alt="profile picture" />
+          <img
+            src="https://via.placeholder.com/200x100?text=News"
+            alt="profile picture"
+          />
           <p>
             In life you need colors. From all of us here, I want to wish you
             happy painting and God bless, my friends. The least little bit can
@@ -97,7 +131,10 @@
           </p>
         </div>
         <div class="card">
-          <img src="https://via.placeholder.com/200x100?text=News" alt="profile picture" />
+          <img
+            src="https://via.placeholder.com/200x100?text=News"
+            alt="profile picture"
+          />
           <p>
             In life you need colors. From all of us here, I want to wish you
             happy painting and God bless, my friends. The least little bit can
@@ -107,7 +144,10 @@
         </div>
 
         <div class="card">
-          <img src="https://via.placeholder.com/200x100?text=News" alt="profile picture" />
+          <img
+            src="https://via.placeholder.com/200x100?text=News"
+            alt="profile picture"
+          />
           <p>
             In life you need colors. From all of us here, I want to wish you
             happy painting and God bless, my friends. The least little bit can
@@ -116,7 +156,10 @@
           </p>
         </div>
         <div class="card">
-          <img src="https://via.placeholder.com/200x100?text=News" alt="profile picture" />
+          <img
+            src="https://via.placeholder.com/200x100?text=News"
+            alt="profile picture"
+          />
           <p>
             In life you need colors. From all of us here, I want to wish you
             happy painting and God bless, my friends. The least little bit can
@@ -125,7 +168,10 @@
           </p>
         </div>
         <div class="card">
-          <img src="https://via.placeholder.com/200x100?text=News" alt="profile picture" />
+          <img
+            src="https://via.placeholder.com/200x100?text=News"
+            alt="profile picture"
+          />
           <p>
             In life you need colors. From all of us here, I want to wish you
             happy painting and God bless, my friends. The least little bit can
@@ -134,7 +180,10 @@
           </p>
         </div>
         <div class="card">
-          <img src="https://via.placeholder.com/200x100?text=News" alt="profile picture" />
+          <img
+            src="https://via.placeholder.com/200x100?text=News"
+            alt="profile picture"
+          />
           <p>
             In life you need colors. From all of us here, I want to wish you
             happy painting and God bless, my friends. The least little bit can
@@ -176,9 +225,9 @@
 import Sidebar from '../components/Sidebar.vue';
 import Topbar from '../components/Topbar.vue';
 import axios from 'axios';
-import { store } from '../store.js'
-import { computed } from "vue";
-import { useVueFuse } from 'vue-fuse'
+import { store } from '../store.js';
+import { computed } from 'vue';
+import { useVueFuse } from 'vue-fuse';
 
 export default {
   name: 'Search',
@@ -187,50 +236,61 @@ export default {
     Sidebar,
   },
   setup() {
-    let userdata = []
+    let userdata = [];
     const testdata = [
-                { ID: 1, Naam: "Bar", School: "Fontys Hogescholen" },
-                { ID: 2, Naam: "Bob Ross", School: "Avans Hogeschool" },
-                { ID: 3, Naam: "John Doe", School: "Technische Universiteit Eindhoven" },
-                { ID: 4, Naam: "Qux Baz", School: "Hogeschool Zuyd" },
-                { ID: 5, Naam: "Foo", School: "Expivi University" },
-                { ID: 6, Naam: "Lorem", School: "Hogeschool Ipsum" }
-            ]
+      { ID: 1, Naam: 'Bar', School: 'Fontys Hogescholen', Ervaringen: 'Test' },
+      {
+        ID: 2,
+        Naam: 'Bob Ross',
+        School: 'Avans Hogeschool',
+        Ervaringen: 'Test',
+      },
+      {
+        ID: 3,
+        Naam: 'John Doe',
+        School: 'Technische Universiteit Eindhoven',
+        Ervaringen: 'Test',
+      },
+      { ID: 4, Naam: 'Qux Baz', School: 'Hogeschool Zuyd', Ervaringen: 'Test' },
+      { ID: 5, Naam: 'Foo', School: 'Expivi University', Ervaringen: 'Test' },
+      { ID: 6, Naam: 'Lorem', School: 'Hogeschool Ipsum', Ervaringen: 'Test' },
+    ];
 
     //Get Request
-    axios.get('http://20.126.206.207/Person/getAllUsers', {
-      headers: {
-  Authorization: `Bearer ${store.token} `
-}
-}).then((response) => {
-      response.data.collection.forEach(element => {
-        //Data gets pushed to empty list testdata
-        userdata.push(element.Values.n.Properties);
+    axios
+      .get('http://20.126.206.207/Person/getAllUsers', {
+        headers: {
+          Authorization: `Bearer ${store.token} `,
+        },
+      })
+      .then((response) => {
+        response.data.collection.forEach((element) => {
+          //Data gets pushed to empty list testdata
+          userdata.push(element.Values.n.Properties);
+        });
+        console.log(userdata);
+        console.log(testdata);
+      })
+      .catch((error) => {
+        console.log(error);
       });
-      console.log(userdata);
-      console.log(testdata);
-    }).catch((error) => {
-      console.log(error);
-    });
 
-//Vue fuse magic
+    //Vue fuse magic
     let sort = false;
-    let updatedList = []
-    let searchQuery = "";
+    let updatedList = [];
+    let searchQuery = '';
 
-    const currentRow =
-      [];
+    const currentRow = [];
     const sortTable = (col) => {
-      sort.value = true
+      sort.value = true;
       // Use of _.sortBy() method
-      updatedList.value = sortBy(testdata, col)
-    }
+      updatedList.value = sortBy(testdata, col);
+    };
     //sort the list
     const sortedList = computed(() => {
       if (sort.value) {
-        return updatedList.value
-      }
-      else {
+        return updatedList.value;
+      } else {
         return testdata;
       }
     });
@@ -240,32 +300,23 @@ export default {
         { name: 'ID', weight: 1 },
         { name: 'Naam', weight: 1 },
       ],
-
     });
     return {
-      sortedList, sortTable, searchQuery, currentRow, search, results, noResults
-    }
+      sortedList,
+      sortTable,
+      searchQuery,
+      currentRow,
+      search,
+      results,
+      noResults,
+    };
   },
-
-  // data: function () {
-  //   return {
-  //     result: [],
-  //     // search: ""
-  //   };
-  // },
-  // watch: {
-  //   search: function (val) {
-  //     if (!val) {
-  //       this.result = [];
-  //     }
-  //   }
-  // },
   methods: {
-    getData: function () {
-
-    }
-  }
-}
+    getData() {
+      alert('Searching...');
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -297,6 +348,66 @@ export default {
 
 .searchbar-input:focus::placeholder {
   color: transparent;
+}
+
+.searchbar-button {
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+.results {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #ebe9e9;
+  border-radius: 20px;
+  min-width: 400px;
+  max-width: 70vw;
+  padding: 10px;
+}
+
+.results:empty {
+  display: none;
+}
+
+.results p {
+  margin-left: 1em;
+}
+
+.results ul {
+  padding: 0 10px;
+}
+
+.results ul li {
+  list-style: none;
+}
+
+.result {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.result > div {
+  margin-right: 10px;
+}
+
+.result > div:not(:nth-child(2)) {
+  background-color: #cccccc;
+  border-radius: 20px;
+  padding: 5px 10px;
+}
+
+.result img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
 }
 
 .persons {
@@ -338,8 +449,8 @@ export default {
   align-items: center;
 }
 
-.forum>.card,
-.news>.card {
+.forum > .card,
+.news > .card {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 </style>
