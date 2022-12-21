@@ -85,6 +85,7 @@ export function createRouter(app) {
         path: '/createProfile',
         name: 'CreateProfile',
         component: () => import('../views/CreateProfile.vue'),
+        props: true,
         beforeEnter: authGuard,
       },
     ],
