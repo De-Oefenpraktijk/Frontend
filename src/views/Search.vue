@@ -13,12 +13,14 @@
         </button>
       </form>
     </div>
+    <!-- Testing purposes -->
     <table class="table table-sm table-light table-bordered">
       <tbody>
         <tr v-for="(result, index) in result" :key="index">
           <td>{{ result.Firstname }}</td>
           <td>{{ result.Username }}</td>
           <td>{{ result.Email }}</td>
+          <td>{{ result.Role }}</td>
         </tr>
       </tbody>
     </table>
@@ -265,10 +267,12 @@ export default {
           Authorization: `Bearer ${store.token} `
         }
       }
-      const url = `http://20.126.206.207/Person/getRecommendation?username=${this.search}`;
+      const url = `http://20.126.206.207/Person/getAllUsers`;
       axios.get(url, config)
         .then(data => {
-          this.result = data.data.collection[0].Values.n;
+          data.data.collection.forEach(element => {
+            this.result.push(element.Values.n.Properties)
+          });
           console.log(this.result)
         });
     }
