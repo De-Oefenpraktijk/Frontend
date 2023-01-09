@@ -42,9 +42,7 @@
                 alt="profile picture"
               />
             </div>
-            <div>
-              {{ r.Firstname }}
-            </div>
+            <div>{{ r.Firstname }} {{ r.Lastname }}</div>
             <div v-for="education in r.Educations" v-bind:key="education">
               {{ education.Name }}
             </div>
