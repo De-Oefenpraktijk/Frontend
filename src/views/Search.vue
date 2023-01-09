@@ -17,23 +17,13 @@
         v-model="search"
       />
     </div>
-    <!-- Testing purposes -->
-    <!-- <table class="table table-sm table-light table-bordered">
-      <tbody>
-        <tr v-for="(result, index) in results" :key="index">
-          <td>{{ result.Firstname }}</td>
-          <td>{{ result.Username }}</td>
-          <td>{{ result.Email }}</td>
-          <td>{{ result.Role }}</td>
-        </tr>
-      </tbody>
-    </table> -->
-
-    <!-- <input type="text" v-model="search" /> -->
-
     <div class="results">
       <p v-if="noResults">Sorry, no results for {{ search }}</p>
-      <ul v-for="(r, i) in results" :key="i">
+      <ul
+        v-for="(r, i) in results"
+        :key="i"
+        @click="$router.push({ path: `/profile/${r.Id}` })"
+      >
         <li>
           <div class="result">
             <div style="background-color: transparent">
@@ -43,14 +33,14 @@
               />
             </div>
             <div>{{ r.Firstname }} {{ r.Lastname }}</div>
-            <div v-for="item in r.Educations" v-bind:key="item">
-              {{ findValueById(item) }}
+            <div v-for="education in r.Educations" v-bind:key="education">
+              {{ education.name }} - {{ education.location }}
             </div>
             <div
               v-for="specialization in r.Specializations"
               v-bind:key="specialization"
             >
-              {{ specialization }}
+              {{ specialization.name }}
             </div>
           </div>
         </li>
@@ -259,47 +249,63 @@ export default {
         response.data.collection.forEach((element) => {
           //Data gets pushed to empty list testdata
           userdata.push(element.Values.n.Properties);
+        });
 
-          userdata.forEach(async (result) => {
-            //console.log(result);
-            result.Educations.forEach(async (education) => {
-              //console.log(education);
-              await axios
-                .get(
-                  `http://20.126.206.207/education/geteducation/${education}`,
-                  {
-                    headers: {
-                      Authorization: `Bearer ${store.token}`,
-                    },
-                  }
-                )
-                .then((res) => {
-                  educations = res.data;
-                  console.log(educations);
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
-            });
+        userdata.forEach(async (result) => {
+          let amountEducation = result.Educations.length;
+          console.log(amountEducation);
+          result.Educations.forEach(async (education) => {
+            console.log(education);
+            await axios
+              .get(
+                `http://20.126.206.207/education/geteducation/${education}`,
+                {
+                  headers: {
+                    Authorization: `Bearer ${store.token}`,
+                  },
+                }
+              )
+              .then((res) => {
+                educations = res.data;
+                result.Educations.push(res.data);
+                console.log(educations);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
           });
 
-          // this.user.specializations.forEach(async (specialization) => {
-          //   await axios
-          //     .get(
-          //       `http://20.126.206.207/specialization/getspecialization/${specialization}`,
-          //       {
-          //         headers: {
-          //           Authorization: `Bearer ${store.token}`,
-          //         },
-          //       }
-          //     )
-          //     .then((res) => {
-          //       this.specializations.push(res.data);
-          //     })
-          //     .catch((err) => {
-          //       console.log(err);
-          //     });
-          // });
+          console.log(result.Educations);
+          result.Educations.splice(0, amountEducation);
+          console.log(result.Educations);
+        });
+
+        userdata.forEach(async (result) => {
+          let amountSpecializations = result.Specializations.length;
+          result.Specializations.forEach(async (specialization) => {
+            console.log(specialization);
+            await axios
+              .get(
+                `http://20.126.206.207/specialization/getspecialization/${specialization}`,
+                {
+                  headers: {
+                    Authorization: `Bearer ${store.token}`,
+                  },
+                }
+              )
+              .then((res) => {
+                specialization = res.data;
+                result.Specializations.push(res.data);
+                console.log(specialization);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          });
+
+          console.log(result.Specializations);
+          result.Specializations.splice(0, amountSpecializations);
+          console.log(result.Specializations);
         });
       });
     //Vue fuse magic
@@ -358,9 +364,6 @@ export default {
   // },
   methods: {
     getData: function () {},
-    findValueById(id) {
-      return this.educations.find((education) => education.id === id).value;
-    },
   },
 };
 </script>
@@ -423,6 +426,10 @@ export default {
 
 .results ul {
   padding: 0 10px;
+}
+
+.results ul:hover {
+  cursor: pointer;
 }
 
 .results ul li {
