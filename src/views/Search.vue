@@ -43,13 +43,16 @@
               />
             </div>
             <div>
-              {{ r.Naam }}
+              {{ r.Firstname }}
             </div>
-            <div>
-              {{ r.School }}
+            <div v-for="education in r.Educations" v-bind:key="education">
+              {{ education.Name }}
             </div>
-            <div>
-              {{ r.Ervaringen }}
+            <div
+              v-for="specialization in r.Specializations"
+              v-bind:key="specialization"
+            >
+              {{ specialization.Name }}
             </div>
           </div>
         </li>
@@ -235,29 +238,19 @@ export default {
     Topbar,
     Sidebar,
   },
-  setup() {
+  async setup() {
     let userdata = [];
     const testdata = [
-      { ID: 1, Naam: 'Bar', School: 'Fontys Hogescholen', Ervaringen: 'Test' },
-      {
-        ID: 2,
-        Naam: 'Bob Ross',
-        School: 'Avans Hogeschool',
-        Ervaringen: 'Test',
-      },
-      {
-        ID: 3,
-        Naam: 'John Doe',
-        School: 'Technische Universiteit Eindhoven',
-        Ervaringen: 'Test',
-      },
-      { ID: 4, Naam: 'Qux Baz', School: 'Hogeschool Zuyd', Ervaringen: 'Test' },
-      { ID: 5, Naam: 'Foo', School: 'Expivi University', Ervaringen: 'Test' },
-      { ID: 6, Naam: 'Lorem', School: 'Hogeschool Ipsum', Ervaringen: 'Test' },
+      { ID: 1, Naam: 'Bar', School: 'Fontys Hogescholen' },
+      { ID: 2, Naam: 'Bob Ross', School: 'Avans Hogeschool' },
+      { ID: 3, Naam: 'John Doe', School: 'Technische Universiteit Eindhoven' },
+      { ID: 4, Naam: 'Qux Baz', School: 'Hogeschool Zuyd' },
+      { ID: 5, Naam: 'Foo', School: 'Expivi University' },
+      { ID: 6, Naam: 'Lorem', School: 'Hogeschool Ipsum' },
     ];
 
     //Get Request
-    axios
+    await axios
       .get('http://20.126.206.207/Person/getAllUsers', {
         headers: {
           Authorization: `Bearer ${store.token} `,
@@ -268,37 +261,35 @@ export default {
           //Data gets pushed to empty list testdata
           userdata.push(element.Values.n.Properties);
         });
-        console.log(userdata);
-        console.log(testdata);
-      })
-      .catch((error) => {
-        console.log(error);
       });
-
     //Vue fuse magic
     let sort = false;
     let updatedList = [];
     let searchQuery = '';
 
+    console.log(userdata);
+    console.log(testdata);
     const currentRow = [];
     const sortTable = (col) => {
       sort.value = true;
       // Use of _.sortBy() method
-      updatedList.value = sortBy(testdata, col);
+      updatedList.value = sortBy(userdata, col);
     };
     //sort the list
     const sortedList = computed(() => {
       if (sort.value) {
         return updatedList.value;
       } else {
-        return testdata;
+        return userdata;
       }
     });
+
     // Filter Search
     const { search, results, noResults } = useVueFuse(sortedList, {
       keys: [
-        { name: 'ID', weight: 1 },
-        { name: 'Naam', weight: 1 },
+        { name: 'Firstname', weight: 1 },
+        { name: 'Username', weight: 1 },
+        { name: 'Lastname', weight: 1 },
       ],
     });
     return {
@@ -311,10 +302,22 @@ export default {
       noResults,
     };
   },
+
+  // data: function () {
+  //   return {
+  //     result: [],
+  //     // search: ""
+  //   };
+  // },
+  // watch: {
+  //   search: function (val) {
+  //     if (!val) {
+  //       this.result = [];
+  //     }
+  //   }
+  // },
   methods: {
-    getData() {
-      alert('Searching...');
-    },
+    getData: function () {},
   },
 };
 </script>
