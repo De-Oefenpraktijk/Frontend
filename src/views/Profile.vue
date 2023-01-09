@@ -27,7 +27,7 @@
             placeholder="Residence"
             v-model="user.residencePlace"
           />
-          <div class="buttons">
+          <div class="buttons" v-if="isOwnProfile()">
             <button @click="saveChanges">Save changes</button>
             <button @click="changePassword">Change password</button>
           </div>
@@ -95,7 +95,6 @@ import Topbar from '../components/Topbar.vue';
 import { useAuth0 } from '@auth0/auth0-vue';
 import { store } from '../store.js';
 import axios from 'axios';
-
 export default {
   name: 'Profile',
   components: {
@@ -115,6 +114,13 @@ export default {
   methods: {
     getUserId() {
       console.log(this.$route.params.id);
+    },
+    isOwnProfile(){
+      console.log('test');
+      if(store.userId == this.$route.params.id){
+        return true
+      }
+      return false
     },
     async getUserDetails() {
       await axios
