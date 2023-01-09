@@ -43,14 +43,14 @@
               />
             </div>
             <div>{{ r.Firstname }} {{ r.Lastname }}</div>
-            <div v-for="education in r.Educations" v-bind:key="education">
-              {{ education.Name }}
+            <div v-for="item in r.Educations" v-bind:key="item">
+              {{ findValueById(item) }}
             </div>
             <div
               v-for="specialization in r.Specializations"
               v-bind:key="specialization"
             >
-              {{ specialization.Name }}
+              {{ specialization }}
             </div>
           </div>
         </li>
@@ -246,6 +246,7 @@ export default {
       { ID: 5, Naam: 'Foo', School: 'Expivi University' },
       { ID: 6, Naam: 'Lorem', School: 'Hogeschool Ipsum' },
     ];
+    let educations = [];
 
     //Get Request
     await axios
@@ -258,6 +259,47 @@ export default {
         response.data.collection.forEach((element) => {
           //Data gets pushed to empty list testdata
           userdata.push(element.Values.n.Properties);
+
+          userdata.forEach(async (result) => {
+            //console.log(result);
+            result.Educations.forEach(async (education) => {
+              //console.log(education);
+              await axios
+                .get(
+                  `http://20.126.206.207/education/geteducation/${education}`,
+                  {
+                    headers: {
+                      Authorization: `Bearer ${store.token}`,
+                    },
+                  }
+                )
+                .then((res) => {
+                  educations = res.data;
+                  console.log(educations);
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            });
+          });
+
+          // this.user.specializations.forEach(async (specialization) => {
+          //   await axios
+          //     .get(
+          //       `http://20.126.206.207/specialization/getspecialization/${specialization}`,
+          //       {
+          //         headers: {
+          //           Authorization: `Bearer ${store.token}`,
+          //         },
+          //       }
+          //     )
+          //     .then((res) => {
+          //       this.specializations.push(res.data);
+          //     })
+          //     .catch((err) => {
+          //       console.log(err);
+          //     });
+          // });
         });
       });
     //Vue fuse magic
@@ -316,6 +358,9 @@ export default {
   // },
   methods: {
     getData: function () {},
+    findValueById(id) {
+      return this.educations.find((education) => education.id === id).value;
+    },
   },
 };
 </script>
