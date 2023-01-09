@@ -4,60 +4,24 @@
     <Topbar title="Workspaces" />
     <div class="mainCard">
       <div class="mainCard__body">
-        <div class="card">
+        <div
+          class="card"
+          v-for="workspace in workspaces || []"
+          :key="workspace.id"
+        >
           <router-link
             :to="{
               name: 'workspace',
-              params: { workspace: 'Couple and Family' },
+              params: { workspace: workspace.id },
             }"
           >
             <img
-              src="https://via.placeholder.com/200x300?text=Couple+And+Family"
+              :src="
+                'https://via.placeholder.com/200x300?text=' + workspace.name
+              "
               alt="profile picture"
             />
           </router-link>
-        </div>
-        <div class="card">
-          <img
-            src="https://via.placeholder.com/200x300?text=Sleep"
-            alt="profile picture"
-          />
-        </div>
-        <div class="card">
-          <img
-            src="https://via.placeholder.com/200x300?text=Forensic"
-            alt="profile picture"
-          />
-        </div>
-        <div class="card">
-          <img
-            src="https://via.placeholder.com/200x300?text=Gero"
-            alt="profile picture"
-          />
-        </div>
-        <div class="card">
-          <img
-            src="https://via.placeholder.com/200x300?text=Introversion"
-            alt="profile picture"
-          />
-        </div>
-        <div class="card">
-          <img
-            src="https://via.placeholder.com/200x300?text=High+Intelligent"
-            alt="profile picture"
-          />
-        </div>
-        <div class="card">
-          <img
-            src="https://via.placeholder.com/200x300?text=Stress"
-            alt="profile picture"
-          />
-        </div>
-        <div class="card">
-          <img
-            src="https://via.placeholder.com/200x300?text=Friendship"
-            alt="profile picture"
-          />
         </div>
       </div>
     </div>
@@ -67,13 +31,40 @@
 <script>
 import Sidebar from '../components/Sidebar.vue';
 import Topbar from '../components/Topbar.vue';
+import axios from 'axios';
+import { store } from '../store';
 export default {
   name: 'Workspaces',
   components: {
     Sidebar,
     Topbar,
   },
+  data() {
+    return {
+      workspaces: [],
+    };
+  },
+  methods: {
+    async getData() {
+      const config = {
+        headers: { Authorization: `Bearer ${store.token}` },
+      };
+      var test = await axios.get(
+        'http://20.126.206.207/workspace/getworkspaces',
+        config
+      );
+      console.log(test.data.collection);
+      this.workspaces = test.data.collection;
+    },
+  },
+  mounted() {
+    this.getData();
+  },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.card {
+  max-width: 280px;
+}
+</style>
