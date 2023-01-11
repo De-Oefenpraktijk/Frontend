@@ -80,12 +80,33 @@
 <script>
 import Sidebar from '../components/Sidebar.vue';
 import Topbar from '../components/Topbar.vue';
+import axios from 'axios';
 
 export default {
   name: 'Forum',
   components: {
     Topbar,
     Sidebar,
+  },
+  data() {
+    return {
+      topics: [],
+    };
+  },
+  mounted() {
+    this.getTopics();
+  },
+  methods: {
+    getTopics() {
+      axios
+        .get('http://20.126.194.16/api/v1/ForumPost')
+        .then((response) => {
+          this.topics = response.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
 };
 </script>
