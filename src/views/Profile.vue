@@ -57,7 +57,7 @@
     </div>
   </div>
   <Teleport to="body">
-    <modal :show="showModal" @close="showModal = false" @save="save">
+    <modal :show="showModal" @close="showModal = false" @save="saveEducation">
       <template #header>
         <h3>Add education to your profile</h3>
       </template>
@@ -71,7 +71,7 @@
               :key="education.id"
               :value="education"
             >
-              {{ education.name }}
+              {{ education.name }} || {{ education.school }}
             </option>
           </select>
         </div>
@@ -128,9 +128,39 @@ export default {
       }
       return false;
     },
-    async save() {
-      console.log(this.chosenEducation.id);
-    },
+    async saveEducation() {
+      this.user.educations.push(this.chosenEducation.id);
+
+      await axios
+        .put(
+          `http://20.126.206.207/user/updateuser/${this.user.id}`,
+          {
+            emailAddress: this.user.emailAddress,
+            firstName: this.user.firstName,
+            lastName: this.user.lastName,
+            residencePlace: this.user.residencePlace,
+            enrollmentDate: this.user.enrollmentDate,
+            id: this.user.id,
+            residencePlace: this.user.residencePlace,
+            role: this.user.role,
+            username: this.user.username,
+            educations: this.user.educations,
+            specializations: this.user.specializations,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${store.token}`,
+            },
+          }
+        )
+        .then((res) => {
+          console.log("Successfull saved!");
+        })
+        .catch((err) => {
+          console.log("Something went wrong!");
+        });
+        this.showModal = false;
+      },
     async getUserDetails() {
       await axios
         .get(
