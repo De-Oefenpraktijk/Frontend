@@ -42,7 +42,7 @@
               <p>{{ education.location }}</p>
             </div>
           </div>
-          <p class="newEducation" @click="showModal = true">+</p>
+          <p class="newEducation" v-if="isOwnProfile()" @click="showModal = true">+</p>
         </div>
         <h1>Specializations</h1>
         <div class="educations">
@@ -51,22 +51,51 @@
               <p>{{ specialization.name }}</p>
             </div>
           </div>
-          <p class="newEducation">+</p>
+          <p class="newEducation"  v-if="isOwnProfile()" @click="showModalSpecialization = true">+</p>
         </div>
       </div>
     </div>
   </div>
   <Teleport to="body">
-    <modal :show="showModal" @close="showModal = false" @save="save">
+    <modal :show="showModal" @close="showModal = false" @save="saveEducation">
       <template #header>
         <h3>Add education to your profile</h3>
       </template>
       <template #body>
         <div class="modal-body">
           <label>Education name</label>
-          <input type="text" placeholder="Education name" />
-          <label>Location</label>
-          <input type="text" placeholder="Location" />
+          <!-- select with options of allEducations, where the chosen education is stored -->
+          <select v-model="chosenEducation">
+            <option
+              v-for="education in allEducations"
+              :key="education.id"
+              :value="education"
+            >
+              {{ education.name }} || {{ education.school }}
+            </option>
+          </select>
+        </div>
+      </template>
+    </modal>
+  </Teleport>
+  <Teleport to="body">
+    <modal :show="showModalSpecialization" @close="showModalSpecialization = false" @save="saveSpecialization">
+      <template #header>
+        <h3>Add education to your profile</h3>
+      </template>
+      <template #body>
+        <div class="modal-body">
+          <label>Specialization name</label>
+          <!-- select with options of allEducations, where the chosen education is stored -->
+          <select v-model="chosenSpecialization">
+            <option
+              v-for="specialization in allSpecializations"
+              :key="specialization.id"
+              :value="specialization"
+            >
+              {{ specialization.name }}
+            </option>
+          </select>
         </div>
       </template>
     </modal>
@@ -94,22 +123,108 @@ export default {
       educations: [],
       specializations: [],
       showModal: false,
+      showModalSpecialization: false,
+      allEducations: [],
+      allSpecializations: [],
+      chosenSpecialization: {},
+      chosenEducation: {},
     };
   },
   async mounted() {
     await this.getUserDetails();
+    await axios
+      .get('http://20.126.206.207/education/geteducations', {
+        headers: {
+          Authorization: `Bearer ${store.token}`,
+        },
+      })
+      .then((res) => {
+        this.allEducations = res.data.collection;
+      });
+      await axios
+      .get('http://20.126.206.207/specialization/getallspecializations', {
+        headers: {
+          Authorization: `Bearer ${store.token}`,
+        },
+      })
+      .then((res) => {
+        this.allSpecializations = res.data.collection;
+      });
   },
   methods: {
     getUserId() {
       console.log(this.$route.params.id);
     },
     isOwnProfile() {
-      console.log('test');
       if (store.userId == this.$route.params.id) {
         return true;
       }
       return false;
     },
+    async saveEducation() {
+      this.user.educations.push(this.chosenEducation.id);
+      await axios
+        .put(
+          `http://20.126.206.207/user/updateuser/${this.user.id}`,
+          {
+            emailAddress: this.user.emailAddress,
+            firstName: this.user.firstName,
+            lastName: this.user.lastName,
+            residencePlace: this.user.residencePlace,
+            enrollmentDate: this.user.enrollmentDate,
+            id: this.user.id,
+            residencePlace: this.user.residencePlace,
+            role: this.user.role,
+            username: this.user.username,
+            educations: this.user.educations,
+            specializations: this.user.specializations,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${store.token}`,
+            },
+          }
+        )
+        .then((res) => {
+          console.log("Successfull saved!");
+        })
+        .catch((err) => {
+          console.log("Something went wrong!");
+        });
+        this.showModal = false;
+      },
+      async saveSpecialization() {
+      this.user.specializations.push(this.chosenSpecialization.id);
+      await axios
+        .put(
+          `http://20.126.206.207/user/updateuser/${this.user.id}`,
+          {
+            emailAddress: this.user.emailAddress,
+            firstName: this.user.firstName,
+            lastName: this.user.lastName,
+            residencePlace: this.user.residencePlace,
+            enrollmentDate: this.user.enrollmentDate,
+            id: this.user.id,
+            residencePlace: this.user.residencePlace,
+            role: this.user.role,
+            username: this.user.username,
+            educations: this.user.educations,
+            specializations: this.user.specializations,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${store.token}`,
+            },
+          }
+        )
+        .then((res) => {
+          console.log("Successfull saved!");
+        })
+        .catch((err) => {
+          console.log("Something went wrong!");
+        });
+        this.showModalSpecialization = false;
+      },
     async getUserDetails() {
       await axios
         .get(
@@ -126,7 +241,7 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-
+        console.log(this.educations);
       this.user.educations.forEach(async (education) => {
         await axios
           .get(`http://20.126.206.207/education/geteducation/${education}`, {
@@ -135,6 +250,7 @@ export default {
             },
           })
           .then((res) => {
+            console.log(res);
             this.educations.push(res.data);
           })
           .catch((err) => {
