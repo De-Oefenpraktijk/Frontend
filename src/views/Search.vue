@@ -49,7 +49,7 @@
 
     <div class="mainCard">
       <div class="mainCard__header">
-        <h2>Related people</h2>
+        <span>Related people</span>
       </div>
       <div class="mainCard__body persons">
         <div class="card person">
@@ -88,7 +88,7 @@
     </div>
     <div class="mainCard">
       <div class="mainCard__header">
-        <h2>Related news</h2>
+        <span>Related news</span>
       </div>
       <div class="mainCard__body news">
         <div class="card">

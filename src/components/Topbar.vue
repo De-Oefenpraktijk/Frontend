@@ -11,7 +11,7 @@ defineProps({
 
 <template>
   <div class="topbar">
-    <div>
+    <div class="title">
       <h1>{{ title }}</h1>
     </div>
     <div>
@@ -66,10 +66,14 @@ img {
   margin-right: 10px;
 }
 
+.topbar .title h1 {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
 .topbar__profile {
   display: flex;
   align-items: center;
-  margin-right: 50px;
 }
 
 .topbar__profile__dropdown__button {
@@ -88,11 +92,20 @@ img {
   margin-right: 10px;
 }
 
+.topbar__profile img {
+  border: 3px solid #CFCED5;
+}
+
+.topbar__profile__dropdown {
+  position: relative;
+}
+
 .topbar__profile__dropdown__content {
   display: none;
   position: absolute;
   background-color: #f9f9f9;
   min-width: 160px;
+  width: 100%;
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
   z-index: 1;
 }

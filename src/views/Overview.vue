@@ -3,31 +3,31 @@
   <div class="main">
     <Topbar title="Overview" />
     <div class="statistics">
-      <div class="statistics__card">
+      <div class="statistics__card statistics__card--blue">
         <div class="statistics__card__header">
           <span>Messages</span>
         </div>
-        <h1>{{ this.$root.mockData.overview.messages }}</h1>
+        <span class="statistic-number">{{ this.$root.mockData.overview.messages }}</span>
       </div>
-      <div class="statistics__card">
+      <div class="statistics__card statistics__card--blue">
         <div class="statistics__card__header">
           <span>Notifications</span>
         </div>
-        <h1>{{ this.$root.mockData.overview.notifications }}</h1>
+        <span class="statistic-number">{{ this.$root.mockData.overview.notifications }}</span>
       </div>
-      <div class="statistics__card">
+      <div class="statistics__card statistics__card--blue">
         <div class="statistics__card__header">
           <span>Active posts</span>
         </div>
 
-        <h1>{{ this.$root.mockData.overview.activePosts }}</h1>
+        <span class="statistic-number">{{ this.$root.mockData.overview.activePosts }}</span>
       </div>
-      <div class="statistics__card">
+      <div class="statistics__card statistics__card--purple">
         <div class="statistics__card__header">
           <span>Upcoming events</span>
         </div>
 
-        <h1>{{ this.$root.mockData.overview.upcomingEvents }}</h1>
+        <span class="statistic-number">{{ this.$root.mockData.overview.upcomingEvents }}</span>
       </div>
     </div>
     <div class="mainCard">
@@ -36,7 +36,7 @@
       </div>
       <div class="mainCard__body">
         <div
-          class="card"
+          class="card workspace-card"
           v-for="workspace in workspaces.slice(0, 4) || []"
           :key="workspace.id"
         >
@@ -46,6 +46,11 @@
               params: { workspace: workspace.id },
             }"
           >
+            <div class="workspace-card-content-wrapper">
+              <div class="workspace-card-content">
+              <span class="workspace-card-content__title">{{ workspace.name }}</span>
+              </div>
+            </div>
             <img :src="workspace.imageFile" />
           </router-link>
         </div>
@@ -157,9 +162,9 @@ export default {
   align-items: center;
   justify-content: center;
   background-color: #fff;
-  border-radius: 10px;
+  border-radius: 6px;
   margin: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 2px solid #e3e2e7;
 }
 
 .statistics__card__header {
@@ -168,9 +173,13 @@ export default {
   justify-content: center;
   height: 50px;
   width: 100%;
-  background-color: #f5f5f5;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  background-color: #e3e2e7;
+}
+
+.statistic-number {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 22px 0;
 }
 
 .recentNews > .card {

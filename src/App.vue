@@ -65,10 +65,10 @@ export default {
         profilePicture:
           'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
         overview: {
-          messages: 2,
-          notifications: 1,
-          activePosts: 3,
-          upcomingEvents: 2,
+          messages: 0,
+          notifications: 0,
+          activePosts: 0,
+          upcomingEvents: 6,
         },
         relatedPeople: [
           {
