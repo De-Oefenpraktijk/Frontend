@@ -88,6 +88,23 @@ body {
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
+.input-default:read-only {
+  box-shadow: unset;
+  border: none;
+  color: #000;
+  font-size: 17px;
+  font-weight: 600;
+  background-color: #e6ecf3;
+  opacity: 1;
+}
+
+.header-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
 .card:hover img {
   transform: scale(1.05);
 }
