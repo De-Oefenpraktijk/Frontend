@@ -16,16 +16,56 @@
             type="text"
             placeholder="First Name"
             v-model="user.firstName"
+            v-if="isOwnProfile()"
+          />
+          <input
+            type="text"
+            placeholder="First Name"
+            v-model="user.firstName"
+            readonly
+            v-else
           />
           <label>Last Name</label>
-          <input type="text" placeholder="Last Name" v-model="user.lastName" />
+          <input
+            type="text"
+            placeholder="Last Name"
+            v-model="user.lastName"
+            v-if="isOwnProfile()"
+          />
+          <input
+            type="text"
+            placeholder="Last Name"
+            v-model="user.lastName"
+            readonly
+            v-else
+          />
           <label>Email</label>
-          <input type="text" placeholder="Email" v-model="user.emailAddress" />
+          <input
+            type="text"
+            placeholder="Email"
+            v-model="user.emailAddress"
+            v-if="isOwnProfile()"
+          />
+          <input
+            type="text"
+            placeholder="Email"
+            v-model="user.emailAddress"
+            readonly
+            v-else
+          />
           <label>Residence place</label>
           <input
             type="text"
             placeholder="Residence"
             v-model="user.residencePlace"
+            v-if="isOwnProfile()"
+          />
+          <input
+            type="text"
+            placeholder="Residence"
+            v-model="user.residencePlace"
+            readonly
+            v-else
           />
           <div class="buttons" v-if="isOwnProfile()">
             <button @click="saveChanges">Save changes</button>
@@ -37,21 +77,43 @@
         <h1>Educations</h1>
         <div class="educations">
           <div v-for="education in educations" :key="education">
-            <div class="education">
+            <div
+              class="education"
+              style="cursor: no-drop"
+              title="Remove education"
+            >
               <p>{{ education.name }} -</p>
               <p>{{ education.location }}</p>
             </div>
           </div>
-          <p class="newEducation" v-if="isOwnProfile()" @click="showModal = true">+</p>
+          <p
+            class="newEducation"
+            v-if="isOwnProfile()"
+            @click="showModal = true"
+            style="cursor: pointer"
+          >
+            +
+          </p>
         </div>
         <h1>Specializations</h1>
         <div class="educations">
           <div v-for="specialization in specializations" :key="specialization">
-            <div class="education">
+            <div
+              class="education"
+              style="cursor: no-drop"
+              title="Remove specialization"
+            >
               <p>{{ specialization.name }}</p>
             </div>
           </div>
-          <p class="newEducation"  v-if="isOwnProfile()" @click="showModalSpecialization = true">+</p>
+          <p
+            class="newEducation"
+            v-if="isOwnProfile()"
+            @click="showModalSpecialization = true"
+            style="cursor: pointer"
+          >
+            +
+          </p>
         </div>
       </div>
     </div>
@@ -79,14 +141,17 @@
     </modal>
   </Teleport>
   <Teleport to="body">
-    <modal :show="showModalSpecialization" @close="showModalSpecialization = false" @save="saveSpecialization">
+    <modal
+      :show="showModalSpecialization"
+      @close="showModalSpecialization = false"
+      @save="saveSpecialization"
+    >
       <template #header>
         <h3>Add education to your profile</h3>
       </template>
       <template #body>
         <div class="modal-body">
           <label>Specialization name</label>
-          <!-- select with options of allEducations, where the chosen education is stored -->
           <select v-model="chosenSpecialization">
             <option
               v-for="specialization in allSpecializations"
@@ -141,7 +206,7 @@ export default {
       .then((res) => {
         this.allEducations = res.data.collection;
       });
-      await axios
+    await axios
       .get('http://20.126.206.207/specialization/getallspecializations', {
         headers: {
           Authorization: `Bearer ${store.token}`,
@@ -186,14 +251,14 @@ export default {
           }
         )
         .then((res) => {
-          console.log("Successfull saved!");
+          console.log('Successfull saved!');
         })
         .catch((err) => {
-          console.log("Something went wrong!");
+          console.log('Something went wrong!');
         });
-        this.showModal = false;
-      },
-      async saveSpecialization() {
+      this.showModal = false;
+    },
+    async saveSpecialization() {
       this.user.specializations.push(this.chosenSpecialization.id);
       await axios
         .put(
@@ -218,13 +283,13 @@ export default {
           }
         )
         .then((res) => {
-          console.log("Successfull saved!");
+          console.log('Successfull saved!');
         })
         .catch((err) => {
-          console.log("Something went wrong!");
+          console.log('Something went wrong!');
         });
-        this.showModalSpecialization = false;
-      },
+      this.showModalSpecialization = false;
+    },
     async getUserDetails() {
       await axios
         .get(
@@ -241,7 +306,7 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-        console.log(this.educations);
+      console.log(this.educations);
       this.user.educations.forEach(async (education) => {
         await axios
           .get(`http://20.126.206.207/education/geteducation/${education}`, {
@@ -290,8 +355,8 @@ export default {
             residencePlace: this.user.residencePlace,
             role: this.user.role,
             username: this.user.username,
-            educations: this.educations,
-            specializations: this.specializations,
+            educations: this.user.educations,
+            specializations: this.user.specializations,
           },
           {
             headers: {

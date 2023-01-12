@@ -7,7 +7,7 @@
         <input type="text" placeholder="Search topic" />
       </div>
       <div class="new">
-        <button>New Topic</button>
+        <button @click="showModal = true">New Topic</button>
       </div>
     </div>
     <div class="filters">
@@ -51,22 +51,59 @@
       </table>
     </div>
   </div>
+  <Teleport to="body">
+    <modal :show="showModal" @close="showModal = false" @save="postTopic">
+      <template #header>
+        <h3>New Topic</h3>
+      </template>
+      <template #body>
+        <form>
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title" v-model="title" />
+          </div>
+          <div class="form-group">
+            <label for="category">Category</label>
+            <select id="category">
+              <option value="uncategorised">Uncategorised</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="tags">Tags</label>
+            <select id="tags">
+              <option value="notags">No tags</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="content">Content</label>
+            <textarea id="content" v-model="content"></textarea>
+          </div>
+        </form>
+      </template>
+    </modal>
+  </Teleport>
 </template>
 
 <script>
 import Sidebar from '../components/Sidebar.vue';
 import Topbar from '../components/Topbar.vue';
 import axios from 'axios';
+import Modal from '../components/Modal.vue';
+import { store } from '../store.js';
 
 export default {
   name: 'Forum',
   components: {
     Topbar,
     Sidebar,
+    Modal,
   },
   data() {
     return {
       topics: [],
+      showModal: false,
+      title: '',
+      content: '',
     };
   },
   mounted() {
@@ -89,6 +126,18 @@ export default {
       return new Date(
         start.getTime() + Math.random() * (end.getTime() - start.getTime())
       ).toDateString();
+    },
+    postTopic() {
+      axios
+        .post('http://20.126.194.16/api/v1/ForumPost', {
+          title: this.title,
+          formBody: this.content,
+          userId: store.userId,
+          userName: store.username,
+        })
+        .then((resp) => {
+          this.$router.push(`/topic/${resp.data}`);
+        });
     },
   },
 };
@@ -184,13 +233,66 @@ export default {
 
 .topics table tr:hover {
   background-color: #f2f2f2;
+  cursor: pointer;
 }
 
 .topics table tr:first-child {
   background-color: #000000;
   color: #ffffff;
 }
+
+.topics table tr:first-child:hover {
+  cursor: auto;
+}
 .topics table tr:nth-child(even) {
   background-color: #c5c5c5;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin: 5px;
+}
+
+.form-group:last-child {
+  width: 90%;
+}
+
+.form-group label {
+  margin-bottom: 10px;
+}
+
+.form-group input {
+  width: 300px;
+  height: 40px;
+  border: 1px solid #000000;
+  border-radius: 5px;
+  padding: 0 10px;
+}
+
+.form-group select {
+  width: 300px;
+  height: 40px;
+  border: 1px solid #000000;
+  border-radius: 5px;
+  padding: 0 10px;
+}
+
+textarea {
+  width: 100%;
+  height: 200px;
+  border: 1px solid #000000;
+  border-radius: 5px;
+  padding: 10px;
+  resize: none;
 }
 </style>
