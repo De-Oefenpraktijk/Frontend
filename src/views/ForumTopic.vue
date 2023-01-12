@@ -70,6 +70,9 @@ export default {
     Sidebar,
     Modal,
   },
+  setup(){
+    return {store,}
+  },
   data() {
     return {
       topic: [],
@@ -86,6 +89,7 @@ export default {
         .get('http://20.126.194.16/api/v1/ForumPost/' + this.$route.params.id)
         .then((response) => {
           this.topic = response.data;
+          console.log(this.topic);
         })
         .catch((error) => {
           console.log(error);
@@ -97,7 +101,7 @@ export default {
           text: this.comment,
           formPostId: this.$route.params.id,
           userId: '1',
-          userName: 'Username',
+          userName: this.store.username,
         })
         .then((response) => {
           this.getTopic();
