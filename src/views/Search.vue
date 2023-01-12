@@ -488,14 +488,14 @@ export default {
   font-weight: 600;
   padding: 4px 8px;
   border-radius: 6px;
-  background: linear-gradient(0, #222252 0%, #606da8 100%);
+  background: linear-gradient(0, #181818 0%, #424242 100%);
   color: #fff;
   display: flex;
   align-items: center;
 }
 
 .result .badge.badge--green {
-  background: linear-gradient(0, #225226 0%, #60a86c 100%);
+  background: linear-gradient(0, #222552 0%, #6071a8 100%);
 }
 
 .result .badge svg {

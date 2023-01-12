@@ -56,11 +56,11 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   width: 500px;
-  min-height: 50%;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;
-  border-radius: 2px;
+  border: 1px solid #e3e2e7;
+  border-radius: 6px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
 }

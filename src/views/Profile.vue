@@ -378,6 +378,7 @@ export default {
   align-items: center;
   justify-content: center;
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .personal_details .buttons {
@@ -433,7 +434,7 @@ export default {
   font-weight: 600;
   padding: 4px 8px;
   border-radius: 6px;
-  background: linear-gradient(0, #222252 0%, #606da8 100%);
+  background: linear-gradient(0, #181818 0%, #424242 100%);
   color: #fff;
   display: flex;
   align-items: center;
