@@ -56,108 +56,11 @@
         <span>Recent news</span>
       </div>
       <div class="mainCard__body recentNews">
-        <div class="card">
-          <img
-            src="https://via.placeholder.com/200x100?text=News"
-            alt="profile picture"
-          />
-          <p>
-            In life you need colors. From all of us here, I want to wish you
-            happy painting and God bless, my friends. The least little bit can
-            do so much. Isn't that fantastic that you can make whole mountains
-            in minutes?
-          </p>
-        </div>
-
-        <div class="card">
-          <img
-            src="https://via.placeholder.com/200x100?text=News"
-            alt="profile picture"
-          />
-          <p>
-            In life you need colors. From all of us here, I want to wish you
-            happy painting and God bless, my friends. The least little bit can
-            do so much. Isn't that fantastic that you can make whole mountains
-            in minutes?
-          </p>
-        </div>
-
-        <div class="card">
-          <img
-            src="https://via.placeholder.com/200x100?text=News"
-            alt="profile picture"
-          />
-          <p>
-            In life you need colors. From all of us here, I want to wish you
-            happy painting and God bless, my friends. The least little bit can
-            do so much. Isn't that fantastic that you can make whole mountains
-            in minutes?
-          </p>
-        </div>
-
-        <div class="card">
-          <img
-            src="https://via.placeholder.com/200x100?text=News"
-            alt="profile picture"
-          />
-          <p>
-            In life you need colors. From all of us here, I want to wish you
-            happy painting and God bless, my friends. The least little bit can
-            do so much. Isn't that fantastic that you can make whole mountains
-            in minutes?
-          </p>
-        </div>
-
-        <div class="card">
-          <img
-            src="https://via.placeholder.com/200x100?text=News"
-            alt="profile picture"
-          />
-          <p>
-            In life you need colors. From all of us here, I want to wish you
-            happy painting and God bless, my friends. The least little bit can
-            do so much. Isn't that fantastic that you can make whole mountains
-            in minutes?
-          </p>
-        </div>
-
-        <div class="card">
-          <img
-            src="https://via.placeholder.com/200x100?text=News"
-            alt="profile picture"
-          />
-          <p>
-            In life you need colors. From all of us here, I want to wish you
-            happy painting and God bless, my friends. The least little bit can
-            do so much. Isn't that fantastic that you can make whole mountains
-            in minutes?
-          </p>
-        </div>
-
-        <div class="card">
-          <img
-            src="https://via.placeholder.com/200x100?text=News"
-            alt="profile picture"
-          />
-          <p>
-            In life you need colors. From all of us here, I want to wish you
-            happy painting and God bless, my friends. The least little bit can
-            do so much. Isn't that fantastic that you can make whole mountains
-            in minutes?
-          </p>
-        </div>
-
-        <div class="card">
-          <img
-            src="https://via.placeholder.com/200x100?text=News"
-            alt="profile picture"
-          />
-          <p>
-            In life you need colors. From all of us here, I want to wish you
-            happy painting and God bless, my friends. The least little bit can
-            do so much. Isn't that fantastic that you can make whole mountains
-            in minutes?
-          </p>
+        <div class="card" v-for="newsItem in newsItems" :key="newsItem">
+          <a :href="newsItem.link" target="_blank">
+            <h1>{{ newsItem.title }}</h1>
+            <p>{{ newsItem.description }}</p>
+          </a>
         </div>
       </div>
     </div>
@@ -180,6 +83,7 @@ export default {
   data() {
     return {
       workspaces: [],
+      newsItems: [],
     };
   },
   methods: {
@@ -193,6 +97,36 @@ export default {
       );
       console.log(test.data.collection);
       this.workspaces = test.data.collection;
+
+      // News
+      axios
+        .get(
+          'https://cors-anywhere.herokuapp.com/https://www.sciencedaily.com/rss/top/health.xml',
+          {
+            headers: {
+              origin: 'http://oefenpraktijk.nl/',
+            },
+          }
+        )
+        .then((res) => {
+          let parser = new DOMParser();
+          let xmlDoc = parser.parseFromString(res.data, 'text/xml');
+
+          for (let index = 0; index < 12; index++) {
+            this.newsItems.push({
+              title: xmlDoc.getElementsByTagName('title')[index].innerHTML,
+              link: xmlDoc.getElementsByTagName('link')[index].innerHTML,
+              description: xmlDoc
+                .getElementsByTagName('description')
+                [index].innerHTML.substring(
+                  0,
+                  xmlDoc.getElementsByTagName('description')[index].innerHTML
+                    .length - 13
+                ),
+            });
+          }
+          this.newsItems.splice(0, 2);
+        });
     },
   },
   setup() {
@@ -241,5 +175,33 @@ export default {
 
 .recentNews > .card {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.recentNews > .card > a {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 10px;
+  text-decoration: none;
+  color: #000;
+}
+
+.recentNews > .card > a > h1 {
+  font-size: 1.2rem;
+  margin: 0;
+  text-align: center;
+}
+
+.recentNews > .card > a > p {
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+.card {
+  min-height: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

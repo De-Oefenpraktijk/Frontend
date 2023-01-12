@@ -1,5 +1,6 @@
 <script setup>
 import { useAuth0 } from '@auth0/auth0-vue';
+import { store } from '../store.js';
 
 const { logout, user } = useAuth0();
 
@@ -22,7 +23,11 @@ defineProps({
           </div>
           <div class="topbar__profile__dropdown__content">
             <ul>
-              <router-link to="/profile">
+              <router-link
+                :to="{
+                  path: `/profile/${store.userId}`,
+                }"
+              >
                 <li>
                   <font-awesome-icon icon="fa-solid fa-user" />
                   <span>Profile</span>
