@@ -36,7 +36,7 @@
       </div>
       <div class="mainCard__body">
         <div
-          class="card workspace-card"
+          class="card card--fixed-height workspace-card"
           v-for="workspace in workspaces.slice(0, 4) || []"
           :key="workspace.id"
         >
@@ -164,7 +164,7 @@ export default {
   background-color: #fff;
   border-radius: 6px;
   margin: 10px;
-  border: 2px solid #e3e2e7;
+  border: 1px solid #e3e2e7;
 }
 
 .statistics__card__header {
