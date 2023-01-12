@@ -64,9 +64,11 @@
       <template #body>
         <div class="modal-body">
           <label>Education name</label>
-          <input type="text" placeholder="Education name" />
-          <label>Location</label>
-          <input type="text" placeholder="Location" />
+        <select id="test123" v-model="choseneducation" v-for="education in alleducations" :key="education">
+          <option v-for="item in education" >
+          {{ item.school }}
+          </option>
+        </select>
         </div>
       </template>
     </modal>
@@ -94,10 +96,19 @@ export default {
       educations: [],
       specializations: [],
       showModal: false,
+      alleducations: [],
+      test123:{},
     };
   },
   async mounted() {
     await this.getUserDetails();
+    await axios.get("http://20.126.206.207/education/geteducations",           {
+            headers: {
+              Authorization: `Bearer ${store.token}`,
+            },
+          }).then((res) => {
+            this.alleducations = res.data;
+          });
   },
   methods: {
     getUserId() {
@@ -109,6 +120,11 @@ export default {
         return true;
       }
       return false;
+    },
+    async save(){
+      console.log(this.choseneducation)
+      console.log(this.test123)
+      console.log('save')
     },
     async getUserDetails() {
       await axios
