@@ -344,6 +344,7 @@ export default {
       );
       console.log(test.data);
       this.workspace = test.data;
+      console.log(this.workspace.files);
     },
     async saveRoom() {
       const config = {

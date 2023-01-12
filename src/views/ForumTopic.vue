@@ -9,7 +9,9 @@
       <div class="topicBody">
         <div class="left">
           <div class="profilePicture">
-            <img src="https://i.imgur.com/0X0X0X0.png" />
+            <img
+              src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+            />
           </div>
           <p>{{ topic.userName }}</p>
         </div>
@@ -28,7 +30,9 @@
           <div class="commentBody">
             <div class="left">
               <div class="profilePicture">
-                <img src="https://i.imgur.com/0X0X0X0.png" />
+                <img
+                  src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                />
               </div>
               <p>{{ comment.userName }}</p>
             </div>
@@ -70,8 +74,8 @@ export default {
     Sidebar,
     Modal,
   },
-  setup(){
-    return {store,}
+  setup() {
+    return { store };
   },
   data() {
     return {

@@ -15,12 +15,7 @@
               params: { workspace: workspace.id },
             }"
           >
-            <img
-              :src="
-                'https://via.placeholder.com/200x300?text=' + workspace.name
-              "
-              alt="profile picture"
-            />
+            <img :src="workspace.imageFile" alt="profile picture" />
           </router-link>
         </div>
       </div>
