@@ -64,11 +64,16 @@
       <template #body>
         <div class="modal-body">
           <label>Education name</label>
-        <select id="test123" v-model="choseneducation" v-for="education in alleducations" :key="education">
-          <option v-for="item in education" >
-          {{ item.school }}
-          </option>
-        </select>
+          <!-- select with options of allEducations, where the chosen education is stored -->
+          <select v-model="chosenEducation">
+            <option
+              v-for="education in allEducations"
+              :key="education.id"
+              :value="education"
+            >
+              {{ education.name }}
+            </option>
+          </select>
         </div>
       </template>
     </modal>
@@ -96,19 +101,21 @@ export default {
       educations: [],
       specializations: [],
       showModal: false,
-      alleducations: [],
-      test123:{},
+      allEducations: [],
+      chosenEducation: {},
     };
   },
   async mounted() {
     await this.getUserDetails();
-    await axios.get("http://20.126.206.207/education/geteducations",           {
-            headers: {
-              Authorization: `Bearer ${store.token}`,
-            },
-          }).then((res) => {
-            this.alleducations = res.data;
-          });
+    await axios
+      .get('http://20.126.206.207/education/geteducations', {
+        headers: {
+          Authorization: `Bearer ${store.token}`,
+        },
+      })
+      .then((res) => {
+        this.allEducations = res.data.collection;
+      });
   },
   methods: {
     getUserId() {
@@ -121,10 +128,8 @@ export default {
       }
       return false;
     },
-    async save(){
-      console.log(this.choseneducation)
-      console.log(this.test123)
-      console.log('save')
+    async save() {
+      console.log(this.chosenEducation.id);
     },
     async getUserDetails() {
       await axios
