@@ -37,40 +37,16 @@
           <th>Likes</th>
           <th>Date</th>
         </tr>
-        <tr>
-          <td>Topic 1</td>
-          <td>Category 1</td>
-          <td>10</td>
-          <td>10</td>
-          <td>11-01-2023</td>
-        </tr>
-        <tr>
-          <td>Topic 2</td>
-          <td>Category 2</td>
-          <td>12</td>
-          <td>10</td>
-          <td>11-01-2023</td>
-        </tr>
-        <tr>
-          <td>Topic 3</td>
-          <td>Category 3</td>
-          <td>14</td>
-          <td>10</td>
-          <td>11-01-2023</td>
-        </tr>
-        <tr>
-          <td>Topic 4</td>
-          <td>Category 4</td>
-          <td>21</td>
-          <td>10</td>
-          <td>11-01-2023</td>
-        </tr>
-        <tr>
-          <td>Topic 5</td>
-          <td>Category 5</td>
-          <td>2</td>
-          <td>10</td>
-          <td>11-01-2023</td>
+        <tr
+          v-for="topic in topics"
+          :key="topic.id"
+          @click="$router.push(`/topic/${topic.id}`)"
+        >
+          <td>{{ topic.title }}</td>
+          <td>Uncategorised</td>
+          <td>{{ topic.comments.length }}</td>
+          <td>69</td>
+          <td>{{ randomDate() }}</td>
         </tr>
       </table>
     </div>
@@ -106,6 +82,13 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+    },
+    randomDate() {
+      const start = new Date(2020, 0, 1);
+      const end = new Date();
+      return new Date(
+        start.getTime() + Math.random() * (end.getTime() - start.getTime())
+      ).toDateString();
     },
   },
 };
