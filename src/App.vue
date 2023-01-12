@@ -52,6 +52,9 @@ export default {
               params: { userId: store.userId },
             });
           }
+          else{
+            this.store.username = response.data.username;
+          }
         });
     },
   },

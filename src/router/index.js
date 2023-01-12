@@ -88,6 +88,13 @@ export function createRouter(app) {
         props: true,
         beforeEnter: authGuard,
       },
+      {
+        path: '/topic/:id',
+        name: 'Topic',
+        component: () => import('../views/ForumTopic.vue'),
+        props: true,
+        beforeEnter: authGuard,
+      },
     ],
     history: createWebHistory(),
   });

@@ -42,7 +42,7 @@
               <p>{{ education.location }}</p>
             </div>
           </div>
-          <p class="newEducation">+</p>
+          <p class="newEducation" @click="showModal = true">+</p>
         </div>
         <h1>Specializations</h1>
         <div class="educations">
@@ -59,31 +59,15 @@
   <Teleport to="body">
     <modal :show="showModal" @close="showModal = false" @save="save">
       <template #header>
-        <h3>Create new room</h3>
+        <h3>Add education to your profile</h3>
       </template>
       <template #body>
-        <form>
-          <div class="form__group">
-            <label for="roomName">Room name</label>
-            <input type="text" id="roomName" />
-          </div>
-          <div class="form__group">
-            <label for="userName">Invite user</label>
-            <select id="userName" v-model="selected">
-              <option
-                v-for="user in users || []"
-                :key="user.Values.b.Properties.Id"
-                :value="user.Values.b.Properties.Id"
-              >
-                {{ user.Values.b.Properties.Username }}
-              </option>
-            </select>
-          </div>
-          <div class="form__group">
-            <label for="date">Date and time</label>
-            <input v-model="inviteDate" type="datetime-local" />
-          </div>
-        </form>
+        <div class="modal-body">
+          <label>Education name</label>
+          <input type="text" placeholder="Education name" />
+          <label>Location</label>
+          <input type="text" placeholder="Location" />
+        </div>
       </template>
     </modal>
   </Teleport>
@@ -95,17 +79,21 @@ import Topbar from '../components/Topbar.vue';
 import { useAuth0 } from '@auth0/auth0-vue';
 import { store } from '../store.js';
 import axios from 'axios';
+import Modal from '../components/Modal.vue';
+
 export default {
   name: 'Profile',
   components: {
     Sidebar,
     Topbar,
+    Modal,
   },
   data() {
     return {
       user: {},
       educations: [],
       specializations: [],
+      showModal: false,
     };
   },
   async mounted() {
@@ -115,12 +103,12 @@ export default {
     getUserId() {
       console.log(this.$route.params.id);
     },
-    isOwnProfile(){
+    isOwnProfile() {
       console.log('test');
-      if(store.userId == this.$route.params.id){
-        return true
+      if (store.userId == this.$route.params.id) {
+        return true;
       }
-      return false
+      return false;
     },
     async getUserDetails() {
       await axios
@@ -196,10 +184,11 @@ export default {
           }
         )
         .then((res) => {
-          console.log(res);
+          this.$router.push(`/`);
+          alert('Changes saved!');
         })
         .catch((err) => {
-          console.log(err);
+          alert('Something went wrong, please try again later');
         });
     },
     changePassword() {
