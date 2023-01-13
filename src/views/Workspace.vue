@@ -326,7 +326,7 @@ export default {
       users: [],
       selected: '',
       roomName:'',
-      inviteDate: Date.now(),
+      inviteDate: new Date().toJSON() ,
     };
   },
   methods: {
@@ -358,7 +358,9 @@ export default {
       console.log(body);
       var request = await axios
         .post('http://20.126.206.207/room/createroom', body, config)
-        .then(() => {})
+        .then(() => {
+          this.showModal = false;
+        })
         .catch(() => {
           console.error('Error creating room');
           this.alert = 'Error';
