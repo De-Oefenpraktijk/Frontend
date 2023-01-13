@@ -11,7 +11,7 @@ defineProps({
 
 <template>
   <div class="topbar">
-    <div>
+    <div class="title">
       <h1>{{ title }}</h1>
     </div>
     <div>
@@ -57,19 +57,29 @@ defineProps({
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 20px;
 }
 
-img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  margin-right: 10px;
+.topbar .title h1 {
+  font-size: 2rem;
+  font-weight: 700;
 }
 
 .topbar__profile {
   display: flex;
   align-items: center;
-  margin-right: 50px;
+  background: white;
+  border-radius: 6px;
+  border: 1px solid #e3e2e7;
+  position: relative;
+  margin-right: 10px;
+}
+
+.topbar__profile img {
+  width: 45px;
+  height: 45px;
+  margin: 5px 10px 5px 0;
+  border-radius: 6px;
 }
 
 .topbar__profile__dropdown__button {
@@ -78,10 +88,7 @@ img {
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
-}
-
-.topbar__profile__dropdown__button:hover {
-  background-color: #eee;
+  font-size: 14px;
 }
 
 .topbar__profile__dropdown__button span {
@@ -91,9 +98,13 @@ img {
 .topbar__profile__dropdown__content {
   display: none;
   position: absolute;
-  background-color: #f9f9f9;
+  background-color: #ffffff;
   min-width: 160px;
-  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  border-radius: 6px;
+  width: 100%;
+  border: 2px solid #e2e1e7;
+  box-shadow: 0 8px 26px 0 rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
 
@@ -127,7 +138,7 @@ img {
   cursor: pointer;
 }
 
-.topbar__profile__dropdown:hover .topbar__profile__dropdown__content {
+.topbar__profile:hover .topbar__profile__dropdown__content {
   display: block;
 }
 

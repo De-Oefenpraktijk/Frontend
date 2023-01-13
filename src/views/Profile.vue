@@ -2,118 +2,78 @@
   <Sidebar />
   <div class="main">
     <Topbar :title="Profile" />
+
     <div class="profile">
-      <div class="left">
+      <div class="mainCard left-card">
+        <div class="mainCard__header">
+          <span>{{ user.firstName + '\'s profile'}}</span>
+        </div>
         <div class="profile_image">
-          <img
-            src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-            alt="profile_image"
-          />
+          <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+            alt="profile_image" />
         </div>
         <div class="personal_details">
-          <label>First Name</label>
-          <input
-            type="text"
-            placeholder="First Name"
-            v-model="user.firstName"
-            v-if="isOwnProfile()"
-          />
-          <input
-            type="text"
-            placeholder="First Name"
-            v-model="user.firstName"
-            readonly
-            v-else
-          />
-          <label>Last Name</label>
-          <input
-            type="text"
-            placeholder="Last Name"
-            v-model="user.lastName"
-            v-if="isOwnProfile()"
-          />
-          <input
-            type="text"
-            placeholder="Last Name"
-            v-model="user.lastName"
-            readonly
-            v-else
-          />
-          <label>Email</label>
-          <input
-            type="text"
-            placeholder="Email"
-            v-model="user.emailAddress"
-            v-if="isOwnProfile()"
-          />
-          <input
-            type="text"
-            placeholder="Email"
-            v-model="user.emailAddress"
-            readonly
-            v-else
-          />
-          <label>Residence place</label>
-          <input
-            type="text"
-            placeholder="Residence"
-            v-model="user.residencePlace"
-            v-if="isOwnProfile()"
-          />
-          <input
-            type="text"
-            placeholder="Residence"
-            v-model="user.residencePlace"
-            readonly
-            v-else
-          />
+          <div>
+            <label>First Name</label>
+            <input class="input-default" type="text" placeholder="First Name" v-model="user.firstName" v-if="isOwnProfile()" />
+            <input class="input-default" type="text" placeholder="First Name" v-model="user.firstName" readonly v-else />
+          </div>
+          <div>
+            <label>Last Name</label>
+            <input class="input-default" type="text" placeholder="Last Name" v-model="user.lastName" v-if="isOwnProfile()" />
+            <input class="input-default" type="text" placeholder="Last Name" v-model="user.lastName" readonly v-else />
+          </div>
+          <div>
+            <label>Email</label>
+            <input class="input-default" type="text" placeholder="Email" v-model="user.emailAddress" v-if="isOwnProfile()" />
+            <input class="input-default" type="text" placeholder="Email" v-model="user.emailAddress" readonly v-else />
+          </div>
+          <div>
+            <label>Residence place</label>
+            <input class="input-default" type="text" placeholder="Residence" v-model="user.residencePlace" v-if="isOwnProfile()" />
+            <input class="input-default" type="text" placeholder="Residence" v-model="user.residencePlace" readonly v-else />
+          </div>
           <div class="buttons" v-if="isOwnProfile()">
             <button @click="saveChanges">Save changes</button>
             <button @click="changePassword">Change password</button>
           </div>
         </div>
       </div>
-      <div class="right">
-        <h1>Educations</h1>
-        <div class="educations">
-          <div v-for="education in educations" :key="education">
-            <div
-              class="education"
-              style="cursor: no-drop"
-              title="Remove education"
-            >
-              <p>{{ education.name }} -</p>
-              <p>{{ education.location }}</p>
+      <div class="right-card">
+        <div class="mainCard">
+          <div class="mainCard__header">
+            <div class="header-action">
+              <span>Educations</span>
+              <div class="addNew btn" v-if="isOwnProfile()" @click="showModal = true" style="cursor: pointer">Add</div>
             </div>
           </div>
-          <p
-            class="newEducation"
-            v-if="isOwnProfile()"
-            @click="showModal = true"
-            style="cursor: pointer"
-          >
-            +
-          </p>
+          <div class="educations">
+            <div v-for="education in educations" :key="education">
+              <div class="education" style="cursor: no-drop" title="Remove education">
+                <p>{{ education.name }} -</p>
+                <p>{{ education.location }}</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <h1>Specializations</h1>
-        <div class="educations">
-          <div v-for="specialization in specializations" :key="specialization">
-            <div
-              class="education"
-              style="cursor: no-drop"
-              title="Remove specialization"
-            >
-              <p>{{ specialization.name }}</p>
+        <div class="mainCard">
+          <div class="mainCard__header">
+            <div class="header-action">
+              <span>Specializations</span> 
+              <div class="addNew btn" v-if="isOwnProfile()" @click="showModalSpecialization = true"
+                style="cursor: pointer">
+                Add
+              </div>
             </div>
           </div>
-          <p
-            class="newEducation"
-            v-if="isOwnProfile()"
-            @click="showModalSpecialization = true"
-            style="cursor: pointer"
-          >
-            +
-          </p>
+          <div class="educations">
+            <div v-for="specialization in specializations" :key="specialization">
+              <div class="education" style="cursor: no-drop" title="Remove specialization">
+                <p>{{ specialization.name }}</p>
+              </div>
+            </div>
+          
+          </div>
         </div>
       </div>
     </div>
@@ -128,11 +88,7 @@
           <label>Education name</label>
           <!-- select with options of allEducations, where the chosen education is stored -->
           <select v-model="chosenEducation">
-            <option
-              v-for="education in allEducations"
-              :key="education.id"
-              :value="education"
-            >
+            <option v-for="education in allEducations" :key="education.id" :value="education">
               {{ education.name }} || {{ education.school }}
             </option>
           </select>
@@ -141,11 +97,7 @@
     </modal>
   </Teleport>
   <Teleport to="body">
-    <modal
-      :show="showModalSpecialization"
-      @close="showModalSpecialization = false"
-      @save="saveSpecialization"
-    >
+    <modal :show="showModalSpecialization" @close="showModalSpecialization = false" @save="saveSpecialization">
       <template #header>
         <h3>Add education to your profile</h3>
       </template>
@@ -153,11 +105,7 @@
         <div class="modal-body">
           <label>Specialization name</label>
           <select v-model="chosenSpecialization">
-            <option
-              v-for="specialization in allSpecializations"
-              :key="specialization.id"
-              :value="specialization"
-            >
+            <option v-for="specialization in allSpecializations" :key="specialization.id" :value="specialization">
               {{ specialization.name }}
             </option>
           </select>
@@ -400,19 +348,17 @@ export default {
 <style scoped>
 .profile {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin-top: 50px;
+
 }
 
-.left {
-  width: 50%;
-  height: 100%;
-  background-color: #c8c8c8;
-  border-radius: 10px;
-  padding: 20px;
+.left-card {
+  flex: 0 0 50%;
 }
+
+.right-card {
+  flex: 0 0 50%;
+}
+
 
 .profile_image {
   display: flex;
@@ -432,15 +378,7 @@ export default {
   align-items: center;
   justify-content: center;
   margin-top: 20px;
-}
-
-.personal_details input {
-  width: 300px;
-  height: 40px;
-  border-radius: 10px;
-  border: none;
-  margin: 10px;
-  padding: 10px;
+  margin-bottom: 20px;
 }
 
 .personal_details .buttons {
@@ -482,34 +420,35 @@ export default {
 .educations,
 .specializations {
   display: flex;
-  flex-direction: row;
   margin-top: 20px;
   background-color: #ffffff;
   border-radius: 10px;
-  height: 180px;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
 }
 
 .educations .education {
+  margin-left: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: linear-gradient(0, #181818 0%, #424242 100%);
+  color: #fff;
   display: flex;
   align-items: center;
-  justify-content: center;
-  background-color: #d1d1d1;
-  border-radius: 10px;
-  margin: 10px;
-  height: 40px;
-  padding: 0 10px;
 }
 
-.educations .newEducation {
+.addNew {
+  margin-left: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 6px;
+  background: #000;
+  color: #fff;
   display: flex;
   align-items: center;
-  justify-content: center;
-  background-color: #d1d1d1;
-  border-radius: 10px;
-  margin: 10px;
-  width: 40px;
-  height: 40px;
-  font-size: 30px;
-  color: #5e5e5e;
 }
 </style>

@@ -2,10 +2,9 @@
   <Sidebar />
   <div class="main">
     <Topbar title="Workspaces" />
-    <div class="mainCard">
-      <div class="mainCard__body">
+    <div class="mainCard__body">
         <div
-          class="card"
+          class="card workspace-card"
           v-for="workspace in workspaces || []"
           :key="workspace.id"
         >
@@ -15,11 +14,15 @@
               params: { workspace: workspace.id },
             }"
           >
-            <img :src="workspace.imageFile" alt="profile picture" />
+            <div class="workspace-card-content-wrapper">
+              <div class="workspace-card-content">
+              <span class="workspace-card-content__title">{{ workspace.name }}</span>
+              </div>
+            </div>
+            <img :src="workspace.imageFile" />
           </router-link>
         </div>
       </div>
-    </div>
   </div>
 </template>
 

@@ -2,54 +2,40 @@
   <Sidebar />
   <div class="main">
     <Topbar title="Forum" />
-    <div class="sub-topbar">
-      <div class="search">
-        <input type="text" placeholder="Search topic" />
+
+    <div class="mainCard">
+      <div class="content-padding">
+      <div class="btn btn--blue" style="margin-bottom:20px;" @click="showModal = true">New Topic</div>
+        <div class="search-actions">
+        <input class="input-default" type="text" placeholder="Search topic" />
+        <div class="btn btn--light btn--fake">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-filter"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+          Categories
+        </div>
+        <div class="btn btn--light btn--fake">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-filter"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+          Tags
+        </div>
       </div>
-      <div class="new">
-        <button @click="showModal = true">New Topic</button>
-      </div>
-    </div>
-    <div class="filters">
-      <select id="category">
-        <option value="all">All categories</option>
-        <option value="category1">Category 1</option>
-        <option value="category2">Category 2</option>
-        <option value="category3">Category 3</option>
-      </select>
-      <select id="tag">
-        <option value="all">All tags</option>
-        <option value="tag1">Tag 1</option>
-        <option value="tag2">Tag 2</option>
-        <option value="tag3">Tag 3</option>
-      </select>
-      <div class="sortOn">
-        <a>Latest</a>
-        <a>Most liked</a>
       </div>
     </div>
+
     <div class="topics">
-      <table>
-        <tr>
-          <th>Topic</th>
-          <th>Category</th>
-          <th>Replies</th>
-          <th>Likes</th>
-          <th>Date</th>
-        </tr>
-        <tr
-          v-for="topic in topics"
-          :key="topic.id"
-          @click="$router.push(`/topic/${topic.id}`)"
-        >
-          <td>{{ topic.title }}</td>
-          <td>Uncategorised</td>
-          <td>{{ topic.comments.length }}</td>
-          <td>69</td>
-          <td>{{ randomDate() }}</td>
-        </tr>
-      </table>
-    </div>
+          <div class="topic" v-for="topic in topics" :key="topic.id" @click="$router.push(`/topic/${topic.id}`)">
+            <div class="flex">
+            <span class="topic__title">{{ topic.title }}</span>
+            <span class="topic__category">Uncategorised</span>
+            </div>
+            <span class="topic__username">posted by <span>@{{ topic.userName }}</span></span>
+            <div class="topic__actions">
+              
+              <div class="btn btn--light"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+              </svg>{{ topic.comments.length }}</div>
+            </div>
+          </div>
+      </div>
+
   </div>
   <Teleport to="body">
     <modal :show="showModal" @close="showModal = false" @save="postTopic">
@@ -115,6 +101,7 @@ export default {
         .get('http://20.126.194.16/api/v1/ForumPost')
         .then((response) => {
           this.topics = response.data;
+          console.log(this.topics);
         })
         .catch((error) => {
           console.log(error);
@@ -156,6 +143,14 @@ export default {
   margin-right: 20px;
 }
 
+.forum-search {
+  padding: 20px 12px;
+}
+
+.search-actions {
+  display: flex;
+}
+
 .search input {
   width: 300px;
   height: 40px;
@@ -185,6 +180,38 @@ export default {
   background-color: #454545;
 }
 
+.topics .topic {
+  padding: 14px 8px;
+  border-radius: 6px;
+  background-color: #fff;
+  margin-bottom: 20px;
+  border: 1px solid #e3e2e7;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.topic .topic__username {
+  font-size: 12px;
+  color: rgb(37, 131, 255);
+}
+
+.topic .topic__title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.topic .topic__category {
+  font-size: 10px;
+  padding: 8px 5px;
+  line-height: 10px;
+  margin: auto 0;
+  background-color: #000;
+  border-radius: 6px;
+  color: #fff;
+  margin-left: 6px;
+}
+
 .filters {
   display: flex;
   justify-content: flex-start;
@@ -212,7 +239,7 @@ export default {
 }
 
 .topics {
-  padding: 0 20px;
+  padding: 0 12px;
 }
 
 .topics table {
@@ -244,6 +271,7 @@ export default {
 .topics table tr:first-child:hover {
   cursor: auto;
 }
+
 .topics table tr:nth-child(even) {
   background-color: #c5c5c5;
 }

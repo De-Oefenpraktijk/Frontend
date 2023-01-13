@@ -23,8 +23,8 @@
           </svg>
           <p>Create new room</p>
         </div>
-        <div class="card" v-for="room in workspace.rooms || []" :key="room.id">
-          <router-link :to="{ name: 'room', query: { id: room.id } }">
+        <div class="card" v-for="room in workspace.rooms || []" :key="room.roomId">
+          <router-link :to="{ name: 'room', query: { id: room.roomId } }">
             <svg
               version="1.1"
               id="Layer_1"
@@ -44,7 +44,7 @@
                 />
               </g>
             </svg>
-            <p>{{ Workspace.name }}</p>
+            <p>{{ room.roomName }}</p>
           </router-link>
         </div>
       </div>
@@ -278,7 +278,7 @@
         <form>
           <div class="form__group">
             <label for="roomName">Room name</label>
-            <input type="text" id="roomName" />
+            <input v-model="roomName" type="text" id="roomName" />
           </div>
           <div class="form__group">
             <label for="userName">Invite user</label>
@@ -325,26 +325,23 @@ export default {
       workspace: {},
       users: [],
       selected: '',
-      inviteDate: Date.now(),
+      roomName:'',
+      inviteDate: new Date().toJSON() ,
     };
   },
   methods: {
     async getWorkspaceData() {
-      console.log(this.user);
       const config = {
         headers: { Authorization: `Bearer ${store.token}` },
       };
-      var idlist = this.user.sub.split('auth0|');
       var test = await axios.get(
         'http://20.126.206.207/room/' +
           this.$route.params.workspace +
           '/' +
-          idlist[1],
+          store.userId,
         config
       );
-      console.log(test.data);
       this.workspace = test.data;
-      console.log(this.workspace.files);
     },
     async saveRoom() {
       const config = {
@@ -352,15 +349,18 @@ export default {
       };
       const userId = this.user.sub.split('|')[1];
       var body = {
-        hostId: userId,
-        invitedIds: [this.selected.split('|')[1]],
+        hostId: store.userId,
+        invitedIds: [this.selected],
         scheduledDate: this.inviteDate,
         workspaceId: this.workspace.id,
+        roomName: this.roomName
       };
       console.log(body);
       var request = await axios
         .post('http://20.126.206.207/room/createroom', body, config)
-        .then(() => {})
+        .then(() => {
+          this.showModal = false;
+        })
         .catch(() => {
           console.error('Error creating room');
           this.alert = 'Error';
@@ -372,7 +372,7 @@ export default {
         headers: { Authorization: `Bearer ${store.token}` },
       };
       var test = await axios.get(
-        'http://20.126.206.207/person/getfollowingusers?person=' + userId,
+        'http://20.126.206.207/person/getfollowingusers?person=' + store.username,
         config
       );
 
