@@ -6,7 +6,7 @@
     <div class="profile">
       <div class="mainCard left-card">
         <div class="mainCard__header">
-          <span>{{ user.firstName + '\'s profile'}}</span>
+            <span>{{ user.firstName + '\'s profile'}}</span>
         </div>
         <div class="profile_image">
           <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
@@ -37,6 +37,7 @@
             <button @click="saveChanges">Save changes</button>
             <button @click="changePassword">Change password</button>
           </div>
+          <div class="btn btn--blue follow-button" v-if="isOwnProfile() == false" @click="sendFollowRequest()" style="cursor: pointer">Make connection</div>
         </div>
       </div>
       <div class="right-card">
@@ -238,6 +239,29 @@ export default {
         });
       this.showModalSpecialization = false;
     },
+    async sendFollowRequest() {
+      console.log(store.userId);
+      console.log(this.user.id);
+      await axios
+        .post(
+          `http://20.126.206.207/person/followuser`,
+          {
+            person1: store.userId,
+            person2: this.user.id,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${store.token}`,
+            },
+          }
+        )
+        .then((res) => {
+          console.log('Successfull saved!');
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     async getUserDetails() {
       await axios
         .get(
@@ -402,6 +426,11 @@ export default {
   background-color: #5e5e5e;
   color: #ffffff;
   cursor: pointer;
+}
+
+.follow-button {
+  margin-top: 20px;
+  padding: 20px;
 }
 
 .right {
