@@ -1,0 +1,152 @@
+<script setup>
+import { useAuth0 } from '@auth0/auth0-vue';
+import { store } from '../store.js';
+
+const { logout, user } = useAuth0();
+
+defineProps({
+  title: String,
+});
+</script>
+
+<template>
+  <div class="topbar">
+    <div class="title">
+      <h1>{{ title }}</h1>
+    </div>
+    <div>
+      <div class="topbar__profile">
+        <div class="topbar__profile__dropdown">
+          <div class="topbar__profile__dropdown__button">
+            <span>{{ user.name }}</span>
+            <font-awesome-icon icon="fa-solid fa-chevron-down" />
+          </div>
+          <div class="topbar__profile__dropdown__content">
+            <ul>
+              <router-link
+                :to="{
+                  path: `/profile/${store.userId}`,
+                }"
+              >
+                <li>
+                  <font-awesome-icon icon="fa-solid fa-user" />
+                  <span>Profile</span>
+                </li>
+              </router-link>
+              <li @click="logout">
+                <font-awesome-icon
+                  icon="fa-solid fa-arrow-right-from-bracket"
+                />
+                <span>Logout</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <img
+          src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+          alt="profile picture"
+        />
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.topbar {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.topbar .title h1 {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.topbar__profile {
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 6px;
+  border: 1px solid #e3e2e7;
+  position: relative;
+  margin-right: 10px;
+}
+
+.topbar__profile img {
+  width: 45px;
+  height: 45px;
+  margin: 5px 10px 5px 0;
+  border-radius: 6px;
+}
+
+.topbar__profile__dropdown__button {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.topbar__profile__dropdown__button span {
+  margin-right: 10px;
+}
+
+.topbar__profile__dropdown__content {
+  display: none;
+  position: absolute;
+  background-color: #ffffff;
+  min-width: 160px;
+  font-size: 14px;
+  border-radius: 6px;
+  width: 100%;
+  border: 2px solid #e2e1e7;
+  box-shadow: 0 8px 26px 0 rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.topbar__profile__dropdown__content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.topbar__profile__dropdown__content ul li {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #a4a6b3;
+  padding: 10px 20px;
+  height: 2rem;
+  color: #a4a6b3;
+}
+
+.topbar__profile__dropdown__content ul li svg {
+  margin-right: 15px;
+  width: 20px;
+}
+
+.topbar__profile__dropdown__content ul a {
+  text-decoration: none;
+}
+
+.topbar__profile__dropdown__content ul li:hover {
+  background-color: #eee;
+  cursor: pointer;
+}
+
+.topbar__profile:hover .topbar__profile__dropdown__content {
+  display: block;
+}
+
+.topbar__profile__dropdown:hover
+  .topbar__profile__dropdown__content
+  ul
+  li
+  span {
+  color: #000;
+}
+</style>
