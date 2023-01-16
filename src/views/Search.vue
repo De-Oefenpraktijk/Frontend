@@ -70,7 +70,8 @@
         <span>Suggested users</span>
       </div>
       <div class="persons">
-        <div class="person" v-for="user in (frozenList = sortedList)" @click="$router.push({ path: `/profile/${user.Id}` })">
+        <div class="person" v-for="(user, index) in (frozenList = sortedList)" @click="$router.push({ path: `/profile/${user.Id}` })" v-show="index < 6 ">
+
           <div class="person-header">
           <div class="person-background"></div>
             <img class="profile-picture"
@@ -517,7 +518,8 @@ export default {
 .persons {
   display: flex;
   padding: 0 12px;
-  gap: 10px
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .person {
@@ -527,8 +529,9 @@ export default {
   margin-bottom: 20px;
   border-radius: 6px;
   border: 1px solid #e3e2e7;
-  flex: 0 0 20%;
+  flex: 0 0 calc(20% - 10px);
   width: 100%;
+  box-sizing: border-box;;
   cursor: pointer;
   margin: 10px 0;
 }
