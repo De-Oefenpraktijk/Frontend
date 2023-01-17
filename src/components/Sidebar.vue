@@ -26,10 +26,10 @@
             <span>Workspaces</span>
           </li>
         </router-link>
-        <router-link to="/messages">
-          <li :class="{'router-link-active': $route.path === '/messages'}">
-            <font-awesome-icon icon="fa-solid fa-message" />
-            <span>Messages</span>
+        <router-link to="/social">
+          <li :class="{'router-link-active': $route.path === '/social'}">
+            <font-awesome-icon icon="fa-solid fa-users" />
+            <span>Social</span>
           </li>
         </router-link>
         <router-link to="/calendar">

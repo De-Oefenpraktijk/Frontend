@@ -240,14 +240,15 @@ export default {
       this.showModalSpecialization = false;
     },
     async sendFollowRequest() {
-      console.log(store.userId);
-      console.log(this.user.id);
+      console.log(store.username);
+      console.log(this.user.username);
+      // send post request to follow user and include url parameters ?person1=store.username&person2=this.user.username
       await axios
         .post(
-          `http://20.126.206.207/person/followuser`,
+          `http://20.126.206.207/person/followuser?person1=${store.username}&person2=${this.user.username}`,
           {
-            person1: store.userId,
-            person2: this.user.id,
+            person1: store.username,
+            person2: this.user.username,
           },
           {
             headers: {

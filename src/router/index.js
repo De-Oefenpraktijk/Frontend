@@ -40,9 +40,9 @@ export function createRouter(app) {
         beforeEnter: authGuard,
       },
       {
-        path: '/messages',
-        name: 'messages',
-        component: () => import('../views/Messages.vue'),
+        path: '/social',
+        name: 'social',
+        component: () => import('../views/Social.vue'),
         beforeEnter: authGuard,
       },
       {
