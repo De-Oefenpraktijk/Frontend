@@ -1,0 +1,50 @@
+.card {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  max-width: 300px;
+}
+
+.card svg {
+  height: 50%;
+  width: 50%;
+}
+
+.card p,
+.card a {
+  text-align: center;
+  text-decoration: none;
+  color: #000;
+}
+
+.form__group {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+}
+
+.form__group label {
+  margin: 5px;
+}
+
+.form__group input {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.form__group input:focus {
+  outline: none;
+  border: 1px solid #000;
+}
+
+select {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+select:focus {
+  outline: none;
+  border: 1px solid #000;
+}

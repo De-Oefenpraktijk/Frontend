@@ -1,0 +1,110 @@
+.profile {
+  display: flex;
+
+}
+
+.left-card {
+  flex: 0 0 50%;
+}
+
+.right-card {
+  flex: 0 0 50%;
+}
+
+
+.profile_image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile_image img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.personal_details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.personal_details .buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.personal_details button {
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  margin: 10px;
+  padding: 10px;
+  background-color: #f5f5f5;
+  color: #5e5e5e;
+}
+
+.personal_details button:hover {
+  background-color: #5e5e5e;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.follow-button {
+  margin-top: 20px;
+  padding: 20px;
+}
+
+.right {
+  width: 50%;
+  height: 100%;
+  background-color: #c8c8c8;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px;
+}
+
+.right h1 {
+  font-size: 20px;
+}
+
+.educations,
+.specializations {
+  display: flex;
+  margin-top: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.educations .education {
+  margin-left: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: linear-gradient(0, #181818 0%, #424242 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+}
+
+.addNew {
+  margin-left: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 6px;
+  background: #000;
+  color: #fff;
+  display: flex;
+  align-items: center;
+}
