@@ -1,5 +1,5 @@
 import React from "react";
-import Workspace from "../components/Workspaces/Workspace";
+import Workspace from "../../components/Workspaces/Workspace";
 import './Workspaces.css'
 
 export default function WorkspacesOverview() {

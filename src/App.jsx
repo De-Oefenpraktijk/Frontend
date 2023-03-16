@@ -4,8 +4,8 @@ import React from 'react';
 import SideBar from './components/SideBar/SideBar';
 import { Routes, Route } from 'react-router-dom'
 import HomePage from './pages/HomePage'
-import Profile from './pages/Profile';
-import WorkspacesOverview from './pages/WorkspacesOverview';
+import Profile from './pages/Profile/Profile';
+import WorkspacesOverview from './pages/WorkspacesOverview/WorkspacesOverview';
 import TopBar from './components/TopBar/TopBar';
 import AppLayout from './Layout/AppLayout';
 

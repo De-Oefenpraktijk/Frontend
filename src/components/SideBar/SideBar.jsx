@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
-import Profile from "../../pages/Profile";
+import Profile from "../../pages/Profile/Profile";
 
 import './SideBar.css'
 
