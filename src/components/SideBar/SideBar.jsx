@@ -14,64 +14,67 @@ export default function SideBar() {
   return (
     <>
       {/* <Routes> */}
-      <div class="sidebar__menu">
-        <ul>
-          <li >
-            <font-awesome-icon icon="fa-solid fa-chart-pie" />
-            <span>Overview</span>
-          </li>
-          <li >
-            <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
-            <span>Search</span>
-          </li>
-          <li>
-            <Link to='/workspaces'>
+      <div class="sidebar">
 
-              <font-awesome-icon icon="fa-solid fa-people-roof" />
-              <span>Workspaces</span>
-            </Link>
+        <div class="sidebar__menu">
+          <ul>
+            <li >
+              <font-awesome-icon icon="fa-solid fa-chart-pie" />
+              <span>Overview</span>
+            </li>
+            <li >
+              <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
+              <span>Search</span>
+            </li>
+            <li>
+              <Link to='/workspaces'>
 
-          </li>
-          <li >
-            <font-awesome-icon icon="fa-solid fa-users" />
-            <span>Social</span>
-          </li>
-          <li >
-            <font-awesome-icon icon="fa-regular fa-calendar" />
-            <span>Calendar</span>
-          </li>
-          <li >
-            <font-awesome-icon icon="fa-solid fa-book" />
-            <span>Articles</span>
-          </li>
-          <li >
-            <font-awesome-icon icon="fa-solid fa-rectangle-list" />
-            <span>Forum</span>
-          </li>
-        </ul>
+                <font-awesome-icon icon="fa-solid fa-people-roof" />
+                <span>Workspaces</span>
+              </Link>
 
-        <ul>
-          <li>
-            <font-awesome-icon icon="fa-solid fa-gear" />
-            <span>Settings</span>
-          </li>
-          <li>
-            <Link to='/organization'>
-              <span>Organization</span>
-            </Link>
-            <font-awesome-icon icon="fa-solid fa-users" />
-          </li>
+            </li>
+            <li >
+              <font-awesome-icon icon="fa-solid fa-users" />
+              <span>Social</span>
+            </li>
+            <li >
+              <font-awesome-icon icon="fa-regular fa-calendar" />
+              <span>Calendar</span>
+            </li>
+            <li >
+              <font-awesome-icon icon="fa-solid fa-book" />
+              <span>Articles</span>
+            </li>
+            <li >
+              <font-awesome-icon icon="fa-solid fa-rectangle-list" />
+              <span>Forum</span>
+            </li>
+          </ul>
 
-          <li>
-            <Link to='/profile'>
-              <span>Profile</span>
-            </Link>
-            <font-awesome-icon icon="fa-solid fa-users" />
+          <ul>
+            <li>
+              <font-awesome-icon icon="fa-solid fa-gear" />
+              <span>Settings</span>
+            </li>
+            <li>
+              <Link to='/organization'>
+                <span>Organization</span>
+              </Link>
+              <font-awesome-icon icon="fa-solid fa-users" />
+            </li>
+
+            <li>
+              <Link to='/profile'>
+                <span>Profile</span>
+              </Link>
+              <font-awesome-icon icon="fa-solid fa-users" />
 
 
 
-          </li>
-        </ul >
+            </li>
+          </ul >
+        </div >
       </div >
       {/* </Routes> */}
     </>
