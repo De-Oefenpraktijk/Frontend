@@ -2,8 +2,25 @@
 
 import React from "react";
 import "./Workspace.css";
+import { store } from "../../store";
+import axios from 'axios';
+
 
 export default function Workspace() {
+
+    async function getData() {
+        const config = {
+            headers: { Authorization: `Bearer ${store.token}` },
+        };
+        var test = await axios.get(
+            'http://20.126.206.207/workspace/getworkspaces',
+            config
+        );
+        console.log(test.data.collection);
+        this.workspaces = test.data.collection;
+    }
+
+    console.log(getData())
     return (
 
         <div>

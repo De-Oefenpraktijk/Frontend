@@ -60,8 +60,8 @@ export default function SideBar() {
             <li>
               <Link to='/organization'>
                 <span>Organization</span>
+                <font-awesome-icon icon="fa-solid fa-users" />
               </Link>
-              <font-awesome-icon icon="fa-solid fa-users" />
             </li>
 
             <li>

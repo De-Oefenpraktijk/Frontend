@@ -3,18 +3,18 @@ import './TopBar.css'
 
 export default function TopBar() {
     return (
-        <div class="topbar">
-            <div class="title">
+        <div className="topbar">
+            <div className="title">
                 <h1>Title</h1>
             </div>
             <div>
-                <div class="topbar__profile">
-                    <div class="topbar__profile__dropdown">
-                        <div class="topbar__profile__dropdown__button">
+                <div className="topbar__profile">
+                    <div className="topbar__profile__dropdown">
+                        <div className="topbar__profile__dropdown__button">
                             <span>username</span>
                             <font-awesome-icon icon="fa-solid fa-chevron-down" />
                         </div>
-                        <div class="topbar__profile__dropdown__content">
+                        <div className="topbar__profile__dropdown__content">
                             <ul>
 
                                 <li>
