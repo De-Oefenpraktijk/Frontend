@@ -7,20 +7,20 @@ import HomePage from './pages/HomePage'
 import Profile from './pages/Profile';
 import WorkspacesOverview from './pages/WorkspacesOverview';
 import TopBar from './components/TopBar/TopBar';
+import AppLayout from './Layout/AppLayout';
 
 function App() {
   return (
     <div>
-      <TopBar></TopBar>
-      {/* <Routes>
-        <Route path='/' element={<HomePage></HomePage>}>
+
+
+      <Routes>
+        <Route path='/' element={<AppLayout></AppLayout>} >
+          <Route path='/profile' element={<Profile />}></Route>
+          <Route path='/' element={<HomePage />}></Route>
+          <Route path='/workspaces' element={<WorkspacesOverview />} ></Route>
 
         </Route>
-      </Routes> */}
-      <Routes>
-        <Route path='/profile' element={<Profile />}></Route>
-        <Route path='/' element={<HomePage />}></Route>
-        <Route path='/workspaces' element={<WorkspacesOverview />} ></Route>
       </Routes>
 
       <SideBar></SideBar>

@@ -14,6 +14,7 @@ export default function WorkspacesOverview() {
 
                         <div class="workspace-card-content-wrapper">
                             <div class="workspace-card-content">
+                                {/* <h1>Workspace page</h1> */}
                                 <span class="workspace-card-content__title"></span>
                             </div>
                         </div>
