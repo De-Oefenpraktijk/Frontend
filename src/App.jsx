@@ -5,11 +5,13 @@ import SideBar from './components/SideBar/SideBar';
 import { Routes, Route } from 'react-router-dom'
 import HomePage from './pages/HomePage'
 import Profile from './pages/Profile';
-import WorkspacesOverview from './components/Workspaces/WorkspacesOverview';
+import WorkspacesOverview from './pages/WorkspacesOverview';
+import TopBar from './components/TopBar/TopBar';
 
 function App() {
   return (
     <div>
+      <TopBar></TopBar>
       {/* <Routes>
         <Route path='/' element={<HomePage></HomePage>}>
 
