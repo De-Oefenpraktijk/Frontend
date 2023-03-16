@@ -2,7 +2,6 @@
 
 import React from "react";
 import "./Workspace.css";
-import { store } from "../../store";
 import axios from 'axios';
 
 
