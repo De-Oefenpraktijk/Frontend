@@ -55,6 +55,11 @@
     padding: 8px 20px;
     height: 2rem;
   }
+  .sidebar__menu ul li a{
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
   
   .sidebar__menu a {
     text-decoration: none;

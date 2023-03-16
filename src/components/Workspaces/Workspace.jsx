@@ -2,18 +2,34 @@
 
 import React from "react";
 import "./Workspace.css";
+import axios from 'axios';
+
 
 export default function Workspace() {
+
+    // async function getData() {
+    //     const config = {
+    //         headers: { Authorization: `Bearer ${store.token}` },
+    //     };
+    //     var test = await axios.get(
+    //         'http://20.126.206.207/workspace/getworkspaces',
+    //         config
+    //     );
+    //     console.log(test.data.collection);
+    //     this.workspaces = test.data.collection;
+    // }
+
+    // console.log(getData())
     return (
 
         <div>
-            <div class="main">
-                <div class="mainCard">
-                    <div class="mainCard__header">
+            <div className="main">
+                <div className="mainCard">
+                    <div className="mainCard__header">
                         <span>Private rooms</span>
                     </div>
-                    <div class="mainCard__body">
-                        <div class="card">
+                    <div className="mainCard__body">
+                        <div className="card">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 x="0px"
@@ -28,17 +44,17 @@ export default function Workspace() {
                             </svg>
                             <p>Create new room</p>
                         </div>
-                        <div class="card">
+                        <div className="card">
 
                             <svg
                                 version="1.1"
                                 id="Layer_1"
                                 xmlns="http://www.w3.org/2000/svg"
-                                xmlns:xlink="http://www.w3.org/1999/xlink"
+                                xlink="http://www.w3.org/1999/xlink"
                                 x="0px"
                                 y="0px"
                                 viewBox="0 0 512 512"
-                                xml:space="preserve"
+                                xmlSpace="preserve"
                             >
                                 <g id="XMLID_1_">
                                     <path
@@ -52,12 +68,12 @@ export default function Workspace() {
                         </div>
                     </div>
                 </div >
-                <div class="mainCard">
-                    <div class="mainCard__header">
+                <div className="mainCard">
+                    <div className="mainCard__header">
                         <span>Most recent attachments</span>
                     </div>
-                    <div class="mainCard__body">
-                        <div class="card">
+                    <div className="mainCard__body">
+                        <div className="card">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 x="0px"
@@ -80,7 +96,7 @@ export default function Workspace() {
                             </svg>
                             <p>effectiveness_ techniques.xslx</p>
                         </div>
-                        <div class="card">
+                        <div className="card">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 x="0px"
@@ -109,7 +125,7 @@ export default function Workspace() {
                             </svg>
                             <p>evaluation_ of_ effectiveness_ techniques.pptx</p>
                         </div>
-                        <div class="card">
+                        <div className="card">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 x="0px"
@@ -134,7 +150,7 @@ export default function Workspace() {
                             </svg>
                             <p>word_file.docx</p>
                         </div>
-                        <div class="card">
+                        <div className="card">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 x="0px"
@@ -156,12 +172,12 @@ export default function Workspace() {
                         </div>
                     </div>
                 </div>
-                <div class="mainCard">
-                    <div class="mainCard__header">
+                <div className="mainCard">
+                    <div className="mainCard__header">
                         <span>Most recent forms</span>
                     </div>
-                    <div class="mainCard__body">
-                        <div class="card">
+                    <div className="mainCard__body">
+                        <div className="card">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 x="0px"
@@ -186,7 +202,7 @@ export default function Workspace() {
                             </svg>
                             <p>standard_form.docx</p>
                         </div>
-                        <div class="card">
+                        <div className="card">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 x="0px"
@@ -211,7 +227,7 @@ export default function Workspace() {
                             </svg>
                             <p>form2.docx</p>
                         </div>
-                        <div class="card">
+                        <div className="card">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 x="0px"
@@ -236,7 +252,7 @@ export default function Workspace() {
                             </svg>
                             <p>another_form.docx</p>
                         </div>
-                        <div class="card">
+                        <div className="card">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 x="0px"
@@ -266,19 +282,19 @@ export default function Workspace() {
             </div >
             <h3>Create new room</h3>
             <form>
-                <div class="form__group">
-                    <label for="roomName">Room name</label>
+                <div className="form__group">
+                    <label forhtml="roomName">Room name</label>
                     <input v-model="roomName" type="text" id="roomName" />
                 </div>
-                <div class="form__group">
-                    <label for="userName">Invite user</label>
+                <div className="form__group">
+                    <label forhtml="userName">Invite user</label>
                     <select id="userName" v-model="selected">
 
                         usernmae
                     </select>
                 </div>
-                <div class="form__group">
-                    <label for="date">Date and time</label>
+                <div className="form__group">
+                    <label forhtml="date">Date and time</label>
                     <input v-model="inviteDate" type="datetime-local" />
                 </div>
             </form >
