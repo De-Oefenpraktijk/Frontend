@@ -7,6 +7,7 @@ import WorkspacesPage from "./pages/Workspaces/WorkspacesPage";
 import AppLayout from "./Layout/AppLayout";
 import Blank from "./pages/NoContentPage/Blank";
 import Workspace from "./components/Workspaces/Workspace";
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 
 function App() {
   return (
@@ -31,4 +32,6 @@ function App() {
   );
 }
 
-export default App;
+export default withAuthenticationRequired(App, {
+  onRedirecting: () => <p>Loading...</p>,
+});

@@ -1,9 +1,11 @@
 import React from "react";
 import "./TopBar.css";
 import { useLocation } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function TopBar() {
   const location = useLocation();
+  const { user } = useAuth0();
   function title() {
     switch (location.pathname) {
       case "/overview":
@@ -38,7 +40,7 @@ export default function TopBar() {
         <div className="topbar__profile">
           <div className="topbar__profile__dropdown">
             <div className="topbar__profile__dropdown__button">
-              <span>username</span>
+              <span>{user.given_name}</span>
               <font-awesome-icon icon="fa-solid fa-chevron-down" />
             </div>
             <div className="topbar__profile__dropdown__content">
