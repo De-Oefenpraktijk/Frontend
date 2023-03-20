@@ -5,9 +5,9 @@ import TopBar from "../components/TopBar/TopBar";
 
 export default function AppLayout() {
     return (
-        <main>
+        <main className="main">
             <TopBar></TopBar>
-            <SideBar></SideBar>
+            <SideBar/>
             <div>
                 <Outlet />
             </div>
