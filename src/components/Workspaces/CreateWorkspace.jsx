@@ -1,7 +1,5 @@
-import React, { useState } from "react";
-import Button from "@mui/material/Button";
+import React from "react";
 import IconButton from "@mui/material/IconButton";
-import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CreateWorkspaceModal from "./CreateWorkspaceModal";
 
