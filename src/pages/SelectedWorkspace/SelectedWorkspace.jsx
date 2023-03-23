@@ -5,7 +5,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useParams } from "react-router-dom";
 import Button from '@mui/material/Button';
 import Moment from 'moment-timezone';
-import formatDistanceToNow from 'date-fns/formatDistanceToNow'
+import { formatDistanceToNowStrict } from "date-fns";
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -39,12 +39,12 @@ export default function SelectedWorkspace() {
   }, []);
 
   const handleDateDifference = (date) => {
-    // const meetingStart = new Date(date).setUTCHours(-1)
-    // const dateNow = new Date()
-    // const millisecondsLeft = meetingStart - dateNow
-    // let minutes = millisecondsLeft / 3600000 
-    // console.log(meetingStart)
-    return 1
+    const meetingStarts = new Date(Moment.utc(date).toDate())
+    const newHours = meetingStarts.getHours() - 1 // Converts the start of the meeting to UTC. I couldn't find a better fix
+    meetingStarts.setHours(newHours)
+    const result = formatDistanceToNowStrict(Date.parse(meetingStarts), {addSuffix: true})
+
+    return result
   }
 
 
@@ -72,7 +72,7 @@ export default function SelectedWorkspace() {
               <TableCell component="th" scope="row">
                 {room["roomName"]}
               </TableCell>
-              <TableCell align="center">{Moment.utc(room["scheduledDate"]).format('DD-MM-YYYY hh:mm')}</TableCell>
+              <TableCell align="center">{Moment.utc(room["scheduledDate"]).format('DD-MM-YYYY hh:mm A')}</TableCell>
               <TableCell align="center">{handleDateDifference(room["scheduledDate"])}</TableCell>
               <TableCell align="center"><Button variant="outlined">Join meeting</Button></TableCell>
             </TableRow>
