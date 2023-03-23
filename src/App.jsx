@@ -25,7 +25,7 @@ function App() {
         <Route path="/settings" element={<Blank />} />
         <Route path="/organization" element={<Blank />} />
         <Route path="/workspaces" element={<WorkspacesPage />} />
-        <Route path="/workspace/:id" element={<SelectedWorkspace/>} />
+        <Route path="/workspacedevelop/:id" element={<SelectedWorkspace/>} />
         <Route path="/profile" element={<ProfilePage />} />
         {/* Testing */}
         <Route path="/workspace/:workspaceId" element={<Workspace />} />
