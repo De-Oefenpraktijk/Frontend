@@ -9,6 +9,7 @@ import Blank from "./pages/NoContentPage/Blank";
 import Workspace from "./components/Workspaces/Workspace";
 import SelectedWorkspace from "./pages/SelectedWorkspace/SelectedWorkspace";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
+import JoinRoom from "./components/JoinRoom/JoinRoom";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/profile" element={<ProfilePage />} />
         {/* Testing */}
         <Route path="/workspace/:workspaceId" element={<Workspace />} />
+        <Route path="/workspace/join-room" element={<JoinRoom />} />
         <Route path="*" element={<Blank/>}/>
       </Route>
     </Routes>
