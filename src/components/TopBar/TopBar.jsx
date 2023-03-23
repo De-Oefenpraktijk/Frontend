@@ -5,7 +5,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 export default function TopBar() {
   const location = useLocation();
-  const { user } = useAuth0();
+  const { user, logout } = useAuth0();
   function title() {
     switch (location.pathname) {
       case "/overview":
@@ -49,7 +49,7 @@ export default function TopBar() {
                   <font-awesome-icon icon="fa-solid fa-user" />
                   <span>Profile</span>
                 </li>
-                <li>
+                <li onClick={() => logout({logoutParams:{returnTo:window.location.origin}})}>
                   <font-awesome-icon icon="fa-solid fa-arrow-right-from-bracket" />
                   <span>Logout</span>
                 </li>
