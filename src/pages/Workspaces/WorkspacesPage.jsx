@@ -23,7 +23,7 @@ export default function WorkspacesOverview() {
         {workspaces.map((workspace) => {
           return (
             <div key={workspace["id"]} className="card workspace-card">
-              <Link to={`/workspace/${workspace["id"]}`}>
+              <Link to={`/workspacedevelop/${workspace["id"]}`}>
                 <div className="workspace-card-content-wrapper">
                   <div className="workspace-card-content">
                     <span className="workspace-card-content__title">

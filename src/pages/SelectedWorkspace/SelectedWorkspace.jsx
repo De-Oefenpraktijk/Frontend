@@ -1,36 +1,85 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Form from "react-bootstrap/Form";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useParams } from "react-router-dom";
+import Button from '@mui/material/Button';
+import Moment from 'moment-timezone';
+import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 
-import { Link, useParams } from "react-router-dom";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 export default function SelectedWorkspace() {
+  // States
   const [meetingRooms, setMeetingRooms] = useState([]);
-  const params = useParams();
-  const hostid = "Placeholder";
+  const [workspaceName, setWorkspaceName] = useState([]);
 
+  //Params
+  const params = useParams();
+  const { user } = useAuth0();
+  const userId = user.sub.split("|")[1]
+
+  //Set rooms and workspace name
   useEffect(() => {
     axios
-      .get(`http://localhost:5137/api/v1/Room/${hostid}/${params["id"]}`)
+      .get(`http://localhost:5137/api/v1/Room/${params["id"]}/${userId}`)
       .then((response) => {
-        setWorkspaces(response.data);
+        setMeetingRooms(response.data["rooms"]);
+        setWorkspaceName(response.data["name"]);
       })
       .catch((err) => {
         console.log("error: " + err);
       });
   }, []);
 
+  const handleDateDifference = (date) => {
+    // const meetingStart = new Date(date).setUTCHours(-1)
+    // const dateNow = new Date()
+    // const millisecondsLeft = meetingStart - dateNow
+    // let minutes = millisecondsLeft / 3600000 
+    // console.log(meetingStart)
+    return 1
+  }
+
+
   return (
     <>
-      <h1>hi workspace {params["id"]}</h1>
+      <h1>{workspaceName}</h1>
       <div>
         <Form.Label>Choose a meeting room:</Form.Label>
-        <Form.Select style={{width: "200px"}}>
-          <option value=""></option>
-          {meetingRooms.map((room) => {
-            return <option value={room["id"]}>{room["name"]}</option>;
-          })}
-        </Form.Select>
+        <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Meeting name:</TableCell>
+            <TableCell align="center">Schedule time</TableCell>
+            <TableCell align="center">Meeting starts in</TableCell>
+            <TableCell align="center">Join</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {meetingRooms.map((room) => (
+            <TableRow
+              key={room["roomName"]}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+              <TableCell component="th" scope="row">
+                {room["roomName"]}
+              </TableCell>
+              <TableCell align="center">{Moment.utc(room["scheduledDate"]).format('DD-MM-YYYY hh:mm')}</TableCell>
+              <TableCell align="center">{handleDateDifference(room["scheduledDate"])}</TableCell>
+              <TableCell align="center"><Button variant="outlined">Join meeting</Button></TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
       </div>
     </>
   );
