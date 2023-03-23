@@ -30,7 +30,7 @@ function App() {
         <Route path="/profile" element={<ProfilePage />} />
         {/* Testing */}
         <Route path="/workspace/:workspaceId" element={<Workspace />} />
-        <Route path="/workspace/join-room" element={<JoinRoom />} />
+        <Route path="/workspace/join-room" element={<JoinRoom roomId="6418284f92093678a33b9045" />} />
         <Route path="*" element={<Blank/>}/>
       </Route>
     </Routes>

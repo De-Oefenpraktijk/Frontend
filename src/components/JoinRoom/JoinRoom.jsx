@@ -1,10 +1,12 @@
 import { JitsiMeeting } from '@jitsi/react-sdk';
-import { useState } from 'react';
+import { useAuth0 } from "@auth0/auth0-react";
+import { useState, useEffect } from 'react';
 
 //import uuid v4
 import { v4 as uuid } from 'uuid';
+import getRoom from '../../service/joinRoom';
 
-export default function JoinRoom() {
+export default function JoinRoom(props) {
     // Skeletons
     const configSettingsSkeleton = {
         startWithAudioMuted: true,
@@ -17,27 +19,50 @@ export default function JoinRoom() {
     const unique_id = uuid();
     const small_id = unique_id.slice(0,8)
 
+    // Extracting props
+    const { roomId } = props;
+
     // useState
-    const [roomName, setRoomName] = useState(`room-${small_id}`)
+    const [room, setRoom] = useState(null);
     const [username, setUsername] = useState("Example User");
+    const { user } = useAuth0();
     const [configSettings, setConfigSettings] = useState(configSettingsSkeleton);
 
+    // helper functions
+    const fetchRoom = async (roomId) => {
+        const room = await getRoom(roomId);
+        setRoom(room.rooms[0]);
+    };
+
+    // useEffect
+    useEffect(() => {
+        setUsername(user.nickname);
+    }, [user]);
+
+    useEffect(() => {
+        fetchRoom(roomId);
+    }, [roomId])
+
     return (
-        <JitsiMeeting
-            // domain = { YOUR_DOMAIN }
-            roomName = { roomName }
-            configOverwrite = {configSettings}
-            interfaceConfigOverwrite = {{
-                DISABLE_JOIN_LEAVE_NOTIFICATIONS: true
-            }}
-            userInfo = {{
-                displayName: username
-            }}
-            onApiReady = { (externalApi) => {
-                // here you can attach custom event listeners to the Jitsi Meet External API
-                // you can also store it locally to execute commands
-            } }
-            getIFrameRef = { (iframeRef) => { iframeRef.style.height = '400px'; } }
-        />
+        <>
+        { room && 
+            <JitsiMeeting
+                // domain = { YOUR_DOMAIN }
+                roomName = { room.roomName }
+                configOverwrite = {configSettings}
+                interfaceConfigOverwrite = {{
+                    DISABLE_JOIN_LEAVE_NOTIFICATIONS: true
+                }}
+                userInfo = {{
+                    displayName: username
+                }}
+                onApiReady = { (externalApi) => {
+                    // here you can attach custom event listeners to the Jitsi Meet External API
+                    // you can also store it locally to execute commands
+                } }
+                getIFrameRef = { (iframeRef) => { iframeRef.style.height = '400px'; } }
+            />
+        }
+        </>
     );
 }
