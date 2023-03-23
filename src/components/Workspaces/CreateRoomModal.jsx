@@ -1,6 +1,8 @@
 import React from "react";
 import createRoom from "../../service/createRoom";
 import { Modal, Box } from "@mui/material";
+import InviteUsers from './InviteUsersBar';
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -19,6 +21,9 @@ export default function CreateRoomModal({ handleClose, open, workspaceId }) {
     scheduledDate: "",
     invitedIds: [],
   });
+
+  const [invitedUsers, setInvitedUsers] = React.useState([]);
+
   const handleRoomChange = (e) => {
     const { name, value } = e.target;
     setRoom((prevState) => ({
@@ -30,7 +35,7 @@ export default function CreateRoomModal({ handleClose, open, workspaceId }) {
     e.preventDefault();
     var body = {
       hostId: workspaceId, //TODO
-      invitedIds: room.invitedIds, //TODO
+      invitedIds: invitedUsers.map(x => x["n.Id"]), //TODO
       scheduledDate: room.scheduledDate,
       workspaceId: workspaceId,
       roomName: room.roomName,
@@ -54,10 +59,8 @@ export default function CreateRoomModal({ handleClose, open, workspaceId }) {
             />
           </div>
           <div className="form__group">
-            <label forhtml="userName">Invite user</label>
-            <select id="userName" name="invitedIds" onChange={handleRoomChange}>
-              username
-            </select>
+            <label forhtml="roomName">Attendees</label>
+            <InviteUsers selectedValues = {invitedUsers} setSelectedValues = {setInvitedUsers}/>
           </div>
           <div className="form__group">
             <label forhtml="date">Date and time</label>
