@@ -5,7 +5,7 @@ import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CreateWorkspaceModal from "./CreateWorkspaceModal";
 
-export default function CreateWorkspace() {
+export default function CreateWorkspace({ updateForRefresh }) {
   //Used for the Modal
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -22,8 +22,7 @@ export default function CreateWorkspace() {
         <CreateWorkspaceModal
           handleClose={handleClose}
           open={open}
-
-          //   workspaceId={workspaceId}
+          updateForRefresh={updateForRefresh}
         />
       </IconButton>
     </div>

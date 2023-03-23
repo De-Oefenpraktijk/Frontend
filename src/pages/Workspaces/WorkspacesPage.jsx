@@ -7,6 +7,11 @@ import { Stack } from "@mui/system";
 
 export default function WorkspacesOverview() {
   const [workspaces, setWorkspaces] = useState([]);
+  const [addedWorkspace, setAddedWorkspace] = useState(false);
+
+  const updateForRefresh = () => {
+    setAddedWorkspace(true);
+  };
 
   useEffect(() => {
     axios
@@ -17,14 +22,14 @@ export default function WorkspacesOverview() {
       .catch((err) => {
         console.log("error: " + err);
       });
-  }, []);
 
-  console.log(workspaces);
+    setAddedWorkspace(false);
+  }, [addedWorkspace]);
 
   return (
     <div>
       <Stack direction="row">
-        <CreateWorkspace></CreateWorkspace>
+        <CreateWorkspace updateForRefresh={updateForRefresh} />
 
         <div className="mainCard__body">
           {workspaces.map((workspace) => {

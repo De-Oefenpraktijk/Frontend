@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import createRoom from "../../service/createRoom";
 import { Modal, Box } from "@mui/material";
-import InviteUsers from "./InviteUsersBar";
 import createWorkspace from "../../service/createWorkspace";
 
 const style = {
@@ -16,34 +14,25 @@ const style = {
   p: 4,
 };
 
-export default function CreateWorkspaceModal({ handleClose, open }) {
+export default function CreateWorkspaceModal({
+  handleClose,
+  open,
+  updateForRefresh,
+}) {
   const [name, setName] = useState("");
-  const [files, setFiles] = useState("");
-  //   const [workspace, setWorkspace] = React.useState({
-  //     workspaceName: "",
-  //     files: "",
-  //   });
-
-  //   const [invitedUsers, setInvitedUsers] = React.useState([]);
+  const [imageFile, setImageFile] = useState("");
 
   const handleNameChange = (e) => {
     const { name, value } = e.target;
-    // setWorkspace((prevState) => ({
-    //   ...prevState,
-    //   [workspaceName]: value,
-    // }));
+
     setName(value);
     console.log(name);
   };
 
   const handleFileUpload = (e) => {
     const { files, value } = e.target;
-    setFiles(value);
+    setImageFile(value);
 
-    // setWorkspace((prevState) => ({
-    //   ...prevState,
-    //   [files]: value,
-    // }));
     console.log(value);
   };
 
@@ -51,11 +40,12 @@ export default function CreateWorkspaceModal({ handleClose, open }) {
     e.preventDefault();
     var body = {
       name,
-      files,
+      imageFile,
     };
 
     console.log(body);
     createWorkspace(body);
+    updateForRefresh();
     handleClose();
   };
 
