@@ -7,7 +7,6 @@ import WorkspacesPage from "./pages/Workspaces/WorkspacesPage";
 import AppLayout from "./Layout/AppLayout";
 import Blank from "./pages/NoContentPage/Blank";
 import Workspace from "./components/Workspaces/Workspace";
-import SelectedWorkspace from "./pages/SelectedWorkspace/SelectedWorkspace";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
 import JoinRoom from "./components/JoinRoom/JoinRoom";
 
@@ -26,11 +25,13 @@ function App() {
         <Route path="/settings" element={<Blank />} />
         <Route path="/organization" element={<Blank />} />
         <Route path="/workspaces" element={<WorkspacesPage />} />
-        <Route path="/workspacedevelop/:id" element={<SelectedWorkspace/>} />
+        <Route path="/workspace/:workspaceId" element={<Workspace />} />
+        <Route path="/workspace/join-room/:roomId" element={<JoinRoom />} />
+
         <Route path="/profile" element={<ProfilePage />} />
         {/* Testing */}
-        <Route path="/workspace/:workspaceId" element={<Workspace />} />
-        <Route path="/workspace/join-room" element={<JoinRoom roomId="6418284f92093678a33b9045" />} />
+        {/* <Route path="/workspace/:workspaceId" element={<Workspace />} />
+        <Route path="/workspace/join-room" element={<JoinRoom roomId="6418284f92093678a33b9045" />} /> */}
         <Route path="*" element={<Blank/>}/>
       </Route>
     </Routes>

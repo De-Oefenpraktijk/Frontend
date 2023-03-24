@@ -15,7 +15,7 @@ const style = {
   p: 4,
 };
 
-export default function CreateRoomModal({ handleClose, open, workspaceId }) {
+export default function CreateRoomModal({ handleClose, open, workspaceId, triggerRefreshRooms }) {
   const [room, setRoom] = React.useState({
     roomName: "",
     scheduledDate: "",
@@ -41,6 +41,7 @@ export default function CreateRoomModal({ handleClose, open, workspaceId }) {
       roomName: room.roomName,
     };
     createRoom(body);
+    triggerRefreshRooms();
     handleClose();
   };
 

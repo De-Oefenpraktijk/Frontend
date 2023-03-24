@@ -5,9 +5,9 @@ import { useState, useEffect } from 'react';
 //import uuid v4
 import { v4 as uuid } from 'uuid';
 import getRoom from '../../service/joinRoom';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
-export default function JoinRoom(props) {
+export default function JoinRoom() {
     // Skeletons
     const configSettingsSkeleton = {
         startWithAudioMuted: true,
@@ -20,8 +20,8 @@ export default function JoinRoom(props) {
     const unique_id = uuid();
     const small_id = unique_id.slice(0,8)
 
-    // Extracting props
-    const { roomId } = props;
+    // Params
+    const { roomId } = useParams();
 
     // useState
     const [room, setRoom] = useState(null);
@@ -62,7 +62,7 @@ export default function JoinRoom(props) {
                     // here you can attach custom event listeners to the Jitsi Meet External API
                     // you can also store it locally to execute commands
                     externalApi.addListener('videoConferenceLeft', function () {
-                        navigate(`/workspacedevelop/${room.workspaceId}`);
+                        navigate(`/workspace/${room.workspaceId}`);
                     });
                 } }
                 getIFrameRef = { (iframeRef) => { iframeRef.style.height = '400px'; } }
