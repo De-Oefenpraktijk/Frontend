@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import "./Workspace.css";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import CreateRoomModal from "./CreateRoomModal";
 import axios from "axios";
 import Form from "react-bootstrap/Form";
@@ -21,12 +21,14 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
 export default function Workspace() {
-  let { workspaceId } = useParams();
+  const { workspaceId } = useParams();
+  const navigate = useNavigate();
 
   //States
   const [open, setOpen] = useState(false); //Used for the Modal
   const [meetingRooms, setMeetingRooms] = useState([]);
   const [workspaceName, setWorkspaceName] = useState([]);
+  const [refreshRooms, setRefreshRooms] = useState(false);
 
   //Params
   const { user } = useAuth0();
@@ -45,12 +47,16 @@ export default function Workspace() {
 
     return result;
   };
+  const triggerRefreshRoom = () => setRefreshRooms(true);
+  const joinRoom = (roomId) => {
+    navigate(`/workspace/join-room/${roomId}`);
+  }
 
   //Effects
   useEffect(() => {
     //Set rooms and workspace name
     axios
-      .get(`http://localhost:5137/api/v1/Room/${workspaceId}/${userId}`)
+      .get(`http://localhost:5137/api/v1/Room/${workspaceId}/${workspaceId}`)
       .then((response) => {
         setMeetingRooms(response.data["rooms"]);
         setWorkspaceName(response.data["name"]);
@@ -58,7 +64,8 @@ export default function Workspace() {
       .catch((err) => {
         console.log("error: " + err);
       });
-  }, []);
+    setRefreshRooms(false);
+  }, [refreshRooms]);
 
   return (
     <div id="workspace-info">
@@ -110,6 +117,7 @@ export default function Workspace() {
           handleClose={handleClose}
           open={open}
           workspaceId={workspaceId}
+          triggerRefreshRooms={triggerRefreshRoom}
         />
       </div>
 
@@ -143,7 +151,7 @@ export default function Workspace() {
                     {handleDateDifference(room["scheduledDate"])}
                   </TableCell>
                   <TableCell align="center">
-                    <Button variant="outlined">Join meeting</Button>
+                    <Button variant="outlined" onClick={() => joinRoom(room.roomId)}>Join meeting</Button>
                   </TableCell>
                 </TableRow>
               ))}
