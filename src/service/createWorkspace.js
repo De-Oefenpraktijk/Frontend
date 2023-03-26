@@ -5,12 +5,12 @@ export default function createWorkspace(body) {
     url: "http://localhost:5137/api/v1/Workspace",
     headers: {
       Authorization: "Bearer " + "aaa",
-      contentType: "application/json",
+      contentType: "multipart/form-data",
+
     },
     data: body,
   };
 
-  console.log(body);
 
   return axios(config)
     .then((response) => response.data)

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Box } from "@mui/material";
 import createWorkspace from "../../service/createWorkspace";
+// import FormData from "form-data";
 
 const style = {
   position: "absolute",
@@ -19,32 +20,34 @@ export default function CreateWorkspaceModal({
   open,
   updateForRefresh,
 }) {
-  const [name, setName] = useState("");
-  const [imageFile, setImageFile] = useState("");
+  const [workspaceName, setName] = useState("");
+  const [imageFile, setImageFile] = useState(null);
 
   const handleNameChange = (e) => {
     const { name, value } = e.target;
-
     setName(value);
-    console.log(name);
   };
 
   const handleFileUpload = (e) => {
-    const { files, value } = e.target;
-    setImageFile(value);
-
-    console.log(value);
+    setImageFile(e.target.files[0]);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    var body = {
-      name,
-      imageFile,
-    };
 
-    console.log(body);
-    createWorkspace(body);
+    const fd = new FormData();
+    fd.append("name", workspaceName);
+    fd.append("imageFile", imageFile);
+
+    console.log(fd.get("name"));
+    console.log(fd.get("imageFile"));
+
+    // var body = {
+    //   name: fd.get("workspaceName"),
+    //   imageFile: fd.get("image"),
+    // };
+
+    createWorkspace(fd);
     updateForRefresh();
     handleClose();
   };
@@ -67,8 +70,8 @@ export default function CreateWorkspaceModal({
             Upload File
             <input
               type="file"
-              name="files"
-              id="files"
+              name="imageFile"
+              id="file"
               onChange={handleFileUpload}
             />
           </div>
