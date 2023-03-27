@@ -13,23 +13,35 @@ export default function WorkspacesOverview() {
     setAddedWorkspace(true);
   };
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:5137/api/v1/Workspace")
-      .then((response) => {
-        setWorkspaces(response.data);
-      })
-      .catch((err) => {
-        console.log("error: " + err);
-      });
+  // workspace -> *1
+  // const newWorkspace
 
-    setAddedWorkspace(false);
-  }, [addedWorkspace]);
+  const addWorkspace = (newWorkspace) => {
+    console.log(newWorkspace);
+    setWorkspaces([...workspaces, newWorkspace]);
+  };
+
+  useEffect(() => {
+    const dataFetch = async () => {
+      axios
+        .get("http://localhost:5137/api/v1/Workspace")
+        .then((response) => {
+          setWorkspaces(response.data);
+        })
+        .catch((err) => {
+          console.log("error: " + err);
+        });
+    };
+    dataFetch();
+  }, []);
 
   return (
     <div>
       <Stack direction="row">
-        <CreateWorkspace updateForRefresh={updateForRefresh} />
+        <CreateWorkspace
+          updateForRefresh={updateForRefresh}
+          addWorkspace={addWorkspace}
+        />
 
         <div className="mainCard__body">
           {workspaces.map((workspace) => {
@@ -44,7 +56,7 @@ export default function WorkspacesOverview() {
                     </div>
                   </div>
                   <img
-                    src={workspace["imageFile"]}
+                    src={workspace.imageFile["fileUrl"]}
                     style={{ height: "300px" }}
                   />
                 </Link>

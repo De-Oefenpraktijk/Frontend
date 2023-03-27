@@ -1,5 +1,5 @@
 import axios from "axios";
-export default function createWorkspace(body) {
+export default async function createWorkspace(body) {
   const config = {
     method: "post",
     url: "http://localhost:5137/api/v1/Workspace",
@@ -13,7 +13,7 @@ export default function createWorkspace(body) {
 
 
   return axios(config)
-    .then((response) => response.data)
+    .then(  (response) => response.data)
     .catch(() => {
       console.error("Error creating workspace");
       alert("Error creating workspace");

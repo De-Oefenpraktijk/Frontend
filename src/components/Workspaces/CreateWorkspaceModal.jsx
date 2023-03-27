@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Box } from "@mui/material";
 import createWorkspace from "../../service/createWorkspace";
-// import FormData from "form-data";
 
 const style = {
   position: "absolute",
@@ -19,6 +18,7 @@ export default function CreateWorkspaceModal({
   handleClose,
   open,
   updateForRefresh,
+  addWorkspace,
 }) {
   const [workspaceName, setName] = useState("");
   const [imageFile, setImageFile] = useState(null);
@@ -32,23 +32,33 @@ export default function CreateWorkspaceModal({
     setImageFile(e.target.files[0]);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const fd = new FormData();
-    fd.append("name", workspaceName);
-    fd.append("imageFile", imageFile);
+    // const fd = new FormData();
+    // fd.append("name", workspaceName);
+    // fd.append("inputImageFile", imageFile);
 
-    console.log(fd.get("name"));
-    console.log(fd.get("imageFile"));
+    // console.log(fd.get("name"));
+    // console.log(fd.get("imageFile"));
 
-    // var body = {
-    //   name: fd.get("workspaceName"),
-    //   imageFile: fd.get("image"),
-    // };
+    // const newWorkspace = await createWorkspace(fd);
+    const workspaceObject = {
+      id: "64218ebe7448e6e0ad273b7c",
+      name: "aide stoychoooo",
+      imageFile: {
+        fileUrl:
+          "https://oefenpraktijkstorageacc.blob.core.windows.net/workspace-images?sv=2021-12-02&se=2023-03-27T13%3A40%3A30Z&sr=c&sp=r&sig=cBy15ZPhnwPBmtNuTVYw4PM4yIZxKpNiBLjyySu0%2BZU%3D",
+        fileName: "243126457_234030476.jpeg",
+      },
+      files: [],
+      rooms: [],
+    };
 
-    createWorkspace(fd);
-    updateForRefresh();
+    addWorkspace(workspaceObject);
+
+    // updateForRefresh();
+    // addWorkspace(newWorkspace);
     handleClose();
   };
 
@@ -72,6 +82,7 @@ export default function CreateWorkspaceModal({
               type="file"
               name="imageFile"
               id="file"
+              required
               onChange={handleFileUpload}
             />
           </div>
