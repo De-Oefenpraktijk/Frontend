@@ -13,14 +13,6 @@ export default function WorkspacesOverview() {
     setAddedWorkspace(true);
   };
 
-  // workspace -> *1
-  // const newWorkspace
-
-  const addWorkspace = (newWorkspace) => {
-    console.log(newWorkspace);
-    setWorkspaces([...workspaces, newWorkspace]);
-  };
-
   useEffect(() => {
     const dataFetch = async () => {
       axios
@@ -38,10 +30,7 @@ export default function WorkspacesOverview() {
   return (
     <div>
       <Stack direction="row">
-        <CreateWorkspace
-          updateForRefresh={updateForRefresh}
-          addWorkspace={addWorkspace}
-        />
+        <CreateWorkspace updateForRefresh={updateForRefresh} />
 
         <div className="mainCard__body">
           {workspaces.map((workspace) => {
@@ -56,7 +45,7 @@ export default function WorkspacesOverview() {
                     </div>
                   </div>
                   <img
-                    src={workspace.imageFile["fileUrl"]}
+                    src={`${workspace["imageFile"]["fileUrl"]}`}
                     style={{ height: "300px" }}
                   />
                 </Link>
