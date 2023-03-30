@@ -5,9 +5,13 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 export default function TopBar() {
   const location = useLocation();
-  const { user } = useAuth0();
+  const { pathname } = location;
+  const { user, logout } = useAuth0();
+
+  console.log("Pathname: ", pathname);
+
   function title() {
-    switch (location.pathname) {
+    switch (pathname) {
       case "/overview":
         return <h1>OVERVIEW</h1>;
       case "/search":
@@ -28,6 +32,10 @@ export default function TopBar() {
         return <h1>ORGANIZATION</h1>;
       case "/profile":
         return <h1>PROFILE</h1>;
+      case pathname.match(/\/workspace\/[a-z0-9]{24}/)?.input:
+        return <h1>WORKSPACE</h1>;
+      case pathname.match(/\/workspace\/join-room\/[a-z0-9]{24}/)?.input:
+        return <h1>JOIN A ROOM</h1>;
       default:
         return <h1>404</h1>;
     }
@@ -49,7 +57,7 @@ export default function TopBar() {
                   <font-awesome-icon icon="fa-solid fa-user" />
                   <span>Profile</span>
                 </li>
-                <li>
+                <li onClick={() => logout({logoutParams:{returnTo:window.location.origin}})}>
                   <font-awesome-icon icon="fa-solid fa-arrow-right-from-bracket" />
                   <span>Logout</span>
                 </li>
