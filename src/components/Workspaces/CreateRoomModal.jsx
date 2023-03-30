@@ -15,10 +15,10 @@ const style = {
   p: 4,
 };
 
-export default function CreateRoomModal({ handleClose, open, workspaceId, triggerRefreshRooms }) {
+export default function CreateRoomModal({ handleClose, open, workspaceId, userId, triggerRefreshRooms }) {
   const [room, setRoom] = React.useState({
     roomName: "",
-    scheduledDate: "",
+    scheduledDate: new Date(),
     invitedIds: [],
   });
 
@@ -34,8 +34,8 @@ export default function CreateRoomModal({ handleClose, open, workspaceId, trigge
   const handleSubmit = (e) => {
     e.preventDefault();
     var body = {
-      hostId: workspaceId, //TODO
-      invitedIds: invitedUsers.map(x => x["n.Id"]), //TODO
+      hostId: userId,
+      invitedIds: invitedUsers.map((x) => x["n.Id"]),
       scheduledDate: room.scheduledDate,
       workspaceId: workspaceId,
       roomName: room.roomName,
