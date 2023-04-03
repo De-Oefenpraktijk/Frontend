@@ -10,6 +10,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Button from "@mui/material/Button";
 import Moment from "moment-timezone";
 import { formatDistanceToNowStrict } from "date-fns";
+import { GETUSERROOMSBYWORKSPACEURL } from "../../service/ConnectionStrings";
 
 // Table imports
 import Table from "@mui/material/Table";
@@ -38,11 +39,12 @@ export default function Workspace() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleDateDifference = (date) => {
-    const meetingStarts = new Date(Moment.utc(date).toDate());
+    const meetingStarts = new Date(Moment(date).toDate());
     const newHours = meetingStarts.getHours(); // Converts the start of the meeting to UTC. I couldn't find a better fix
     meetingStarts.setHours(newHours);
-    const result = formatDistanceToNowStrict(Date.parse(meetingStarts), {
-      addSuffix: true,
+    const nowDate = new Date(meetingStarts).toISOString();
+    const result = formatDistanceToNowStrict(new Date(nowDate), {
+      addSuffix: true
     });
 
     return result;
@@ -56,7 +58,7 @@ export default function Workspace() {
   useEffect(() => {
     //Set rooms and workspace name
     axios
-      .get(`http://localhost:5137/api/v1/Room/${workspaceId}/${userId}`)
+      .get(GETUSERROOMSBYWORKSPACEURL + workspaceId + "/" + userId)
       .then((response) => {
         setMeetingRooms(response.data["rooms"]);
         setWorkspaceName(response.data["name"]);
@@ -70,7 +72,7 @@ export default function Workspace() {
     <div id="workspace-info">
       <h1>{workspaceName}</h1>
 
-      <div id="room-options" style={{textAlign:"right"}}>
+      <div id="room-options" style={{ textAlign: "right" }}>
         <Button variant="outlined" onClick={handleOpen}>
           Create a meeting
         </Button>
@@ -98,14 +100,16 @@ export default function Workspace() {
             <TableBody>
               {meetingRooms.map((room) => (
                 <TableRow
-                  key={room["roomName"]}
+                  key={room.roomId}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
                     {room["roomName"]}
                   </TableCell>
                   <TableCell align="center">
-                    {Moment(room["scheduledDate"]).format("DD-MM-YYYY hh:mm A")}
+                    {Moment(room["scheduledDate"]).format(
+                      "DD-MM-YYYY hh:mm A"
+                    )}
                   </TableCell>
                   <TableCell align="center">
                     {handleDateDifference(room["scheduledDate"])}

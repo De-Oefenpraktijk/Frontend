@@ -17,12 +17,12 @@ export default function CreateWorkspace({ updateForRefresh }) {
         onClick={handleOpen}
       >
         <AddCircleIcon style={{ color: "black" }} fontSize="large" />
-        <CreateWorkspaceModal
-          handleClose={handleClose}
-          open={open}
-          updateForRefresh={updateForRefresh}
-        />
       </IconButton>
+      <CreateWorkspaceModal
+        handleClose={handleClose}
+        open={open}
+        updateForRefresh={updateForRefresh}
+      />
     </div>
   );
 }

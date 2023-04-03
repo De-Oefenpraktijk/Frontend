@@ -1,8 +1,10 @@
 import axios from "axios";
+import { GETROOMROOMURL } from './ConnectionStrings';
+
 export default function getRoom(roomId) {
   const config = {
     method: "get",
-    url: `http://localhost:5137/api/v1/Room/room/${roomId}`,
+    url: GETROOMROOMURL + roomId,
     headers: {
       Authorization: "Bearer " + "aaa",
       contentType: "application/json",

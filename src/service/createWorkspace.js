@@ -1,8 +1,10 @@
 import axios from "axios";
+import {POSTWORKSPACEURL} from './ConnectionStrings'
+
 export default function createWorkspace(body) {
   const config = {
     method: "post",
-    url: "http://localhost:5137/api/v1/Workspace",
+    url: POSTWORKSPACEURL,
     headers: {
       Authorization: "Bearer " + "aaa",
       contentType: "multipart/form-data",

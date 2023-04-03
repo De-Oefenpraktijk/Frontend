@@ -4,6 +4,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import CreateWorkspace from "../../components/Workspaces/CreateWorkspace";
 import { Stack } from "@mui/system";
+import { GETWORKSPACEURL } from "../../service/ConnectionStrings";
 
 export default function WorkspacesOverview() {
   const [workspaces, setWorkspaces] = useState([]);
@@ -16,7 +17,7 @@ export default function WorkspacesOverview() {
   useEffect(() => {
     const dataFetch = async () => {
       axios
-        .get("http://localhost:5137/api/v1/Workspace")
+        .get(GETWORKSPACEURL)
         .then((response) => {
           setWorkspaces(response.data);
         })
@@ -30,7 +31,10 @@ export default function WorkspacesOverview() {
   return (
     <div>
       <Stack direction="row">
-        <CreateWorkspace updateForRefresh={updateForRefresh} />
+        <CreateWorkspace
+          updateForRefresh={updateForRefresh}
+          className="card workspace-card"
+        />
 
         <div className="mainCard__body">
           {workspaces.map((workspace) => {
