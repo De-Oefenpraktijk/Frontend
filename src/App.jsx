@@ -6,7 +6,7 @@ import ProfilePage from "./pages/Profile/ProfilePage";
 import WorkspacesPage from "./pages/Workspaces/WorkspacesPage";
 import AppLayout from "./Layout/AppLayout";
 import Blank from "./pages/NoContentPage/Blank";
-import Workspace from "./components/Workspaces/Workspace";
+import WorkspacePage from "./pages/Workspace/WorkspacePage";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
 import JoinRoom from "./components/JoinRoom/JoinRoom";
 
@@ -17,7 +17,6 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/overview" element={<Blank />} />
         <Route path="/search" element={<Blank />} />
-        <Route path="/workspaces" element={<WorkspacesPage />} />
         <Route path="/social" element={<Blank />} />
         <Route path="/calendar" element={<Blank />} />
         <Route path="/articles" element={<Blank />} />
@@ -25,7 +24,7 @@ function App() {
         <Route path="/settings" element={<Blank />} />
         <Route path="/organization" element={<Blank />} />
         <Route path="/workspaces" element={<WorkspacesPage />} />
-        <Route path="/workspace/:workspaceId" element={<Workspace />} />
+        <Route path="/workspace/:workspaceId" element={<WorkspacePage />} />
         <Route path="/workspace/join-room/:roomId" element={<JoinRoom />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="*" element={<Blank/>}/>

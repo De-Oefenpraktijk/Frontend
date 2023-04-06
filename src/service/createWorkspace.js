@@ -1,5 +1,5 @@
 import axios from "axios";
-import {POSTWORKSPACEURL} from './ConnectionStrings'
+import { POSTWORKSPACEURL } from "./ConnectionStrings";
 
 export default function createWorkspace(body) {
   const config = {
@@ -8,11 +8,9 @@ export default function createWorkspace(body) {
     headers: {
       Authorization: "Bearer " + "aaa",
       contentType: "multipart/form-data",
-
     },
     data: body,
   };
-
 
   return axios(config)
     .then((response) => response.data)
