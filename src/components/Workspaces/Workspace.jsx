@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import "./Workspace.css";
 import { useParams, useNavigate } from "react-router-dom";
 import CreateRoomModal from "./CreateRoomModal";
+import CreatePublicRoomModal from "./CreatePublicRoomModal";
 import axios from "axios";
 import Form from "react-bootstrap/Form";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -27,17 +28,21 @@ export default function Workspace() {
 
   //States
   const [open, setOpen] = useState(false); //Used for the Modal
+  const [openPublic, setOpenPublic] = useState(false); //Used for the Modal
   const [meetingRooms, setMeetingRooms] = useState([]);
   const [workspaceName, setWorkspaceName] = useState([]);
   const [refreshRooms, setRefreshRooms] = useState(false);
+  const [refreshRoomsPublic, setRefreshRoomsPublic] = useState(false);
 
   //Params
   const { user } = useAuth0();
   const userId = user.sub.split("|")[1];
 
   // Functions
-  const handleOpen = () => setOpen(true);
+  const handlePrivateOpen = () => setOpen(true);
+  const handlePublicOpen = () => setOpenPublic(true);
   const handleClose = () => setOpen(false);
+  const handlePublicClose = () => setOpenPublic(false);
   const handleDateDifference = (date) => {
     const meetingStarts = new Date(Moment(date).toDate());
     const newHours = meetingStarts.getHours(); // Converts the start of the meeting to UTC. I couldn't find a better fix
@@ -50,6 +55,7 @@ export default function Workspace() {
     return result;
   };
   const triggerRefreshRoom = () => setRefreshRooms(!refreshRooms);
+  const triggerRefreshRoomPublic = () => setRefreshRoomsPublic(!refreshRoomsPublic);
   const joinRoom = (roomId) => {
     navigate(`/workspace/join-room/${roomId}`);
   };
@@ -73,15 +79,26 @@ export default function Workspace() {
       <h1>{workspaceName}</h1>
 
       <div id="room-options" style={{ textAlign: "right" }}>
-        <Button variant="outlined" onClick={handleOpen}>
-          Create a meeting
+        <Button variant="outlined" onClick={handlePrivateOpen}>
+          Create a private meeting
         </Button>
+        <Button variant="outlined" onClick={handlePublicOpen}>
+          Create a public meeting
+        </Button>
+
         <CreateRoomModal
           handleClose={handleClose}
           open={open}
           workspaceId={workspaceId}
           userId={userId}
           triggerRefreshRooms={triggerRefreshRoom}
+        />
+        <CreatePublicRoomModal
+          handleClose={handlePublicClose}
+          open={openPublic}
+          workspaceId={workspaceId}
+          userId={userId}
+          triggerRefreshRooms={triggerRefreshRoomPublic}
         />
       </div>
 
