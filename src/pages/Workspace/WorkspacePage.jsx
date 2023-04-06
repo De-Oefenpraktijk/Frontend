@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import CreateRoomModal from "./CreateRoomModal";
-import CreatePublicRoomModal from "./CreatePublicRoomModal";
-import axios from "axios";
-import Form from "react-bootstrap/Form";
+import CreatePublicRoomModal from "../../components/Workspaces/CreatePublicRoomModal";
 import { useAuth0 } from "@auth0/auth0-react";
 import Button from "@mui/material/Button";
 import { formatDistanceToNowStrict } from "date-fns";

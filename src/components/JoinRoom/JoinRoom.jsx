@@ -32,12 +32,8 @@ export default function JoinRoom() {
 
   // helper functions
   const fetchRoom = async (roomId) => {
-    getRoom(roomId)
-      .then((response) => response.data)
-      .catch(() => {
-        console.error("Error fetching a room");
-        alert("Error fetching a room");
-      });
+    const room = await getRoom(roomId);
+    setRoom(room.rooms[0]);
   };
 
   // useEffect
@@ -50,7 +46,7 @@ export default function JoinRoom() {
   }, [roomId]);
 
   return (
-    <>
+    <div className="room">
       {room && (
         <JitsiMeeting
           // domain = { YOUR_DOMAIN }
@@ -74,6 +70,6 @@ export default function JoinRoom() {
           }}
         />
       )}
-    </>
+    </div>
   );
 }
