@@ -5,7 +5,9 @@ name: Frontend CI
 
 on:
   push:
-    branches: [ "development", "feature/**"]
+    branches:
+      - development
+      - feature/**
 
 jobs:
   build:
