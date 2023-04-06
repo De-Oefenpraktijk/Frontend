@@ -12,6 +12,8 @@ export const GETROOMROOMURL = ROOMURL + "Room/room/";
 
 export const POSTROOMURL = ROOMURL + "Room";
 
+export const POSTPUBLICROOMURL = URL + "PublicRoom";
+
 export const POSTWORKSPACEURL = ROOMURL + "Workspace";
 
 export const GETINVITEDUSERSURL = SOCIALSERVICEURL + "Person/dtos/emailandid/";
