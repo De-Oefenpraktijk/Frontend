@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GETROOMROOMURL } from './ConnectionStrings';
+import { GETROOMROOMURL } from "./ConnectionStrings";
 
 export default function getRoom(roomId) {
   const config = {
