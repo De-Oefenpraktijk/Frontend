@@ -1,5 +1,5 @@
 import axios from "axios";
-import {POSTROOMURL} from './ConnectionStrings'
+import { POSTROOMURL } from "./ConnectionStrings";
 
 export default function createRoom(body) {
   const config = {

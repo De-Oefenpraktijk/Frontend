@@ -20,7 +20,7 @@ export default function CreateRoomModal({
   open,
   workspaceId,
   userId,
-  triggerRefreshRooms,
+  dataFetch,
 }) {
   const [room, setRoom] = React.useState({
     roomName: "",
@@ -56,8 +56,9 @@ export default function CreateRoomModal({
       workspaceId: workspaceId,
       roomName: room.roomName,
     };
-    createRoom(body);
-    triggerRefreshRooms();
+    createRoom(body).then(() => {
+      dataFetch();
+    });
     handleClose();
   };
 

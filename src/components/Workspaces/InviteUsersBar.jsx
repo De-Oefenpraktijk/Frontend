@@ -1,21 +1,19 @@
 import * as React from 'react';
-import Chip from '@mui/material/Chip';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
 import { useState, useEffect } from "react";
-import {GetDataBySubstr} from "../../service/inviteUsers";
+import {getUserIdEmailDTO} from "../../service/getUserIdEmailDTO";
 
 const DEBOUNCE_DELAY = 250; // milliseconds
 
-export default function InviteUsers(props) {
+export default function InviteUsersBar(props) {
   const [inputValue, setInputValue] = useState('*');
   const [options, setOptions] = useState([]);
 
 
   useEffect(() => {
     const getData = async () => {
-      await GetDataBySubstr(inputValue).then((response) => {
+      await getUserIdEmailDTO(inputValue).then((response) => {
         setInputValue('*');
         setOptions(response.data.map(x => x.Values));
       });

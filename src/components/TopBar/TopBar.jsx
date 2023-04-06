@@ -8,8 +8,6 @@ export default function TopBar() {
   const { pathname } = location;
   const { user, logout } = useAuth0();
 
-  console.log("Pathname: ", pathname);
-
   function title() {
     switch (pathname) {
       case "/overview":
