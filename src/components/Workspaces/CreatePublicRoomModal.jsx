@@ -47,7 +47,7 @@ export default function CreatePublicRoomModal({
       scheduledDate.getUTCSeconds()
     );
     var body = {
-      hostId: "641c54a10a4f57e546d1cbf0", //userId
+      hostId: userId,
       scheduledDate: new Date(now_utc),
       workspaceId: workspaceId,
       roomName: room.roomName,
