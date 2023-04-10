@@ -1,55 +1,44 @@
 import React, { useEffect, useState } from "react";
-import "./WorkspacesPage.css";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import CreateWorkspace from "../../components/Workspaces/CreateWorkspace";
+import getWorkspaces from "../../service/getWorkspaces";
 import { Stack } from "@mui/system";
-import { GETWORKSPACEURL } from "../../service/ConnectionStrings";
+import "./WorkspacesPage.css";
 
 export default function WorkspacesOverview() {
   const [workspaces, setWorkspaces] = useState([]);
-  const [addedWorkspace, setAddedWorkspace] = useState(false);
-
-  const updateForRefresh = () => {
-    setAddedWorkspace(true);
+  const dataFetch = async () => {
+    getWorkspaces(setWorkspaces);
   };
 
   useEffect(() => {
-    const dataFetch = async () => {
-      axios
-        .get(GETWORKSPACEURL)
-        .then((response) => {
-          setWorkspaces(response.data);
-        })
-        .catch((err) => {
-          console.log("error: " + err);
-        });
-    };
     dataFetch();
   }, []);
 
   return (
     <div>
       <Stack direction="row">
-        <CreateWorkspace
-          updateForRefresh={updateForRefresh}
-          className="card workspace-card"
-        />
-
         <div className="mainCard__body">
+          <div className="addWorkspaceButton card">
+            <CreateWorkspace
+              dataFetch={dataFetch}
+              style={{ height: "300px" }}
+            />
+          </div>
+
           {workspaces.map((workspace) => {
             return (
-              <div key={workspace["id"]} className="card workspace-card">
-                <Link to={`/workspace/${workspace["id"]}`}>
+              <div key={workspace.id} className="card workspace-card">
+                <Link to={`/workspace/${workspace.id}`}>
                   <div className="workspace-card-content-wrapper">
                     <div className="workspace-card-content">
                       <span className="workspace-card-content__title">
-                        {workspace["name"]}
+                        {workspace.name}
                       </span>
                     </div>
                   </div>
                   <img
-                    src={`${workspace["imageFile"]["fileUrl"]}`}
+                    src={`${workspace.imageFile.fileUrl}`}
                     style={{ height: "300px" }}
                   />
                 </Link>
