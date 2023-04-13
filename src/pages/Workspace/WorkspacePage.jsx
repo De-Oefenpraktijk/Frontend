@@ -9,6 +9,7 @@ import CreateRoomModal from "../../components/Workspaces/CreateRoomModal";
 import Form from "react-bootstrap/Form";
 import getUserRoomsByWorkspace from "../../service/getUserRoomsByWorkspace";
 import "./WorkspacePage.css";
+import axios from "axios";
 
 // Table imports
 import Table from "@mui/material/Table";
@@ -19,6 +20,11 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
 export default function WorkspacePage() {
   const { workspaceId } = useParams();
   const navigate = useNavigate();
@@ -30,6 +36,7 @@ export default function WorkspacePage() {
   const [workspaceName, setWorkspaceName] = useState([]);
   const [refreshRooms, setRefreshRooms] = useState(false);
   const [refreshRoomsPublic, setRefreshRoomsPublic] = useState(false);
+  const [publicRooms, setPublicRooms] = useState([]);
 
   //Params
   const { user } = useAuth0();
@@ -52,10 +59,16 @@ export default function WorkspacePage() {
     return result;
   };
   const dataFetch = async () => {
-    getUserRoomsByWorkspace(setMeetingRooms, setWorkspaceName,workspaceId,userId);
+    getUserRoomsByWorkspace(
+      setMeetingRooms,
+      setWorkspaceName,
+      workspaceId,
+      userId
+    );
   };
   const triggerRefreshRoom = () => setRefreshRooms(!refreshRooms);
-  const triggerRefreshRoomPublic = () => setRefreshRoomsPublic(!refreshRoomsPublic);
+  const triggerRefreshRoomPublic = () =>
+    setRefreshRoomsPublic(!refreshRoomsPublic);
   const joinRoom = (roomId) => {
     navigate(`/workspace/join-room/${roomId}`);
   };
@@ -63,6 +76,14 @@ export default function WorkspacePage() {
   //Effects
   useEffect(() => {
     //Set rooms and workspace name
+    axios
+      .get(`http://localhost:5137/api/v1/PublicRoom/${workspaceId}`)
+      .then((response) => {
+        setPublicRooms(response.data);
+      })
+      .catch((err) => {
+        console.log("error: " + err);
+      });
     dataFetch();
   }, []);
 
@@ -134,6 +155,62 @@ export default function WorkspacePage() {
             </TableBody>
           </Table>
         </TableContainer>
+
+        <Box paddingTop={2}>
+          <Form.Label>Available Webinars</Form.Label>
+          {publicRooms.length > 0 && (
+            <Paper elevation={3}>
+              <Box
+                padding={0}
+                sx={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  alignSelf: "flex-end",
+                  "& > :not(style)": {
+                    m: 1,
+                    width: "100%",
+                    height: "100%",
+                  },
+                }}
+              >
+                <Box padding={0}>
+                  {publicRooms.map((publicRoom) => (
+                    <>
+                      <Card sx={{ maxWidth: "100%" }}>
+                        <CardContent>
+                          <Typography gutterBottom variant="h4" component="div">
+                            {publicRoom.roomName}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {publicRoom.description}
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            color="text.secondary"
+                            sx={{ fontWeight: "bold", m: 0 }}
+                          >
+                            Webinar starts in:{" "}
+                            {handleDateDifference(publicRoom.date)}
+                          </Typography>
+                          <CardActions sx={{ float: "right", paddingRight: 0 }}>
+                            <Button
+                              variant="outlined"
+                              size="large"
+                              onClick={() => joinRoom(publicRoom.roomId)}
+                            >
+                              Join
+                            </Button>
+                          </CardActions>
+                        </CardContent>
+                      </Card>
+                      <br></br>
+                    </>
+                  ))}
+                </Box>
+              </Box>
+            </Paper>
+          )}
+        </Box>
       </div>
     </div>
   );
