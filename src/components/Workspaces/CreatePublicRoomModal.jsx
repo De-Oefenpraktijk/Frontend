@@ -1,6 +1,7 @@
 import React from "react";
 import createPublicRoom from "../../service/createPublicRoom";
 import { Modal, Box } from "@mui/material";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const style = {
   position: "absolute",
@@ -26,6 +27,8 @@ export default function CreatePublicRoomModal({
     description: "",
     scheduledDate: new Date(),
   });
+
+  const { getAccessTokenSilently } = useAuth0();
 
   const handleRoomChange = (e) => {
     const { name, value } = e.target;
@@ -53,7 +56,8 @@ export default function CreatePublicRoomModal({
       roomName: room.roomName,
       description: room.description
     };
-    createPublicRoom(body);
+
+    createPublicRoom(body, getAccessTokenSilently);
     triggerRefreshRooms();
     handleClose();
   };

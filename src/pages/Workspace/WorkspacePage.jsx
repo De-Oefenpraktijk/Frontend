@@ -9,6 +9,7 @@ import CreateRoomModal from "../../components/Workspaces/CreateRoomModal";
 import Form from "react-bootstrap/Form";
 import getUserRoomsByWorkspace from "../../service/getUserRoomsByWorkspace";
 import "./WorkspacePage.css";
+import jwt from "jwt-decode"
 
 // Table imports
 import Table from "@mui/material/Table";
@@ -18,6 +19,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+
+
+// Const
+const CREATE_PUBLIC_ROOM_PERMISSION = "create:public-rooms"
 
 export default function WorkspacePage() {
   const { workspaceId } = useParams();
@@ -30,9 +35,10 @@ export default function WorkspacePage() {
   const [workspaceName, setWorkspaceName] = useState([]);
   const [refreshRooms, setRefreshRooms] = useState(false);
   const [refreshRoomsPublic, setRefreshRoomsPublic] = useState(false);
+  const [userCanCreatePublicRooms, setUserCanCreatePublicRooms] = useState(false);
 
   //Params
-  const { user } = useAuth0();
+  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const userId = user.sub.split("|")[1];
 
   // Functions
@@ -66,6 +72,20 @@ export default function WorkspacePage() {
     dataFetch();
   }, []);
 
+  useEffect(() => {
+    const canCreatePublicRooms = async () => {
+      const token = await getAccessTokenSilently();
+      const decoded_token = jwt(token);
+      const { permissions } = decoded_token;
+      if (permissions.includes(CREATE_PUBLIC_ROOM_PERMISSION)) {
+        console.log("Has permissions")
+        return true;
+      }
+      return false;
+    };
+    setUserCanCreatePublicRooms(canCreatePublicRooms)
+  }, [getAccessTokenSilently])
+
   return (
     <div id="workspace-info">
       <h1>{workspaceName}</h1>
@@ -85,13 +105,15 @@ export default function WorkspacePage() {
           userId={userId}
           dataFetch={dataFetch}
         />
-        <CreatePublicRoomModal
-          handleClose={handlePublicClose}
-          open={openPublic}
-          workspaceId={workspaceId}
-          userId={userId}
-          triggerRefreshRooms={triggerRefreshRoomPublic}
-        />
+        {isAuthenticated &&
+          <CreatePublicRoomModal
+            handleClose={handlePublicClose}
+            open={openPublic}
+            workspaceId={workspaceId}
+            userId={userId}
+            triggerRefreshRooms={triggerRefreshRoomPublic}
+          />
+        }
       </div>
 
       <div id="room-list">
