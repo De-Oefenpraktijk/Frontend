@@ -25,6 +25,7 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
+import { GETPUBLICROOMURL } from "../../service/ConnectionStrings";
 export default function WorkspacePage() {
   const { workspaceId } = useParams();
   const navigate = useNavigate();
@@ -69,6 +70,7 @@ export default function WorkspacePage() {
   const triggerRefreshRoom = () => setRefreshRooms(!refreshRooms);
   const triggerRefreshRoomPublic = () =>
     setRefreshRoomsPublic(!refreshRoomsPublic);
+
   const joinRoom = (roomId) => {
     navigate(`/workspace/join-room/${roomId}`);
   };
@@ -77,7 +79,7 @@ export default function WorkspacePage() {
   useEffect(() => {
     //Set rooms and workspace name
     axios
-      .get(`http://localhost:5137/api/v1/PublicRoom/${workspaceId}`)
+      .get(`${GETPUBLICROOMURL}/${workspaceId}`)
       .then((response) => {
         setPublicRooms(response.data);
       })
