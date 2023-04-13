@@ -146,19 +146,7 @@ export default function Workspace() {
       </div>
 
       <div>
-        <Box
-          padding={0}
-          sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            alignSelf: "flex-end",
-            "& > :not(style)": {
-              m: 1,
-              width: "100%",
-              height: "100%",
-            },
-          }}
-        >
+        <Box paddingTop={2}>
           <Form.Label>Available Webinars</Form.Label>
 
           <Paper elevation={3}>
@@ -175,16 +163,12 @@ export default function Workspace() {
                 },
               }}
             >
-              <Form.Label>Available Webinars</Form.Label>
-
-              <Box padding={1}>
+              <Box padding={0}>
                 {publicRooms.map((publicRoom) => (
                   <>
                     <Card sx={{ maxWidth: "100%" }}>
                       <CardContent>
                         <Typography gutterBottom variant="h4" component="div">
-                          {console.log(publicRoom)}
-
                           {publicRoom.roomName}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
