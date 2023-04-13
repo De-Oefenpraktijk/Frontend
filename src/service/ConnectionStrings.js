@@ -1,6 +1,6 @@
-export const ROOMURL = "http://20.86.203.49/api/v1/";
+export const ROOMURL = "https://roaring-tulumba-fc8d3c.netlify.app/api/v1/";
 
-export const SOCIALSERVICEURL = "http://20.13.84.62/";
+export const SOCIALSERVICEURL = "https://roaring-tulumba-fc8d3c.netlify.app/";
 
 export const GETWORKSPACESURL = ROOMURL + "Workspace";
 
@@ -12,7 +12,7 @@ export const GETROOMROOMURL = ROOMURL + "Room/room/";
 
 export const POSTROOMURL = ROOMURL + "Room";
 
-export const POSTPUBLICROOMURL = URL + "PublicRoom";
+export const POSTPUBLICROOMURL = SOCIALSERVICEURL + "PublicRoom";
 
 export const POSTWORKSPACEURL = ROOMURL + "Workspace";
 
