@@ -10,7 +10,17 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Button from "@mui/material/Button";
 import Moment from "moment-timezone";
 import { formatDistanceToNowStrict } from "date-fns";
-import { GETUSERROOMSBYWORKSPACEURL } from "../../service/ConnectionStrings";
+import {
+  GETUSERROOMSBYWORKSPACEURL,
+  GETPUBLICROOM,
+} from "../../service/ConnectionStrings";
+
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
 
 // Table imports
 import Table from "@mui/material/Table";
@@ -29,6 +39,7 @@ export default function Workspace() {
   const [open, setOpen] = useState(false); //Used for the Modal
   const [meetingRooms, setMeetingRooms] = useState([]);
   const [workspaceName, setWorkspaceName] = useState([]);
+  const [publicRooms, setPublicRooms] = useState([]);
   const [refreshRooms, setRefreshRooms] = useState(false);
 
   //Params
@@ -44,24 +55,34 @@ export default function Workspace() {
     meetingStarts.setHours(newHours);
     const nowDate = new Date(meetingStarts).toISOString();
     const result = formatDistanceToNowStrict(new Date(nowDate), {
-      addSuffix: true
+      addSuffix: true,
     });
 
     return result;
   };
   const triggerRefreshRoom = () => setRefreshRooms(!refreshRooms);
+
   const joinRoom = (roomId) => {
     navigate(`/workspace/join-room/${roomId}`);
   };
 
   //Effects
   useEffect(() => {
-    //Set rooms and workspace name
+    //Set rooms, public rooms and workspace name
     axios
       .get(GETUSERROOMSBYWORKSPACEURL + workspaceId + "/" + userId)
       .then((response) => {
         setMeetingRooms(response.data["rooms"]);
         setWorkspaceName(response.data["name"]);
+      })
+      .catch((err) => {
+        console.log("error: " + err);
+      });
+
+    axios
+      .get(`http://localhost:5137/api/v1/PublicRoom/${workspaceId}`)
+      .then((response) => {
+        setPublicRooms(response.data);
       })
       .catch((err) => {
         console.log("error: " + err);
@@ -107,18 +128,13 @@ export default function Workspace() {
                     {room["roomName"]}
                   </TableCell>
                   <TableCell align="center">
-                    {Moment(room["scheduledDate"]).format(
-                      "DD-MM-YYYY hh:mm A"
-                    )}
+                    {Moment(room["scheduledDate"]).format("DD-MM-YYYY hh:mm A")}
                   </TableCell>
                   <TableCell align="center">
                     {handleDateDifference(room["scheduledDate"])}
                   </TableCell>
                   <TableCell align="center">
-                    <Button
-                      variant="outlined"
-                      onClick={() => joinRoom(room.roomId)}
-                    >
+                    <Button variant="outlined" onClick={() => joinRoom()}>
                       Join meeting
                     </Button>
                   </TableCell>
@@ -127,6 +143,63 @@ export default function Workspace() {
             </TableBody>
           </Table>
         </TableContainer>
+      </div>
+
+      <div>
+        <Box paddingTop={2}>
+          <Form.Label>Available Webinars</Form.Label>
+
+          <Paper elevation={3}>
+            <Box
+              padding={0}
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                alignSelf: "flex-end",
+                "& > :not(style)": {
+                  m: 1,
+                  width: "100%",
+                  height: "100%",
+                },
+              }}
+            >
+              <Box padding={0}>
+                {publicRooms.map((publicRoom) => (
+                  <>
+                    <Card sx={{ maxWidth: "100%" }}>
+                      <CardContent>
+                        <Typography gutterBottom variant="h4" component="div">
+                          {publicRoom.roomName}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {publicRoom.description}
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          color="text.secondary"
+                          sx={{ fontWeight: "bold", m: 0 }}
+                        >
+                          Webinar starts in:{" "}
+                          {handleDateDifference(publicRoom.date)}
+                        </Typography>
+                        <CardActions sx={{ float: "right", paddingRight: 0 }}>
+                          <Button
+                            variant="outlined"
+                            size="large"
+                            onClick={() => joinRoom(publicRoom.roomId)}
+                          >
+                            Join
+                          </Button>
+                        </CardActions>
+                      </CardContent>
+                    </Card>
+                    <br></br>
+                  </>
+                ))}
+              </Box>
+            </Box>
+          </Paper>
+        </Box>
       </div>
     </div>
   );
