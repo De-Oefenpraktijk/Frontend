@@ -1,26 +1,14 @@
-// should contain design/logic relating to a single workspace, Workspace.css has the css from the last project
-
 import React, { useEffect, useState } from "react";
-import "./Workspace.css";
 import { useParams, useNavigate } from "react-router-dom";
-import CreateRoomModal from "./CreateRoomModal";
-import axios from "axios";
-import Form from "react-bootstrap/Form";
+import CreatePublicRoomModal from "../../components/Workspaces/CreatePublicRoomModal";
 import { useAuth0 } from "@auth0/auth0-react";
 import Button from "@mui/material/Button";
-import Moment from "moment-timezone";
 import { formatDistanceToNowStrict } from "date-fns";
-import {
-  GETUSERROOMSBYWORKSPACEURL,
-  GETPUBLICROOM,
-} from "../../service/ConnectionStrings";
-
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
+import Moment from "moment-timezone";
+import CreateRoomModal from "../../components/Workspaces/CreateRoomModal";
+import Form from "react-bootstrap/Form";
+import getUserRoomsByWorkspace from "../../service/getUserRoomsByWorkspace";
+import "./WorkspacePage.css";
 
 // Table imports
 import Table from "@mui/material/Table";
@@ -31,24 +19,28 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-export default function Workspace() {
+export default function WorkspacePage() {
   const { workspaceId } = useParams();
   const navigate = useNavigate();
 
   //States
   const [open, setOpen] = useState(false); //Used for the Modal
+  const [openPublic, setOpenPublic] = useState(false); //Used for the Modal
   const [meetingRooms, setMeetingRooms] = useState([]);
   const [workspaceName, setWorkspaceName] = useState([]);
   const [publicRooms, setPublicRooms] = useState([]);
   const [refreshRooms, setRefreshRooms] = useState(false);
+  const [refreshRoomsPublic, setRefreshRoomsPublic] = useState(false);
 
   //Params
   const { user } = useAuth0();
   const userId = user.sub.split("|")[1];
 
   // Functions
-  const handleOpen = () => setOpen(true);
+  const handlePrivateOpen = () => setOpen(true);
+  const handlePublicOpen = () => setOpenPublic(true);
   const handleClose = () => setOpen(false);
+  const handlePublicClose = () => setOpenPublic(false);
   const handleDateDifference = (date) => {
     const meetingStarts = new Date(Moment(date).toDate());
     const newHours = meetingStarts.getHours(); // Converts the start of the meeting to UTC. I couldn't find a better fix
@@ -60,49 +52,46 @@ export default function Workspace() {
 
     return result;
   };
+  const dataFetch = async () => {
+    getUserRoomsByWorkspace(setMeetingRooms, setWorkspaceName,workspaceId,userId);
+  };
   const triggerRefreshRoom = () => setRefreshRooms(!refreshRooms);
-
+  const triggerRefreshRoomPublic = () => setRefreshRoomsPublic(!refreshRoomsPublic);
   const joinRoom = (roomId) => {
     navigate(`/workspace/join-room/${roomId}`);
   };
 
   //Effects
   useEffect(() => {
-    //Set rooms, public rooms and workspace name
-    axios
-      .get(GETUSERROOMSBYWORKSPACEURL + workspaceId + "/" + userId)
-      .then((response) => {
-        setMeetingRooms(response.data["rooms"]);
-        setWorkspaceName(response.data["name"]);
-      })
-      .catch((err) => {
-        console.log("error: " + err);
-      });
-
-    axios
-      .get(`http://localhost:5137/api/v1/PublicRoom/${workspaceId}`)
-      .then((response) => {
-        setPublicRooms(response.data);
-      })
-      .catch((err) => {
-        console.log("error: " + err);
-      });
-  }, [refreshRooms]);
+    //Set rooms and workspace name
+    dataFetch();
+  }, []);
 
   return (
     <div id="workspace-info">
       <h1>{workspaceName}</h1>
 
       <div id="room-options" style={{ textAlign: "right" }}>
-        <Button variant="outlined" onClick={handleOpen}>
-          Create a meeting
+        <Button variant="outlined" onClick={handlePrivateOpen}>
+          Create a private meeting
         </Button>
+        <Button variant="outlined" onClick={handlePublicOpen}>
+          Create a public meeting
+        </Button>
+
         <CreateRoomModal
           handleClose={handleClose}
           open={open}
           workspaceId={workspaceId}
           userId={userId}
-          triggerRefreshRooms={triggerRefreshRoom}
+          dataFetch={dataFetch}
+        />
+        <CreatePublicRoomModal
+          handleClose={handlePublicClose}
+          open={openPublic}
+          workspaceId={workspaceId}
+          userId={userId}
+          triggerRefreshRooms={triggerRefreshRoomPublic}
         />
       </div>
 

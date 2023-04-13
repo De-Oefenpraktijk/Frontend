@@ -1,7 +1,6 @@
 import React from "react";
-import createRoom from "../../service/createRoom";
+import createPublicRoom from "../../service/createPublicRoom";
 import { Modal, Box } from "@mui/material";
-import InviteUsers from "./InviteUsersBar";
 
 const style = {
   position: "absolute",
@@ -15,20 +14,18 @@ const style = {
   p: 4,
 };
 
-export default function CreateRoomModal({
+export default function CreatePublicRoomModal({
   handleClose,
   open,
   workspaceId,
   userId,
-  dataFetch,
+  triggerRefreshRooms,
 }) {
   const [room, setRoom] = React.useState({
     roomName: "",
+    description: "",
     scheduledDate: new Date(),
-    invitedIds: [],
   });
-
-  const [invitedUsers, setInvitedUsers] = React.useState([]);
 
   const handleRoomChange = (e) => {
     const { name, value } = e.target;
@@ -51,24 +48,23 @@ export default function CreateRoomModal({
     );
     var body = {
       hostId: userId,
-      invitedIds: invitedUsers.map((x) => x["n.Id"]),
       scheduledDate: new Date(now_utc),
       workspaceId: workspaceId,
       roomName: room.roomName,
+      description: room.description
     };
-    createRoom(body).then(() => {
-      dataFetch();
-    });
+    createPublicRoom(body);
+    triggerRefreshRooms();
     handleClose();
   };
 
   return (
     <Modal open={open} onClose={handleClose}>
       <Box sx={style}>
-        <h3>Create new room</h3>
+        <h3>Create new public room</h3>
         <form onSubmit={handleSubmit}>
           <div className="form__group">
-            <label forhtml="roomName">Room name</label>
+            <label forhtml="roomName">Public room name</label>
             <input
               type="text"
               id="roomName"
@@ -77,11 +73,8 @@ export default function CreateRoomModal({
             />
           </div>
           <div className="form__group">
-            <label forhtml="roomName">Attendees</label>
-            <InviteUsers
-              selectedValues={invitedUsers}
-              setSelectedValues={setInvitedUsers}
-            />
+            <label forhtml="roomName">Description</label>
+            <textarea name="description" onChange={handleRoomChange} rows="4" cols="50"></textarea>
           </div>
           <div className="form__group">
             <label forhtml="date">Date and time</label>

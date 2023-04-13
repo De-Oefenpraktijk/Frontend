@@ -10,7 +10,6 @@ export default function SideBar() {
     //todo
   });
   return (
-    <>
       <div className="sidebar">
         <div className="sidebar__menu">
           <ul>
@@ -81,6 +80,5 @@ export default function SideBar() {
           </ul>
         </div>
       </div>
-    </>
   );
 }

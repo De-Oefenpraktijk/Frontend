@@ -2,3 +2,9 @@
 .card {
     max-width: 280px;
   }
+.addWorkspaceButton{
+  border-style: ridge;
+  max-height: 300px;
+  height: 90%;
+  justify-content: center;
+}

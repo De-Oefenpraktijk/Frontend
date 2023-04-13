@@ -1,12 +1,13 @@
 import axios from "axios";
-import { POSTROOMURL } from "./ConnectionStrings";
+import {POSTPUBLICROOMURL} from './ConnectionStrings'
 
-export default function createRoom(body) {
+export default function createPublicRoom(body) {
   const config = {
     method: "post",
-    url: POSTROOMURL,
+    url: POSTPUBLICROOMURL,
     headers: {
-      Authorization: "Bearer " + "aaa",
+    //TODO:    
+    //   Authorization: "Bearer " + "<key>",
       contentType: "application/json",
     },
     data: body,

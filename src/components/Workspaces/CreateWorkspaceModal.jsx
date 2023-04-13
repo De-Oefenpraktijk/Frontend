@@ -14,11 +14,7 @@ const style = {
   p: 4,
 };
 
-export default function CreateWorkspaceModal({
-  handleClose,
-  open,
-  updateForRefresh,
-}) {
+export default function CreateWorkspaceModal({ handleClose, open, dataFetch }) {
   const [workspaceName, setName] = useState("");
   const [imageFile, setImageFile] = useState(null);
 
@@ -38,11 +34,9 @@ export default function CreateWorkspaceModal({
     fd.append("name", workspaceName);
     fd.append("inputImageFile", imageFile);
 
-    console.log(fd.get("name"));
-    console.log(fd.get("inputImageFile"));
-
-    createWorkspace(fd);
-    updateForRefresh();
+    createWorkspace(fd).then(() => {
+      dataFetch();
+    });
     handleClose();
   };
 
