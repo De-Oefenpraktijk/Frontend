@@ -46,7 +46,8 @@ export default function JoinRoom() {
   }, [roomId]);
 
   return (
-    <div className="room">
+    <div className="room"
+    style={{"height": "80vh"}}>
       {room && (
         <JitsiMeeting
           // domain = { YOUR_DOMAIN }
@@ -66,7 +67,7 @@ export default function JoinRoom() {
             });
           }}
           getIFrameRef={(iframeRef) => {
-            iframeRef.style.height = "400px";
+            iframeRef.style.height = "100%";
           }}
         />
       )}
