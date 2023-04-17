@@ -43,12 +43,30 @@ export default function JoinRoom() {
   }, [user]);
 
   useEffect(() => {
-    if (location.state.room == null) {
-      navigate(-1); //if there is no room saved in the location, go back to the previous page
+    setRoom(location.state.room);
+    window.addEventListener("beforeunload", preventRefresh);
+    return () => {
+      window.removeEventListener("beforeunload", preventRefresh);
+    };
+
+    /*
+    if (location.state == null) {
+      console.log("HELLO WORLD");
+      console.log(location.state);
+
+      setRoom(location.state.room); //if there is no room saved in the location, go back to the previous page
     } else {
+      console.log("HELLO WORLD");
       setRoom(location.state.room);
     }
-  });
+    */
+  }, []);
+
+  const preventRefresh = (e) => {
+    e.preventDefault();
+    e.returnValue("");
+    navigate(`/workspace/${room.workspaceId}`);
+  };
 
   return (
     <div className="room" style={{ height: "80vh" }}>
