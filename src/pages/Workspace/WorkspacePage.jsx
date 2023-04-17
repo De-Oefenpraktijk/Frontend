@@ -167,10 +167,7 @@ export default function WorkspacePage() {
                     {handleDateDifference(room["scheduledDate"])}
                   </TableCell>
                   <TableCell align="center">
-                    <Button
-                      variant="outlined"
-                      onClick={() => joinRoom(room.roomId)}
-                    >
+                    <Button variant="outlined" onClick={() => joinRoom(room)}>
                       Join meeting
                     </Button>
                   </TableCell>
