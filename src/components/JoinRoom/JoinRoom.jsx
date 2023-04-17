@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 //import uuid v4
 import { v4 as uuid } from "uuid";
 import getRoom from "../../service/joinRoom";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 
 export default function JoinRoom() {
   // Skeletons
@@ -21,7 +21,7 @@ export default function JoinRoom() {
   const small_id = unique_id.slice(0, 8);
 
   // Params
-  const { roomId } = useParams();
+  //const { roomId } = useParams();
 
   // useState
   const [room, setRoom] = useState(null);
@@ -29,6 +29,7 @@ export default function JoinRoom() {
   const { user } = useAuth0();
   const [configSettings, setConfigSettings] = useState(configSettingsSkeleton);
   const navigate = useNavigate();
+  const location = useLocation();
 
   // helper functions
   const fetchRoom = async (roomId) => {
@@ -42,12 +43,15 @@ export default function JoinRoom() {
   }, [user]);
 
   useEffect(() => {
-    fetchRoom(roomId);
-  }, [roomId]);
+    if (location.state.room == null) {
+      navigate(-1); //if there is no room saved in the location, go back to the previous page
+    } else {
+      setRoom(location.state.room);
+    }
+  });
 
   return (
-    <div className="room"
-    style={{"height": "80vh"}}>
+    <div className="room" style={{ height: "80vh" }}>
       {room && (
         <JitsiMeeting
           // domain = { YOUR_DOMAIN }

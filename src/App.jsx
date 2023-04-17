@@ -25,9 +25,9 @@ function App() {
         <Route path="/organization" element={<Blank />} />
         <Route path="/workspaces" element={<WorkspacesPage />} />
         <Route path="/workspace/:workspaceId" element={<WorkspacePage />} />
-        <Route path="/workspace/join-room/:roomId" element={<JoinRoom />} />
+        <Route path="/workspace/join-room" element={<JoinRoom />} />
         <Route path="/profile" element={<ProfilePage />} />
-        <Route path="*" element={<Blank/>}/>
+        <Route path="*" element={<Blank />} />
       </Route>
     </Routes>
   );

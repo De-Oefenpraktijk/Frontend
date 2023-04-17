@@ -77,8 +77,8 @@ export default function WorkspacePage() {
   const triggerRefreshRoomPublic = () =>
     setRefreshRoomsPublic(!refreshRoomsPublic);
 
-  const joinRoom = (roomId) => {
-    navigate(`/workspace/join-room/${roomId}`);
+  const joinRoom = (room) => {
+    navigate(`/workspace/join-room`, { state: { room } });
   };
 
   //Effects
@@ -220,7 +220,7 @@ export default function WorkspacePage() {
                             <Button
                               variant="outlined"
                               size="large"
-                              onClick={() => joinRoom(publicRoom.roomId)}
+                              onClick={() => joinRoom(publicRoom)}
                             >
                               Join
                             </Button>
