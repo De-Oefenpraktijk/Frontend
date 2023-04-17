@@ -12,6 +12,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       clientId="NxfCO50lGG6Vc0jfJJFTd9OodstbIvSU"
       authorizationParams={{
         redirect_uri: window.location.origin,
+        audience: "http://localhost:5137",
+        scope: "create:public-rooms"
       }}
     >
       <App />

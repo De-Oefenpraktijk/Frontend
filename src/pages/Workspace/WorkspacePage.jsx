@@ -10,6 +10,7 @@ import Form from "react-bootstrap/Form";
 import getUserRoomsByWorkspace from "../../service/getUserRoomsByWorkspace";
 import "./WorkspacePage.css";
 import axios from "axios";
+import jwt from "jwt-decode";
 
 // Table imports
 import Table from "@mui/material/Table";
@@ -26,6 +27,9 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { GETPUBLICROOMURL } from "../../service/ConnectionStrings";
+// Const
+const CREATE_PUBLIC_ROOM_PERMISSION = "create:public-rooms";
+
 export default function WorkspacePage() {
   const { workspaceId } = useParams();
   const navigate = useNavigate();
@@ -38,9 +42,11 @@ export default function WorkspacePage() {
   const [refreshRooms, setRefreshRooms] = useState(false);
   const [refreshRoomsPublic, setRefreshRoomsPublic] = useState(false);
   const [publicRooms, setPublicRooms] = useState([]);
+  const [userCanCreatePublicRooms, setUserCanCreatePublicRooms] =
+    useState(false);
 
   //Params
-  const { user } = useAuth0();
+  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const userId = user.sub.split("|")[1];
 
   // Functions
@@ -89,6 +95,21 @@ export default function WorkspacePage() {
     dataFetch();
   }, []);
 
+  useEffect(() => {
+    const canCreatePublicRooms = async () => {
+      const token = await getAccessTokenSilently();
+      const decoded_token = jwt(token);
+      const { permissions } = decoded_token;
+      if (permissions.includes(CREATE_PUBLIC_ROOM_PERMISSION)) {
+        console.log("Has permissions");
+        setUserCanCreatePublicRooms(true);
+      } else {
+        setUserCanCreatePublicRooms(false);
+      }
+    };
+    canCreatePublicRooms();
+  }, [getAccessTokenSilently]);
+
   return (
     <div id="workspace-info">
       <h1>{workspaceName}</h1>
@@ -97,10 +118,11 @@ export default function WorkspacePage() {
         <Button variant="outlined" onClick={handlePrivateOpen}>
           Create a private meeting
         </Button>
-        <Button variant="outlined" onClick={handlePublicOpen}>
-          Create a public meeting
-        </Button>
-
+        {isAuthenticated && userCanCreatePublicRooms && (
+          <Button variant="outlined" onClick={handlePublicOpen}>
+            Create a public meeting
+          </Button>
+        )}
         <CreateRoomModal
           handleClose={handleClose}
           open={open}

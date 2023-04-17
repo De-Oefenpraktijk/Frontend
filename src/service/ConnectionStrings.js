@@ -14,6 +14,7 @@ export const POSTROOMURL = ROOMURL + "Room";
 
 export const GETPUBLICROOMURL = ROOMURL + "PublicRoom";
 
+// TODO: Change it ROOMURL
 export const POSTPUBLICROOMURL = ROOMURL + "PublicRoom";
 
 export const POSTWORKSPACEURL = ROOMURL + "Workspace";
