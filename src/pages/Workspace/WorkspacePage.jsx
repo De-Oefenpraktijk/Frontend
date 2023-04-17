@@ -196,7 +196,7 @@ export default function WorkspacePage() {
               >
                 <Box padding={0}>
                   {publicRooms.map((publicRoom) => (
-                    <>
+                    <div key={publicRoom.roomId}>
                       <Card sx={{ maxWidth: "100%" }}>
                         <CardContent>
                           <Typography gutterBottom variant="h4" component="div">
@@ -225,7 +225,7 @@ export default function WorkspacePage() {
                         </CardContent>
                       </Card>
                       <br></br>
-                    </>
+                    </div>
                   ))}
                 </Box>
               </Box>
