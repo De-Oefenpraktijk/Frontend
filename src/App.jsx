@@ -1,7 +1,6 @@
 import "./App.css";
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import HomePage from "./pages/Home/HomePage";
 import ProfilePage from "./pages/Profile/ProfilePage";
 import WorkspacesPage from "./pages/Workspaces/WorkspacesPage";
 import AppLayout from "./Layout/AppLayout";
@@ -14,7 +13,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<AppLayout />}>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<Blank />} />
         <Route path="/overview" element={<Blank />} />
         <Route path="/search" element={<Blank />} />
         <Route path="/social" element={<Blank />} />

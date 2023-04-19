@@ -42,7 +42,6 @@ export default function WorkspacePage() {
   const [publicRooms, setPublicRooms] = useState([]);
   const [refreshRooms, setRefreshRooms] = useState(false);
   const [refreshRoomsPublic, setRefreshRoomsPublic] = useState(false);
-  const [publicRooms, setPublicRooms] = useState([]);
   const [userCanCreatePublicRooms, setUserCanCreatePublicRooms] =
     useState(false);
 
@@ -212,7 +211,7 @@ export default function WorkspacePage() {
                             sx={{ fontWeight: "bold", m: 0 }}
                           >
                             Webinar starts in:{" "}
-                            {handleDateDifference(publicRoom.date)}
+                            {handleDateDifference(publicRoom.scheduledDate)}
                           </Typography>
                           <CardActions sx={{ float: "right", paddingRight: 0 }}>
                             <Button
@@ -232,63 +231,6 @@ export default function WorkspacePage() {
               </Box>
             </Paper>
           )}
-        </Box>
-      </div>
-
-      <div>
-        <Box paddingTop={2}>
-          <Form.Label>Available Webinars</Form.Label>
-
-          <Paper elevation={3}>
-            <Box
-              padding={0}
-              sx={{
-                display: "flex",
-                flexWrap: "wrap",
-                alignSelf: "flex-end",
-                "& > :not(style)": {
-                  m: 1,
-                  width: "100%",
-                  height: "100%",
-                },
-              }}
-            >
-              <Box padding={0}>
-                {publicRooms.map((publicRoom) => (
-                  <>
-                    <Card sx={{ maxWidth: "100%" }}>
-                      <CardContent>
-                        <Typography gutterBottom variant="h4" component="div">
-                          {publicRoom.roomName}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {publicRoom.description}
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          color="text.secondary"
-                          sx={{ fontWeight: "bold", m: 0 }}
-                        >
-                          Webinar starts in:{" "}
-                          {handleDateDifference(publicRoom.date)}
-                        </Typography>
-                        <CardActions sx={{ float: "right", paddingRight: 0 }}>
-                          <Button
-                            variant="outlined"
-                            size="large"
-                            onClick={() => joinRoom(publicRoom.roomId)}
-                          >
-                            Join
-                          </Button>
-                        </CardActions>
-                      </CardContent>
-                    </Card>
-                    <br></br>
-                  </>
-                ))}
-              </Box>
-            </Box>
-          </Paper>
         </Box>
       </div>
     </div>
