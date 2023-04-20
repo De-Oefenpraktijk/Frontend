@@ -5,11 +5,11 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Button from "@mui/material/Button";
 import { formatDistanceToNowStrict } from "date-fns";
 import Moment from "moment-timezone";
-import CreateRoomModal from "../../components/Workspaces/CreateRoomModal";
-import Form from "react-bootstrap/Form";
+import CreatePrivateRoomModal from "../../components/Workspaces/CreatePrivateRoomModal";
 import getUserRoomsByWorkspace from "../../service/getUserRoomsByWorkspace";
+import Form from "react-bootstrap/Form";
 import "./WorkspacePage.css";
-import axios from "axios";
+import getPublicRooms from "../../service/getPublicRooms";
 import jwt from "jwt-decode";
 
 // Table imports
@@ -26,7 +26,6 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { GETPUBLICROOMURL } from "../../service/ConnectionStrings";
 // Const
 const CREATE_PUBLIC_ROOM_PERMISSION = "create:public-rooms";
 
@@ -40,7 +39,6 @@ export default function WorkspacePage() {
   const [meetingRooms, setMeetingRooms] = useState([]);
   const [workspaceName, setWorkspaceName] = useState([]);
   const [publicRooms, setPublicRooms] = useState([]);
-  const [refreshRooms, setRefreshRooms] = useState(false);
   const [refreshRoomsPublic, setRefreshRoomsPublic] = useState(false);
   const [userCanCreatePublicRooms, setUserCanCreatePublicRooms] =
     useState(false);
@@ -65,7 +63,7 @@ export default function WorkspacePage() {
 
     return result;
   };
-  const dataFetch = async () => {
+  const fetchPrivateRooms = async () => {
     getUserRoomsByWorkspace(
       setMeetingRooms,
       setWorkspaceName,
@@ -73,9 +71,9 @@ export default function WorkspacePage() {
       userId
     );
   };
-  const triggerRefreshRoom = () => setRefreshRooms(!refreshRooms);
-  const triggerRefreshRoomPublic = () =>
-    setRefreshRoomsPublic(!refreshRoomsPublic);
+  const fetchPublicRooms = async () => {
+    getPublicRooms(workspaceId, setPublicRooms);
+  };
 
   const joinRoom = (room) => {
     navigate(`/workspace/join-room`, { state: { room } });
@@ -83,16 +81,8 @@ export default function WorkspacePage() {
 
   //Effects
   useEffect(() => {
-    //Set rooms and workspace name
-    axios
-      .get(`${GETPUBLICROOMURL}/${workspaceId}`)
-      .then((response) => {
-        setPublicRooms(response.data);
-      })
-      .catch((err) => {
-        console.log("error: " + err);
-      });
-    dataFetch();
+    fetchPublicRooms();
+    fetchPrivateRooms();
   }, []);
 
   useEffect(() => {
@@ -123,19 +113,19 @@ export default function WorkspacePage() {
             Create a public meeting
           </Button>
         )}
-        <CreateRoomModal
+        <CreatePrivateRoomModal
           handleClose={handleClose}
           open={open}
           workspaceId={workspaceId}
           userId={userId}
-          dataFetch={dataFetch}
+          fetchPrivateRooms={fetchPrivateRooms}
         />
         <CreatePublicRoomModal
           handleClose={handlePublicClose}
           open={openPublic}
           workspaceId={workspaceId}
           userId={userId}
-          triggerRefreshRooms={triggerRefreshRoomPublic}
+          fetchPublicRooms={fetchPublicRooms}
         />
       </div>
 

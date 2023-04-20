@@ -1,13 +1,12 @@
 import "./App.css";
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import ProfilePage from "./pages/Profile/ProfilePage";
 import WorkspacesPage from "./pages/Workspaces/WorkspacesPage";
 import AppLayout from "./Layout/AppLayout";
 import Blank from "./pages/NoContentPage/Blank";
 import WorkspacePage from "./pages/Workspace/WorkspacePage";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
-import JoinRoom from "./components/JoinRoom/JoinRoom";
+import RoomPage from "./pages/Room/RoomPage";
 
 function App() {
   return (
@@ -24,8 +23,8 @@ function App() {
         <Route path="/organization" element={<Blank />} />
         <Route path="/workspaces" element={<WorkspacesPage />} />
         <Route path="/workspace/:workspaceId" element={<WorkspacePage />} />
-        <Route path="/workspace/join-room" element={<JoinRoom />} />
-        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/workspace/join-room" element={<RoomPage />} />
+        <Route path="/profile" element={<Blank />} />
         <Route path="*" element={<Blank />} />
       </Route>
     </Routes>

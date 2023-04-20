@@ -20,7 +20,7 @@ export default function CreatePublicRoomModal({
   open,
   workspaceId,
   userId,
-  triggerRefreshRooms,
+  fetchPublicRooms,
 }) {
   const [room, setRoom] = React.useState({
     roomName: "",
@@ -54,11 +54,12 @@ export default function CreatePublicRoomModal({
       scheduledDate: new Date(now_utc),
       workspaceId: workspaceId,
       roomName: room.roomName,
-      description: room.description
+      description: room.description,
     };
 
-    createPublicRoom(body, getAccessTokenSilently);
-    triggerRefreshRooms();
+    createPublicRoom(body, getAccessTokenSilently).then(() =>
+      fetchPublicRooms()
+    );
     handleClose();
   };
 
@@ -78,7 +79,12 @@ export default function CreatePublicRoomModal({
           </div>
           <div className="form__group">
             <label forhtml="roomName">Description</label>
-            <textarea name="description" onChange={handleRoomChange} rows="4" cols="50"></textarea>
+            <textarea
+              name="description"
+              onChange={handleRoomChange}
+              rows="4"
+              cols="50"
+            ></textarea>
           </div>
           <div className="form__group">
             <label forhtml="date">Date and time</label>

@@ -7,7 +7,6 @@ export default function TopBar() {
   const location = useLocation();
   const { pathname } = location;
   const { user, logout } = useAuth0();
-  console.log(user)
 
   function title() {
     switch (pathname) {
@@ -57,7 +56,13 @@ export default function TopBar() {
                   <font-awesome-icon icon="fa-solid fa-user" />
                   <span>Profile</span>
                 </li>
-                <li onClick={() => logout({logoutParams:{returnTo:window.location.origin}})}>
+                <li
+                  onClick={() =>
+                    logout({
+                      logoutParams: { returnTo: window.location.origin },
+                    })
+                  }
+                >
                   <font-awesome-icon icon="fa-solid fa-arrow-right-from-bracket" />
                   <span>Logout</span>
                 </li>
