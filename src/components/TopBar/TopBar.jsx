@@ -56,7 +56,13 @@ export default function TopBar() {
                   <font-awesome-icon icon="fa-solid fa-user" />
                   <span>Profile</span>
                 </li>
-                <li onClick={() => logout({logoutParams:{returnTo:window.location.origin}})}>
+                <li
+                  onClick={() =>
+                    logout({
+                      logoutParams: { returnTo: window.location.origin },
+                    })
+                  }
+                >
                   <font-awesome-icon icon="fa-solid fa-arrow-right-from-bracket" />
                   <span>Logout</span>
                 </li>
