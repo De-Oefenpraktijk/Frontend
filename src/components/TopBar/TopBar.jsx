@@ -47,7 +47,7 @@ export default function TopBar() {
         <div className="topbar__profile">
           <div className="topbar__profile__dropdown">
             <div className="topbar__profile__dropdown__button">
-              <span>{user.given_name}</span>
+              <span>{user && user.given_name}</span>
               <font-awesome-icon icon="fa-solid fa-chevron-down" />
             </div>
             <div className="topbar__profile__dropdown__content">

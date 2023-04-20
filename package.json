@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "local-dev": "copy .\\src\\service\\ConnectionStrings.local.js .\\src\\service\\ConnectionStrings.js",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"

@@ -13,7 +13,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       authorizationParams={{
         redirect_uri: window.location.origin,
         audience: "http://localhost:5137",
-        scope: "create:public-rooms"
+        scope: "profile email create:public-rooms"
       }}
     >
       <App />

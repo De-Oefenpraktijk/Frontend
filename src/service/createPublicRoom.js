@@ -3,7 +3,7 @@ import {POSTPUBLICROOMURL} from './ConnectionStrings'
 
 export default async function createPublicRoom(body, getAccessTokenSilently) {
   try{
-    const token = await getAccessTokenSilently();
+    const token = await getAccessTokenSilently({ scope: 'create:public-rooms' });
     const config = {
       method: "post",
       url: POSTPUBLICROOMURL,
