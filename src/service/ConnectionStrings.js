@@ -12,7 +12,10 @@ export const GETROOMROOMURL = ROOMURL + "Room/room/";
 
 export const POSTROOMURL = ROOMURL + "Room";
 
-export const POSTPUBLICROOMURL = SOCIALSERVICEURL + "PublicRoom";
+export const GETPUBLICROOMURL = ROOMURL + "PublicRoom";
+
+// TODO: Change it ROOMURL
+export const POSTPUBLICROOMURL = ROOMURL + "PublicRoom";
 
 export const POSTWORKSPACEURL = ROOMURL + "Workspace";
 

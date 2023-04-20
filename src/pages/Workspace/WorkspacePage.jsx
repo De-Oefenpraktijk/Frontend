@@ -5,10 +5,12 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Button from "@mui/material/Button";
 import { formatDistanceToNowStrict } from "date-fns";
 import Moment from "moment-timezone";
-import CreateRoomModal from "../../components/Workspaces/CreateRoomModal";
-import Form from "react-bootstrap/Form";
+import CreatePrivateRoomModal from "../../components/Workspaces/CreatePrivateRoomModal";
 import getUserRoomsByWorkspace from "../../service/getUserRoomsByWorkspace";
+import Form from "react-bootstrap/Form";
 import "./WorkspacePage.css";
+import getPublicRooms from "../../service/getPublicRooms";
+import jwt from "jwt-decode";
 
 // Table imports
 import Table from "@mui/material/Table";
@@ -19,6 +21,14 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+// Const
+const CREATE_PUBLIC_ROOM_PERMISSION = "create:public-rooms";
+
 export default function WorkspacePage() {
   const { workspaceId } = useParams();
   const navigate = useNavigate();
@@ -28,11 +38,13 @@ export default function WorkspacePage() {
   const [openPublic, setOpenPublic] = useState(false); //Used for the Modal
   const [meetingRooms, setMeetingRooms] = useState([]);
   const [workspaceName, setWorkspaceName] = useState([]);
-  const [refreshRooms, setRefreshRooms] = useState(false);
+  const [publicRooms, setPublicRooms] = useState([]);
   const [refreshRoomsPublic, setRefreshRoomsPublic] = useState(false);
+  const [userCanCreatePublicRooms, setUserCanCreatePublicRooms] =
+    useState(false);
 
   //Params
-  const { user } = useAuth0();
+  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const userId = user.sub.split("|")[1];
 
   // Functions
@@ -51,20 +63,42 @@ export default function WorkspacePage() {
 
     return result;
   };
-  const dataFetch = async () => {
-    getUserRoomsByWorkspace(setMeetingRooms, setWorkspaceName,workspaceId,userId);
+  const fetchPrivateRooms = async () => {
+    getUserRoomsByWorkspace(
+      setMeetingRooms,
+      setWorkspaceName,
+      workspaceId,
+      userId
+    );
   };
-  const triggerRefreshRoom = () => setRefreshRooms(!refreshRooms);
-  const triggerRefreshRoomPublic = () => setRefreshRoomsPublic(!refreshRoomsPublic);
-  const joinRoom = (roomId) => {
-    navigate(`/workspace/join-room/${roomId}`);
+  const fetchPublicRooms = async () => {
+    getPublicRooms(workspaceId, setPublicRooms);
+  };
+
+  const joinRoom = (room) => {
+    navigate(`/workspace/join-room`, { state: { room } });
   };
 
   //Effects
   useEffect(() => {
-    //Set rooms and workspace name
-    dataFetch();
+    fetchPublicRooms();
+    fetchPrivateRooms();
   }, []);
+
+  useEffect(() => {
+    const canCreatePublicRooms = async () => {
+      const token = await getAccessTokenSilently();
+      const decoded_token = jwt(token);
+      const { permissions } = decoded_token;
+      if (permissions.includes(CREATE_PUBLIC_ROOM_PERMISSION)) {
+        console.log("Has permissions");
+        setUserCanCreatePublicRooms(true);
+      } else {
+        setUserCanCreatePublicRooms(false);
+      }
+    };
+    canCreatePublicRooms();
+  }, [getAccessTokenSilently]);
 
   return (
     <div id="workspace-info">
@@ -74,23 +108,24 @@ export default function WorkspacePage() {
         <Button variant="outlined" onClick={handlePrivateOpen}>
           Create a private meeting
         </Button>
-        <Button variant="outlined" onClick={handlePublicOpen}>
-          Create a public meeting
-        </Button>
-
-        <CreateRoomModal
+        {isAuthenticated && userCanCreatePublicRooms && (
+          <Button variant="outlined" onClick={handlePublicOpen}>
+            Create a public meeting
+          </Button>
+        )}
+        <CreatePrivateRoomModal
           handleClose={handleClose}
           open={open}
           workspaceId={workspaceId}
           userId={userId}
-          dataFetch={dataFetch}
+          fetchPrivateRooms={fetchPrivateRooms}
         />
         <CreatePublicRoomModal
           handleClose={handlePublicClose}
           open={openPublic}
           workspaceId={workspaceId}
           userId={userId}
-          triggerRefreshRooms={triggerRefreshRoomPublic}
+          fetchPublicRooms={fetchPublicRooms}
         />
       </div>
 
@@ -122,10 +157,7 @@ export default function WorkspacePage() {
                     {handleDateDifference(room["scheduledDate"])}
                   </TableCell>
                   <TableCell align="center">
-                    <Button
-                      variant="outlined"
-                      onClick={() => joinRoom(room.roomId)}
-                    >
+                    <Button variant="outlined" onClick={() => joinRoom(room)}>
                       Join meeting
                     </Button>
                   </TableCell>
@@ -134,6 +166,62 @@ export default function WorkspacePage() {
             </TableBody>
           </Table>
         </TableContainer>
+
+        <Box paddingTop={2}>
+          <Form.Label>Available Webinars</Form.Label>
+          {publicRooms.length > 0 && (
+            <Paper elevation={3}>
+              <Box
+                padding={0}
+                sx={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  alignSelf: "flex-end",
+                  "& > :not(style)": {
+                    m: 1,
+                    width: "100%",
+                    height: "100%",
+                  },
+                }}
+              >
+                <Box padding={0}>
+                  {publicRooms.map((publicRoom) => (
+                    <div key={publicRoom.roomId}>
+                      <Card sx={{ maxWidth: "100%" }}>
+                        <CardContent>
+                          <Typography gutterBottom variant="h4" component="div">
+                            {publicRoom.roomName}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {publicRoom.description}
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            color="text.secondary"
+                            sx={{ fontWeight: "bold", m: 0 }}
+                          >
+                            Webinar starts in:{" "}
+                            {handleDateDifference(publicRoom.scheduledDate)}
+                          </Typography>
+                          <CardActions sx={{ float: "right", paddingRight: 0 }}>
+                            <Button
+                              variant="outlined"
+                              size="large"
+                              onClick={() => joinRoom(publicRoom)}
+                            >
+                              Join
+                            </Button>
+                          </CardActions>
+                        </CardContent>
+                      </Card>
+                      <br></br>
+                    </div>
+                  ))}
+                </Box>
+              </Box>
+            </Paper>
+          )}
+        </Box>
       </div>
     </div>
   );

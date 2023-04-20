@@ -10,6 +10,7 @@ export default function TopBar() {
 
   function title() {
     switch (pathname) {
+      case "/":
       case "/overview":
         return <h1>OVERVIEW</h1>;
       case "/search":
@@ -32,7 +33,7 @@ export default function TopBar() {
         return <h1>PROFILE</h1>;
       case pathname.match(/\/workspace\/[a-z0-9]{24}/)?.input:
         return <h1>WORKSPACE</h1>;
-      case pathname.match(/\/workspace\/join-room\/[a-z0-9]{24}/)?.input:
+      case "/workspace/join-room":
         return <h1>JOIN A ROOM</h1>;
       default:
         return <h1>404</h1>;
@@ -55,7 +56,13 @@ export default function TopBar() {
                   <font-awesome-icon icon="fa-solid fa-user" />
                   <span>Profile</span>
                 </li>
-                <li onClick={() => logout({logoutParams:{returnTo:window.location.origin}})}>
+                <li
+                  onClick={() =>
+                    logout({
+                      logoutParams: { returnTo: window.location.origin },
+                    })
+                  }
+                >
                   <font-awesome-icon icon="fa-solid fa-arrow-right-from-bracket" />
                   <span>Logout</span>
                 </li>
