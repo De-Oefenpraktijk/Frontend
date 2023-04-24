@@ -38,7 +38,7 @@ jobs:
           args:
             -Dsonar.projectKey=De-Oefenpraktijk_Frontend
             -Dsonar.organization=de-oefenpraktijk
-            -Dsonar.sources=./src
+            -Dsonar.sources=github.workspace.De-Oefenpraktijk.Frontend
 
   hello:
     runs-on: ubuntu-latest
