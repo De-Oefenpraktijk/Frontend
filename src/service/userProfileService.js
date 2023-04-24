@@ -1,10 +1,10 @@
 import axios from "axios";
-import { GETUSERURL } from "./ConnectionStrings";
+import { GET_USER_URL, UPDATE_USER_URL } from "./ConnectionStrings";
 
 function getUserById(userId) {
   const config = {
     method: "get",
-    url: GETUSERURL + userId,
+    url: GET_USER_URL + userId,
     headers: {
       contentType: "application/json",
     },
@@ -17,6 +17,25 @@ function getUserById(userId) {
       alert("Error fetching a user");
     });
 }
+
+function updateUserById(userId, userData) {
+  const config = {
+    method: "put",
+    url: UPDATE_USER_URL + userId,
+    headers: {
+      contentType: "application/json",
+    },
+    data: userData,
+  };
+
+  return axios(config)
+    .then((response) => response.data)
+    .catch(() => {
+      console.error("Error updating the user");
+      alert("Error updating the user");
+    });
+}
 export default {
-  getUserByIds,
+  getUserById,
+  updateUserById
 };

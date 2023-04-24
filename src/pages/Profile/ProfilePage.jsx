@@ -10,7 +10,7 @@ import "./ProfilePage.css";
 const userDataSkeleton = {
   firstName: "",
   lastName: "",
-  userName: "",
+  username: "",
   email: "",
   workplace: "",
 };
@@ -19,9 +19,29 @@ export default function ProfilePage() {
   const [userData, setUserData] = useState(userDataSkeleton);
   const { user } = useAuth0();
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUserData({...userData, [name]: value});
+  };
+
+  const updateProfileData = async () => {
+    try {
+      const response = await userProfileService.updateUserById("6446667fd901bf084fe59382", userData);
+      console.log("Updated user: ", response);
+    } catch(e) {
+      console.log("Problem occured while updating the profile information!");
+      alert("Problem occured while updating the profile information!");
+    }
+  }
+
   useEffect(() => {
-    userProfileService.getUserByIds();
-  });
+    const getUserData = async () => {
+      const response = await userProfileService.getUserById("6446667fd901bf084fe59382");
+      setUserData(response);
+    };
+    getUserData();
+  }, []);
+
   return (
     <>
       <div className="profile">
@@ -39,46 +59,61 @@ export default function ProfilePage() {
             <div>
               <label>First Name</label>
               <input
+                name="firstName" 
                 className="input-default"
                 type="text"
                 placeholder="First Name"
+                defaultValue={userData.firstName}
+                onChange={handleChange}
               />
             </div>
             <div>
               <label>Last Name</label>
               <input
+                name="lastName"
                 className="input-default"
                 type="text"
                 placeholder="Last Name"
+                defaultValue={userData.lastName}
+                onChange={handleChange}
               />
             </div>
 
             <div>
               <label>Username</label>
               <input
+                name="username"
                 className="input-default"
                 type="text"
                 placeholder="Username"
+                defaultValue={userData.username}
+                onChange={handleChange}
               />
             </div>
             <div>
               <label>Email</label>
               <input
+                name="email"
                 className="input-default"
                 type="text"
                 placeholder="Email"
+                defaultValue={userData.email}
+                onChange={handleChange}
               />
             </div>
             <div>
               <label>Workplace</label>
               <input
+                name="workplace"
                 className="input-default"
                 type="text"
                 placeholder="Workplace"
+                defaultValue={userData.workplace}
+                onChange={handleChange}
               />
             </div>
             <div className="buttons" v-if="isOwnProfile()">
-              <Button>Update</Button>
+              <Button onClick={updateProfileData}>Update</Button>
             </div>
           </div>
         </div>
