@@ -2,11 +2,9 @@ name: Hello world workflow
 
 on:
   push:
-    branches:
-      - feature/test_workflow
+    branches: [ "development", "feature/**" ]
   pull_request:
-    branches:
-      - feature/test_workflow
+    branches: [ "development", "feature/**" ]
   workflow_dispatch:
 
 jobs:
@@ -39,21 +37,3 @@ jobs:
           args:
             -Dsonar.projectKey=De-Oefenpraktijk_Frontend
             -Dsonar.organization=de-oefenpraktijk
-
-  hello:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: hello world
-        run: echo "hello world"
-        shell: bash
-      - name: Log Workspace Path
-        run: | 
-          echo ${{ github.workspace }}
-          ls ${{ github.workspace }}/src/
-  goodbye: 
-    runs-on: ubuntu-latest
-    steps:
-      - name: goodbye world
-        run: echo "Goodbye"
-        shell: bash
