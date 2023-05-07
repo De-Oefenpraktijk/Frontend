@@ -36,7 +36,7 @@ jobs:
         with:
           projectKey: De-Oefenpraktijk_Frontend
           organization: de-oefenpraktijk
-          projectBaseDir: ${{ github.workspace }}
+          projectBaseDir: ${{ github.workspace }}/src/
           args:
             -Dsonar.projectKey=De-Oefenpraktijk_Frontend
             -Dsonar.organization=de-oefenpraktijk
