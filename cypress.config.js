@@ -11,6 +11,6 @@ export default defineConfig({
   defaultCommandTimeout: 5000,
 
   e2e: {
-    specPattern: "cypress/e2e/1-getting-started"
+    specPattern: "cypress_test.js"
   },
 });
