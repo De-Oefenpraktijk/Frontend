@@ -38,7 +38,7 @@ jobs:
             -Dsonar.projectKey=De-Oefenpraktijk_Frontend
             -Dsonar.organization=de-oefenpraktijk
   
-    End_to_end:
+  End_to_end:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
