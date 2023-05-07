@@ -55,7 +55,7 @@ jobs:
         with:
           browser: chrome
           record: true
-          # key: ${{ secrets.CYPRESS_RECORD_KEY }}
+          key: ${{ secrets.CYPRESS_RECORD_KEY }}
           config-file: cypress.config.js
           # spec: ${{ github.workspace }}/cypress_test.js
           headless: true
