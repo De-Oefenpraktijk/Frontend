@@ -42,11 +42,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install dependencies
         run: npm ci
-
+      
+      - name: Check path content
+        run: ls ${{ github.workspace }}
+      
       - name: Run Cypress tests
         uses: cypress-io/github-action@v2
         with:
