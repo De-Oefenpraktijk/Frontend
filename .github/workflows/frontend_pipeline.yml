@@ -1,4 +1,4 @@
-name: Hello world workflow
+name: Frontend pipeline
 
 on:
   push:
@@ -37,3 +37,22 @@ jobs:
           args:
             -Dsonar.projectKey=De-Oefenpraktijk_Frontend
             -Dsonar.organization=de-oefenpraktijk
+  
+    End_to_end:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v2
+        with:
+          browser: chrome
+          record: true
+          # key: ${{ secrets.CYPRESS_RECORD_KEY }}
+          config-file: ./cypress.json
+          spec: ./cypress_test.js
+          headless: true
