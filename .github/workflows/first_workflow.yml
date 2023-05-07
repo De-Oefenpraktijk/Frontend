@@ -37,8 +37,7 @@ jobs:
           args:
             -Dsonar.projectKey=De-Oefenpraktijk_Frontend
             -Dsonar.organization=de-oefenpraktijk
-            -Dsonar.projectBaseDir=./Frontend
-
+            -Dsonar.projectBaseDir=./De-Oefenpraktijk/Frontend
 
   hello:
     runs-on: ubuntu-latest
