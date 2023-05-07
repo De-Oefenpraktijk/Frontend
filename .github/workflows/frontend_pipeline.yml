@@ -40,6 +40,9 @@ jobs:
   
   End_to_end:
     runs-on: ubuntu-latest
+
+    env:
+      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -55,7 +58,6 @@ jobs:
         with:
           browser: chrome
           record: true
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           config-file: cypress.config.js
           # spec: ${{ github.workspace }}/cypress_test.js
           headless: true
