@@ -9,11 +9,8 @@ export default defineConfig({
   screenshotsFolder: "cypress/screenshots",
   chromeWebSecurity: false,
   defaultCommandTimeout: 5000,
-  integrationFolder: "cypress/e2e/1-getting-started",
 
   e2e: {
-    setupNodeEvents(on, config) {
-      console.log("Tests done")
-    },
+    specPattern: "cypress/e2e/1-getting-started"
   },
 });
