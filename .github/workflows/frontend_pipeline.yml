@@ -49,6 +49,9 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Print CYPRESS_RECORD_KEY
+        run: echo $CYPRESS_RECORD_KEY
       
       - name: Check path content
         run: ls ${{ github.workspace }}
