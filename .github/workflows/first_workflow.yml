@@ -37,7 +37,7 @@ jobs:
           args:
             -Dsonar.projectKey=De-Oefenpraktijk_Frontend
             -Dsonar.organization=de-oefenpraktijk
-            -Dsonar.projectBaseDir=./../../
+            -Dsonar.projectBaseDir=./
 
   hello:
     runs-on: ubuntu-latest
@@ -47,7 +47,9 @@ jobs:
         run: echo "hello world"
         shell: bash
       - name: Log Workspace Path
-        run: echo ${{ github.workspace }}
+        run: | 
+          echo ${{ github.workspace }}
+          ls ${{ github.workspace }}
   goodbye: 
     runs-on: ubuntu-latest
     steps:
