@@ -49,7 +49,7 @@ jobs:
       - name: Log Workspace Path
         run: | 
           echo ${{ github.workspace }}
-          ls ${{ github.workspace }}
+          ls ./src/
   goodbye: 
     runs-on: ubuntu-latest
     steps:
