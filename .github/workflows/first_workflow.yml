@@ -37,6 +37,9 @@ jobs:
           projectKey: De-Oefenpraktijk_Frontend
           organization: de-oefenpraktijk
           projectBaseDir: ${{ github.workspace }}
+          args:
+            -Dsonar.projectKey=De-Oefenpraktijk_Frontend
+            -Dsonar.organization=de-oefenpraktijk
 
   hello:
     runs-on: ubuntu-latest
