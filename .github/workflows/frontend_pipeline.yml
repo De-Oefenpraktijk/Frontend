@@ -38,7 +38,7 @@ jobs:
             -Dsonar.projectKey=De-Oefenpraktijk_Frontend
             -Dsonar.organization=de-oefenpraktijk
   
-  End_to_end:
+  Cypress_end_to_end:
     runs-on: ubuntu-latest
 
     env:
@@ -51,7 +51,7 @@ jobs:
         run: npm ci
       
       - name: Run Cypress tests
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v3
         with:
           browser: chrome
           record: true
