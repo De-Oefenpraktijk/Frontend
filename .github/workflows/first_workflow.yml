@@ -46,6 +46,8 @@ jobs:
       - name: hello world
         run: echo "hello world"
         shell: bash
+      - name: Log Workspace Path
+        run: echo ${{ github.workspace }}
   goodbye: 
     runs-on: ubuntu-latest
     steps:
