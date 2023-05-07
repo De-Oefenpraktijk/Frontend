@@ -34,8 +34,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}   # Generate a token on Sonarcloud.io, add it to the secrets of this repo with the name SONAR_TOKEN (Settings > Secrets > Actions > add new repository secret)
         with:
-          projectKey: De-Oefenpraktijk_Frontend
-          organization: de-oefenpraktijk
           projectBaseDir: ${{ github.workspace }}/src/
           args:
             -Dsonar.projectKey=De-Oefenpraktijk_Frontend
@@ -51,7 +49,7 @@ jobs:
       - name: Log Workspace Path
         run: | 
           echo ${{ github.workspace }}
-          ls ${{ github.workspace }}
+          ls ${{ github.workspace }}/src/
   goodbye: 
     runs-on: ubuntu-latest
     steps:
