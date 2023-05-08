@@ -2,7 +2,6 @@ export const ROOMURL = "https://oefenpraktijkapi.westeurope.cloudapp.azure.com/r
 
 export const SOCIALSERVICEURL = "https://oefenpraktijkapi.westeurope.cloudapp.azure.com/social/";
 
-// https://localhost:7147/api/v1/User/GetUserById/6446667fd901bf084fe59382
 export const PROFILESERVICEURL = "https://oefenpraktijkapi.westeurope.cloudapp.azure.com/profile/api/v1/";
 
 export const GETWORKSPACESURL = ROOMURL + "Workspace";
