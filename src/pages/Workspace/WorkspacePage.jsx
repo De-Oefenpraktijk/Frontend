@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import CreatePublicRoomModal from "../../components/Workspaces/CreatePublicRoomModal";
 import { useAuth0 } from "@auth0/auth0-react";
 import Button from "@mui/material/Button";
-import { formatDistanceToNowStrict } from "date-fns";
+import { formatDistanceToNowStrict, subHours, parseISO } from "date-fns";
 import Moment from "moment-timezone";
 import CreatePrivateRoomModal from "../../components/Workspaces/CreatePrivateRoomModal";
 import getUserRoomsByWorkspace from "../../service/getUserRoomsByWorkspace";
@@ -37,8 +37,10 @@ export default function WorkspacePage() {
   const [open, setOpen] = useState(false); //Used for the Modal
   const [openPublic, setOpenPublic] = useState(false); //Used for the Modal
   const [meetingRooms, setMeetingRooms] = useState([]);
+  const [recentMeetingRooms, setRecentMeetingRooms] = useState([]);
   const [workspaceName, setWorkspaceName] = useState([]);
   const [publicRooms, setPublicRooms] = useState([]);
+  const [recentPublicRooms, setRecenPublicRooms] = useState([]);
   const [refreshRoomsPublic, setRefreshRoomsPublic] = useState(false);
   const [userCanCreatePublicRooms, setUserCanCreatePublicRooms] =
     useState(false);
@@ -63,6 +65,7 @@ export default function WorkspacePage() {
 
     return result;
   };
+
   const fetchPrivateRooms = async () => {
     getUserRoomsByWorkspace(
       setMeetingRooms,
@@ -70,9 +73,36 @@ export default function WorkspacePage() {
       workspaceId,
       userId
     );
+
+    //sets to display only meetings within the last 2 hours
+    let recentPrivateRooms = [];
+    const currentDate = Date();
+
+    for (const recentPrivateRoom of meetingRooms) {
+      if (
+        new Date(recentPrivateRoom.scheduledDate) >
+        subHours(new Date(currentDate), 2)
+      ) {
+        recentPrivateRooms.push(recentPrivateRoom);
+      }
+      setRecentMeetingRooms(recentPrivateRooms);
+    }
   };
+
   const fetchPublicRooms = async () => {
     getPublicRooms(workspaceId, setPublicRooms);
+    //sets to display only meetings within the last 2 hours
+    let recentPublicRooms = [];
+    const currentDate = Date();
+    for (const recentPublicRoom of publicRooms) {
+      if (
+        new Date(recentPublicRoom.scheduledDate) >
+        subHours(new Date(currentDate), 2)
+      ) {
+        recentPublicRooms.push(recentPublicRoom);
+      }
+      setRecentMeetingRooms(recentPublicRooms);
+    }
   };
 
   const joinRoom = (room) => {
@@ -140,9 +170,9 @@ export default function WorkspacePage() {
                 <TableCell align="center">Meeting starts in</TableCell>
                 <TableCell align="center">Join</TableCell>
               </TableRow>
-            </TableHead>
+            </TableHead>{" "}
             <TableBody>
-              {meetingRooms.map((room) => (
+              {recentMeetingRooms.map((room) => (
                 <TableRow
                   key={room.roomId}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -169,7 +199,7 @@ export default function WorkspacePage() {
 
         <Box paddingTop={2}>
           <Form.Label>Available Webinars</Form.Label>
-          {publicRooms.length > 0 && (
+          {recentPublicRooms.length > 0 && (
             <Paper elevation={3}>
               <Box
                 padding={0}
