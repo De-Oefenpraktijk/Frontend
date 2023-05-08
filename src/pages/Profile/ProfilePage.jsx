@@ -39,7 +39,6 @@ export default function ProfilePage() {
   }
 
   useEffect(() => {
-    console.log(process.env.NODE_ENV)
     const getUserData = async () => {
       const response = await userProfileService.getUserByEmail(getUserEmail());
       setUserData(response);
