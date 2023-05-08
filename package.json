@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "local-dev": "copy .\\src\\service\\ConnectionStrings.local.js .\\src\\service\\ConnectionStrings.js",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
@@ -19,6 +20,7 @@
     "cypress": "^12.11.0",
     "date-fns": "^2.29.3",
     "form-data": "^4.0.0",
+    "jwt-decode": "^3.1.2",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.41",
     "react": "^18.2.0",

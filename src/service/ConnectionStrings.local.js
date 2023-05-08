@@ -1,6 +1,6 @@
-export const ROOMURL = "https://oefenpraktijkapi.westeurope.cloudapp.azure.com/room/api/v1/";
+export const ROOMURL = "http://localhost:5137/api/v1/";
 
-export const SOCIALSERVICEURL = "https://oefenpraktijkapi.westeurope.cloudapp.azure.com/social/";
+export const SOCIALSERVICEURL = "http://localhost:5672/";
 
 export const GETWORKSPACESURL = ROOMURL + "Workspace";
 

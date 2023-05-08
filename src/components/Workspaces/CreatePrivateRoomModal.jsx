@@ -15,12 +15,12 @@ const style = {
   p: 4,
 };
 
-export default function CreateRoomModal({
+export default function CreatePrivateRoomModal({
   handleClose,
   open,
   workspaceId,
   userId,
-  dataFetch,
+  fetchPrivateRooms,
 }) {
   const [room, setRoom] = React.useState({
     roomName: "",
@@ -57,7 +57,7 @@ export default function CreateRoomModal({
       roomName: room.roomName,
     };
     createRoom(body).then(() => {
-      dataFetch();
+      fetchPrivateRooms();
     });
     handleClose();
   };

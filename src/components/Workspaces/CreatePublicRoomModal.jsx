@@ -1,6 +1,7 @@
 import React from "react";
 import createPublicRoom from "../../service/createPublicRoom";
 import { Modal, Box } from "@mui/material";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const style = {
   position: "absolute",
@@ -19,13 +20,15 @@ export default function CreatePublicRoomModal({
   open,
   workspaceId,
   userId,
-  triggerRefreshRooms,
+  fetchPublicRooms,
 }) {
   const [room, setRoom] = React.useState({
     roomName: "",
     description: "",
     scheduledDate: new Date(),
   });
+
+  const { getAccessTokenSilently } = useAuth0();
 
   const handleRoomChange = (e) => {
     const { name, value } = e.target;
@@ -51,10 +54,12 @@ export default function CreatePublicRoomModal({
       scheduledDate: new Date(now_utc),
       workspaceId: workspaceId,
       roomName: room.roomName,
-      description: room.description
+      description: room.description,
     };
-    createPublicRoom(body);
-    triggerRefreshRooms();
+
+    createPublicRoom(body, getAccessTokenSilently).then(() =>
+      fetchPublicRooms()
+    );
     handleClose();
   };
 
@@ -74,7 +79,12 @@ export default function CreatePublicRoomModal({
           </div>
           <div className="form__group">
             <label forhtml="roomName">Description</label>
-            <textarea name="description" onChange={handleRoomChange} rows="4" cols="50"></textarea>
+            <textarea
+              name="description"
+              onChange={handleRoomChange}
+              rows="4"
+              cols="50"
+            ></textarea>
           </div>
           <div className="form__group">
             <label forhtml="date">Date and time</label>

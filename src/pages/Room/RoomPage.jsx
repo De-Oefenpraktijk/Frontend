@@ -2,12 +2,9 @@ import { JitsiMeeting } from "@jitsi/react-sdk";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState, useEffect } from "react";
 
-//import uuid v4
-import { v4 as uuid } from "uuid";
-import getRoom from "../../service/joinRoom";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
-export default function JoinRoom() {
+export default function RoomPage() {
   // Skeletons
   const configSettingsSkeleton = {
     startWithAudioMuted: true,
@@ -16,25 +13,13 @@ export default function JoinRoom() {
     enableEmailInStats: false,
   };
 
-  // Const vars
-  const unique_id = uuid();
-  const small_id = unique_id.slice(0, 8);
-
-  // Params
-  const { roomId } = useParams();
-
   // useState
   const [room, setRoom] = useState(null);
   const [username, setUsername] = useState("Example User");
   const { user } = useAuth0();
   const [configSettings, setConfigSettings] = useState(configSettingsSkeleton);
   const navigate = useNavigate();
-
-  // helper functions
-  const fetchRoom = async (roomId) => {
-    const room = await getRoom(roomId);
-    setRoom(room.rooms[0]);
-  };
+  const location = useLocation();
 
   // useEffect
   useEffect(() => {
@@ -42,11 +27,15 @@ export default function JoinRoom() {
   }, [user]);
 
   useEffect(() => {
-    fetchRoom(roomId);
-  }, [roomId]);
+    if (location.state == null) {
+      navigate("/workspaces"); //if there is no room saved in the location, go back to the previous page
+    } else {
+      setRoom(location.state.room);
+    }
+  }, []);
 
   return (
-    <div className="room">
+    <div className="room" style={{ height: "80vh" }}>
       {room && (
         <JitsiMeeting
           // domain = { YOUR_DOMAIN }
@@ -66,7 +55,7 @@ export default function JoinRoom() {
             });
           }}
           getIFrameRef={(iframeRef) => {
-            iframeRef.style.height = "400px";
+            iframeRef.style.height = "100%";
           }}
         />
       )}
