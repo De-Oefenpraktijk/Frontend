@@ -1,6 +1,6 @@
-export const ROOMURL = "https://roaring-tulumba-fc8d3c.netlify.app/api/v1/";
+export const ROOMURL = "https://oefenpraktijkapi.westeurope.cloudapp.azure.com/room/api/v1/";
 
-export const SOCIALSERVICEURL = "https://roaring-tulumba-fc8d3c.netlify.app/";
+export const SOCIALSERVICEURL = "https://oefenpraktijkapi.westeurope.cloudapp.azure.com/social/";
 
 export const GETWORKSPACESURL = ROOMURL + "Workspace";
 
