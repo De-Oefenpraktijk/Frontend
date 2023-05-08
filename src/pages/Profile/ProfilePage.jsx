@@ -47,7 +47,7 @@ export default function ProfilePage() {
       <div className="profile">
         <div className="mainCard left-card">
           <div className="mainCard__header">
-            <span>user</span>
+            <span>User</span>
           </div>
           <div className="profile_image">
             <img
