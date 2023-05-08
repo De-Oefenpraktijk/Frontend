@@ -17,7 +17,6 @@ const userDataSkeleton = {
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState(userDataSkeleton);
-  const [userEmail, setUserEmail] = useState("example@gmail.com");
   const { user } = useAuth0();
 
   const handleChange = (e) => {
@@ -25,9 +24,13 @@ export default function ProfilePage() {
     setUserData({...userData, [name]: value});
   };
 
+  const getUserEmail = () => {
+    return process.env.NODE_ENV === "production" ? user.email : "example@gmail.com"
+  }
+
   const updateProfileData = async () => {
     try {
-      const response = await userProfileService.updateUserByEmail(userEmail, userData);
+      const response = await userProfileService.updateUserByEmail(getUserEmail(), userData);
       console.log("Updated user: ", response);
     } catch(e) {
       console.log("Problem occured while updating the profile information!");
@@ -36,17 +39,9 @@ export default function ProfilePage() {
   }
 
   useEffect(() => {
-    // =========== !!! ===========
-    // To be able to update a user on local host, you need to create a user with such email in your local DB
-    // =========== !!! ===========
-    const email = process.env.NODE_ENV === "production" ? user.email : "example@gmail.com"
-    setUserEmail(email)
-  }, [user])
-
-  useEffect(() => {
     console.log(process.env.NODE_ENV)
     const getUserData = async () => {
-      const response = await userProfileService.getUserByEmail(userEmail);
+      const response = await userProfileService.getUserByEmail(getUserEmail());
       setUserData(response);
     };
     getUserData();
