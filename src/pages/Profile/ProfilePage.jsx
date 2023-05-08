@@ -26,7 +26,7 @@ export default function ProfilePage() {
 
   const updateProfileData = async () => {
     try {
-      const response = await userProfileService.updateUserByEmail("ivan@gmail.com", userData);
+      const response = await userProfileService.updateUserByEmail("test13@gmail.com", userData);
       console.log("Updated user: ", response);
     } catch(e) {
       console.log("Problem occured while updating the profile information!");
@@ -36,7 +36,7 @@ export default function ProfilePage() {
 
   useEffect(() => {
     const getUserData = async () => {
-      const response = await userProfileService.getUserByEmail("ivan@gmail.com");
+      const response = await userProfileService.getUserByEmail("test13@gmail.com");
       setUserData(response);
     };
     getUserData();
