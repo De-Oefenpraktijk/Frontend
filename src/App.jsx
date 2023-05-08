@@ -7,6 +7,7 @@ import Blank from "./pages/NoContentPage/Blank";
 import WorkspacePage from "./pages/Workspace/WorkspacePage";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
 import RoomPage from "./pages/Room/RoomPage";
+import ProfilePage from "./pages/Profile/ProfilePage";
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
         <Route path="/workspaces" element={<WorkspacesPage />} />
         <Route path="/workspace/:workspaceId" element={<WorkspacePage />} />
         <Route path="/workspace/join-room" element={<RoomPage />} />
-        <Route path="/profile" element={<Blank />} />
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="*" element={<Blank />} />
       </Route>
     </Routes>
