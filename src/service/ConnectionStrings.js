@@ -25,6 +25,12 @@ export const GETINVITEDUSERSURL = SOCIALSERVICEURL + "Person/dtos/emailandid/";
 
 export const GET_USER_URL = PROFILESERVICEURL + "User/GetUserById/";
 
+export const GET_ALL_FUNCTION_URL = PROFILESERVICEURL + "Function/GetAllFunctions";
+
+export const GET_ALL_EDUCATIONS_URL = PROFILESERVICEURL + "Education/GetEducations";
+
+export const GET_ALL_SPECIALIZATIONS_URL = PROFILESERVICEURL + "Specialization/GetAllSpecializations";
+
 export const GET_USER_BY_EMAIL_URL = PROFILESERVICEURL + "User/GetUserByEmail/";
 
 export const UPDATE_USER_URL = PROFILESERVICEURL + "User/UpdateUser/";
