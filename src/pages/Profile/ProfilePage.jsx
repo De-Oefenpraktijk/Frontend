@@ -4,7 +4,8 @@ import { useEffect } from "react";
 import { useState } from "react";
 import userProfileService from "../../service/userProfileService";
 import { useAuth0 } from "@auth0/auth0-react";
-
+import TextField from '@mui/material/TextField';
+import { InputLabel } from '@mui/material';
 import "./ProfilePage.css";
 
 const userDataSkeleton = {
@@ -61,58 +62,55 @@ export default function ProfilePage() {
           </div>
           <div className="personal_details">
             <div>
-              <label>First Name</label>
-              <input
-                name="firstName" 
-                className="input-default"
-                type="text"
-                placeholder="First Name"
-                defaultValue={userData.firstName}
+              <InputLabel>First Name</InputLabel>
+              <TextField
+                name="firstName"
+                id="outlined-basic" 
+                variant="outlined"
+                value={userData.firstName}
                 onChange={handleChange}
               />
             </div>
             <div>
-              <label>Last Name</label>
-              <input
+              <InputLabel>Last Name</InputLabel>
+              <TextField
                 name="lastName"
-                className="input-default"
-                type="text"
-                placeholder="Last Name"
-                defaultValue={userData.lastName}
+                id="outlined-basic" 
+                variant="outlined"
+                value={userData.lastName}
                 onChange={handleChange}
               />
             </div>
 
             <div>
-              <label>Username</label>
-              <input
+              <InputLabel>Username</InputLabel>
+              <TextField
                 name="username"
-                className="input-default"
-                type="text"
-                placeholder="Username"
-                defaultValue={userData.username}
+                id="outlined-basic" 
+                variant="outlined"
+                disabled
+                value={userData.username}
                 onChange={handleChange}
               />
             </div>
             <div>
-              <label>Email</label>
-              <input
+              <InputLabel>Email</InputLabel>
+              <TextField
                 name="email"
-                className="input-default"
-                type="text"
-                placeholder="Email"
-                defaultValue={userData.email}
+                id="outlined-basic" 
+                variant="outlined"
+                value={userData.email}
+                disabled
                 onChange={handleChange}
               />
             </div>
             <div>
-              <label>Workplace</label>
-              <input
+              <InputLabel>Workplace</InputLabel>
+              <TextField
                 name="workplace"
-                className="input-default"
-                type="text"
-                placeholder="Workplace"
-                defaultValue={userData.workplace}
+                id="outlined-basic" 
+                variant="outlined"
+                value={userData.workplace}
                 onChange={handleChange}
               />
             </div>
