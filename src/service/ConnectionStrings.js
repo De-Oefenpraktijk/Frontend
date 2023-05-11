@@ -1,9 +1,8 @@
-export const ROOMURL = "http://localhost:5137/api/v1/";
+export const ROOMURL = "https://oefenpraktijkapi.westeurope.cloudapp.azure.com/room/api/v1/";
 
-export const SOCIALSERVICEURL = "http://localhost:5672/";
+export const SOCIALSERVICEURL = "https://oefenpraktijkapi.westeurope.cloudapp.azure.com/social/";
 
-// https://localhost:7147/api/v1/User/GetUserById/6446667fd901bf084fe59382
-export const PROFILESERVICEURL = "https://localhost:7147/api/v1/";
+export const PROFILESERVICEURL = "https://oefenpraktijkapi.westeurope.cloudapp.azure.com/profile/api/v1/";
 
 export const GETWORKSPACESURL = ROOMURL + "Workspace";
 
@@ -25,4 +24,9 @@ export const POSTWORKSPACEURL = ROOMURL + "Workspace";
 export const GETINVITEDUSERSURL = SOCIALSERVICEURL + "Person/dtos/emailandid/";
 
 export const GET_USER_URL = PROFILESERVICEURL + "User/GetUserById/";
-export const UPDATE_USER_URL = PROFILESERVICEURL + "User/UPdateUser/";
+
+export const GET_USER_BY_EMAIL_URL = PROFILESERVICEURL + "User/GetUserByEmail/";
+
+export const UPDATE_USER_URL = PROFILESERVICEURL + "User/UpdateUser/";
+
+export const UPDATE_USER_BY_EMAIL_URL = PROFILESERVICEURL + "User/UpdateUserByEmail/";

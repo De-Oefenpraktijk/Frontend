@@ -24,9 +24,13 @@ export default function ProfilePage() {
     setUserData({...userData, [name]: value});
   };
 
+  const getUserEmail = () => {
+    return process.env.NODE_ENV === "production" ? user.email : "example@gmail.com"
+  }
+
   const updateProfileData = async () => {
     try {
-      const response = await userProfileService.updateUserById("6446667fd901bf084fe59382", userData);
+      const response = await userProfileService.updateUserByEmail(getUserEmail(), userData);
       console.log("Updated user: ", response);
     } catch(e) {
       console.log("Problem occured while updating the profile information!");
@@ -36,7 +40,7 @@ export default function ProfilePage() {
 
   useEffect(() => {
     const getUserData = async () => {
-      const response = await userProfileService.getUserById("6446667fd901bf084fe59382");
+      const response = await userProfileService.getUserByEmail(getUserEmail());
       setUserData(response);
     };
     getUserData();
@@ -47,7 +51,7 @@ export default function ProfilePage() {
       <div className="profile">
         <div className="mainCard left-card">
           <div className="mainCard__header">
-            <span>user</span>
+            <span>User</span>
           </div>
           <div className="profile_image">
             <img
