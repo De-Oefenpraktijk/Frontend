@@ -1,11 +1,8 @@
-import { Button } from "@mui/material";
 import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
-import userProfileService from "../../service/userProfileService";
+import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import TextField from '@mui/material/TextField';
-import { InputLabel } from '@mui/material';
+import { InputLabel, TextField, Button } from '@mui/material';
+import userProfileService from "../../service/userProfileService";
 import "./ProfilePage.css";
 
 const userDataSkeleton = {
