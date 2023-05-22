@@ -62,3 +62,23 @@
   display: flex;
   align-items: center;
 }
+
+.addNew {
+  margin-left: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 6px;
+  background: #000;
+  color: #fff;
+  display: flex;
+  align-items: center;
+}
+.MuiAutocomplete-paper {
+  max-height: 300px; /* Adjust this value as needed */
+  overflow-y: auto;
+}
+.autocompleteContainer {
+  max-height: 135px; /* Set a maximum height for the Autocomplete */
+  overflow-y: auto;
+}
