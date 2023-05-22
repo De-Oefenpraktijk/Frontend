@@ -110,8 +110,8 @@ export default function ProfilePage() {
             />
           </div>
           <div className="personal_details">
-            <Grid container direction="row">
-              <Grid item xs={6}>
+            <Grid container direction="row" gap={2} style={{ 'justify-content': 'center' }}>
+              <Grid item xs={5}>
                 {/* Basic Profile information */}
                 <Stack spacing={3}>
                   <div>
@@ -169,7 +169,7 @@ export default function ProfilePage() {
                   </div>
                 </Stack>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={5}>
                 <Stack spacing={3} sx={{ maxWidth: '360px', maxHeight: '360px' }}>
                   {/* Function */}
                   <Select
