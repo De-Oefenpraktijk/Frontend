@@ -3,13 +3,9 @@
   justify-content: center;
 }
 
-/* .left-card {
-  flex: 0 0 50%;
+ .left-card {
+  padding-inline: 30px;
 }
-
-.right-card {
-  flex: 0 0 50%;
-} */
 
 
 .profile_image {

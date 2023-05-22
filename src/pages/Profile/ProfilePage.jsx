@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { 
-  InputLabel, 
-  TextField, 
+import {
+  InputLabel,
+  TextField,
   Button,
   Autocomplete,
   MenuItem,
   Stack,
   Select,
-  Chip
-} 
-from '@mui/material';
+  Chip,
+  Grid,
+} from "@mui/material";
 import userProfileService from "../../service/userProfileService";
 import getAllFunctions from "../../service/getAllFunctions";
 import getAllEducations from "../../service/getAllEducations";
@@ -32,7 +32,7 @@ const userDataSkeleton = {
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState(userDataSkeleton);
-  const [allFunctions, setAllFunctions] = useState([{id:"",name:""}]);
+  const [allFunctions, setAllFunctions] = useState([{ id: "", name: "" }]);
   const [allEducations, setAllEducations] = useState([""]);
   const [allSpecializations, setAllSpecializations] = useState([""]);
 
@@ -110,153 +110,163 @@ export default function ProfilePage() {
             />
           </div>
           <div className="personal_details">
-            <Stack spacing={3} sx={{ width: 300 }}>
-              {/* Basic Profile information */}
-              <div>
-              <InputLabel>First Name</InputLabel>
-              <TextField
-                name="firstName"
-                id="outlined-basic" 
-                variant="outlined"
-                value={userData.firstName}
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <InputLabel>Last Name</InputLabel>
-              <TextField
-                name="lastName"
-                id="outlined-basic" 
-                variant="outlined"
-                value={userData.lastName}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div>
-              <InputLabel>Username</InputLabel>
-              <TextField
-                name="username"
-                id="outlined-basic" 
-                variant="outlined"
-                disabled
-                value={userData.username}
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <InputLabel>Email</InputLabel>
-              <TextField
-                name="email"
-                id="outlined-basic" 
-                variant="outlined"
-                value={userData.email}
-                disabled
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <InputLabel>Workplace</InputLabel>
-              <TextField
-                name="workplace"
-                id="outlined-basic" 
-                variant="outlined"
-                value={userData.workplace}
-                onChange={handleChange}
-              />
-            </div>
-              {/* Function */}
-              <Select
-                id="standard-select-currency"
-                name="function"
-                label="Function"
-                value={userData.function}
-                onChange={handleChange}
-                variant="standard"
-              >
-                {allFunctions.map((option) => (
-                  <MenuItem key={option.id} value={option.name}>
-                    {option.name}
-                  </MenuItem>
-                ))}
-              </Select>
-
-              {/* Educations */}
-              <Autocomplete
-                multiple
-                id="tags-standard"
-                name="educations"
-                options={allEducations.map((education) => education.name)}
-                onChange={handleSelectEducationsChange}
-                value={userData.educations}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="standard"
-                    label="Educations"
-                    placeholder="Favorites"
-                  />
-                )}
-              />
-
-              {/* Specializations */}
-              <Autocomplete
-                multiple
-                name="specializations"
-                onChange={handleSelectSpecializationsChange}
-                id="tags-standard"
-                options={allSpecializations.map((specialization)=>specialization.name)}
-                value={userData.specializations} //TODO Change
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="standard"
-                    label="Specializations"
-                    placeholder="Favorites"
-                  />
-                )}
-              />
-
-              {/* Biography */}
-              <TextField
-                id="outlined-multiline-static"
-                label="Biography"
-                name="biography"
-                onChange={handleChange}
-                multiline
-                rows={4}
-                value={userData.biography} //TODO Change
-              />
-
-              {/* Hobbies */}
-              <Autocomplete
-                multiple
-                id="tags-filled"
-                value={userData.hobbies}
-                name="hobbies"
-                onChange={handleSelectHobbiesChange}
-                options={[""]}
-                freeSolo
-                renderTags={(value, getTagProps) =>
-                  value.map((option, index) => (
-                    <Chip
+            <Grid container direction="row">
+              <Grid item xs={6}>
+                {/* Basic Profile information */}
+                <Stack spacing={3}>
+                  <div>
+                    <InputLabel>First Name</InputLabel>
+                    <TextField
+                      name="firstName"
+                      id="outlined-basic"
                       variant="outlined"
-                      label={option}
-                      {...getTagProps({ index })}
+                      value={userData.firstName}
+                      onChange={handleChange}
                     />
-                  ))
-                }
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="filled"
-                    label="Hobbies"
-                    placeholder="Your hobbies"
-                  />
-                )}
-              />
-            </Stack>
+                  </div>
+                  <div>
+                    <InputLabel>Last Name</InputLabel>
+                    <TextField
+                      name="lastName"
+                      id="outlined-basic"
+                      variant="outlined"
+                      value={userData.lastName}
+                      onChange={handleChange}
+                    />
+                  </div>
 
+                  <div>
+                    <InputLabel>Username</InputLabel>
+                    <TextField
+                      name="username"
+                      id="outlined-basic"
+                      variant="outlined"
+                      disabled
+                      value={userData.username}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div>
+                    <InputLabel>Email</InputLabel>
+                    <TextField
+                      name="email"
+                      id="outlined-basic"
+                      variant="outlined"
+                      value={userData.email}
+                      disabled
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div>
+                    <InputLabel>Workplace</InputLabel>
+                    <TextField
+                      name="workplace"
+                      id="outlined-basic"
+                      variant="outlined"
+                      value={userData.workplace}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </Stack>
+              </Grid>
+              <Grid item xs={6}>
+                <Stack spacing={3} sx={{ maxWidth: '360px', maxHeight: '360px' }}>
+                  {/* Function */}
+                  <Select
+                    id="standard-select-currency"
+                    name="function"
+                    label="Function"
+                    value={userData.function}
+                    onChange={handleChange}
+                    variant="standard"
+                  >
+                    {allFunctions.map((option) => (
+                      <MenuItem key={option.id} value={option.name}>
+                        {option.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+
+                  {/* Educations */}
+                  <Autocomplete
+                    multiple
+                    id="tags-standard"
+                    name="educations"
+                    options={allEducations.map((education) => education.name)}
+                    onChange={handleSelectEducationsChange}
+                    value={userData.educations}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="standard"
+                        label="Educations"
+                        placeholder="Favorites"
+                      />
+                    )}
+                  />
+
+                  {/* Specializations */}
+                  <Autocomplete
+                    multiple
+                    name="specializations"
+                    onChange={handleSelectSpecializationsChange}
+                    id="tags-standard"
+                    options={allSpecializations.map(
+                      (specialization) => specialization.name
+                    )}
+                    value={userData.specializations} //TODO Change
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="standard"
+                        label="Specializations"
+                        placeholder="Favorites"
+                      />
+                    )}
+                  />
+
+                  {/* Biography */}
+                  <TextField
+                    id="outlined-multiline-static"
+                    label="Biography"
+                    name="biography"
+                    onChange={handleChange}
+                    multiline
+                    rows={4}
+                    value={userData.biography} //TODO Change
+                  />
+
+                  {/* Hobbies */}
+                  <Autocomplete
+                    multiple
+                    id="tags-filled"
+                    value={userData.hobbies}
+                    name="hobbies"
+                    onChange={handleSelectHobbiesChange}
+                    options={[""]}
+                    freeSolo
+                    ListboxProps={{ style: { maxHeight: 150 } }}
+                    renderTags={(value, getTagProps) =>
+                      value.map((option, index) => (
+                        <Chip
+                          variant="outlined"
+                          label={option}
+                          {...getTagProps({ index })}
+                        />
+                      ))
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="filled"
+                        label="Hobbies"
+                        placeholder="Your hobbies"
+                      />
+                    )}
+                  />
+                </Stack>
+              </Grid>
+            </Grid>
             <div className="buttons" v-if="isOwnProfile()">
               <Button onClick={updateProfileData}>Update</Button>
             </div>
