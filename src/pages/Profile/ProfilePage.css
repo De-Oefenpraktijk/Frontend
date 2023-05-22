@@ -3,11 +3,6 @@
   justify-content: center;
 }
 
- .left-card {
-  padding-inline: 30px;
-}
-
-
 .profile_image {
   display: flex;
   align-items: center;
@@ -36,38 +31,13 @@
   justify-content: center;
 }
 
-.personal_details button {
-  height: 40px;
-  border-radius: 10px;
-  border: none;
-  margin: 10px;
-  padding: 10px;
-  background-color: #f5f5f5;
-  color: #5e5e5e;
-}
-
-.personal_details button:hover {
-  background-color: #5e5e5e;
-  color: #ffffff;
-  cursor: pointer;
+.buttons {
+  margin-top: 20px;
 }
 
 .follow-button {
   margin-top: 20px;
   padding: 20px;
-}
-
-.right {
-  width: 50%;
-  height: 100%;
-  background-color: #c8c8c8;
-  border-radius: 10px;
-  padding: 20px;
-  margin: 20px;
-}
-
-.right h1 {
-  font-size: 20px;
 }
 
 .educations,

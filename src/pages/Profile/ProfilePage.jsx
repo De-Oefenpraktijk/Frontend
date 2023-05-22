@@ -269,7 +269,7 @@ export default function ProfilePage() {
               </Grid>
             </Grid>
             <div className="buttons" v-if="isOwnProfile()">
-              <Button onClick={updateProfileData}>Update</Button>
+              <Button variant="outlined" onClick={updateProfileData}>Update</Button>
             </div>
           </div>
         </div>
