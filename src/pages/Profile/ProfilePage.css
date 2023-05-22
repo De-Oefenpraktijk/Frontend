@@ -2,10 +2,13 @@
   display: flex;
   justify-content: center;
 }
+.mainCard {
+  width: 90%;
+  padding: 10px 0;
+}
 
 .profile_image {
   display: flex;
-  align-items: center;
   justify-content: center;
 }
 
@@ -21,7 +24,7 @@
   align-items: center;
   justify-content: center;
   margin-top: 20px;
-  margin-bottom: 20px;
+  padding: 10px 40px;
 }
 
 .personal_details .buttons {
@@ -29,15 +32,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-}
-
-.buttons {
   margin-top: 20px;
-}
-
-.follow-button {
-  margin-top: 20px;
-  padding: 20px;
 }
 
 .educations,
@@ -61,24 +56,4 @@
   color: #fff;
   display: flex;
   align-items: center;
-}
-
-.addNew {
-  margin-left: 10px;
-  font-size: 12px;
-  font-weight: 600;
-  padding: 8px 14px;
-  border-radius: 6px;
-  background: #000;
-  color: #fff;
-  display: flex;
-  align-items: center;
-}
-.MuiAutocomplete-paper {
-  max-height: 300px; /* Adjust this value as needed */
-  overflow-y: auto;
-}
-.autocompleteContainer {
-  max-height: 135px; /* Set a maximum height for the Autocomplete */
-  overflow-y: auto;
 }

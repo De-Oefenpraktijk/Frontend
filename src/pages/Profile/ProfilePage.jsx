@@ -97,10 +97,7 @@ export default function ProfilePage() {
   return (
     <>
       <div className="profile">
-        <div className="mainCard left-card">
-          <div className="mainCard__header">
-            <span>User</span>
-          </div>
+        <div className="mainCard">
           <div className="profile_image">
             <img
               src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
@@ -111,12 +108,12 @@ export default function ProfilePage() {
             <Grid
               container
               direction="row"
-              gap={2}
+              gap={4}
               style={{ justifyContent: "center" }}
             >
-              <Grid item xs={5}>
+              <Grid item xs={12} md={4}>
                 {/* Basic Profile information */}
-                <Stack spacing={4.5}>
+                <Stack spacing={4.9}>
                   <div>
                     <TextField
                       name="firstName"
@@ -125,6 +122,7 @@ export default function ProfilePage() {
                       variant="outlined"
                       value={userData.firstName}
                       onChange={handleChange}
+                      sx={{ minWidth: "300px", width:"100%"}}
                     />
                   </div>
                   <div>
@@ -135,6 +133,7 @@ export default function ProfilePage() {
                       variant="outlined"
                       value={userData.lastName}
                       onChange={handleChange}
+                      sx={{ minWidth: "300px", width:"100%"}}
                     />
                   </div>
 
@@ -147,6 +146,7 @@ export default function ProfilePage() {
                       disabled
                       value={userData.username}
                       onChange={handleChange}
+                      sx={{ minWidth: "300px", width:"100%"}}
                     />
                   </div>
                   <div>
@@ -158,6 +158,7 @@ export default function ProfilePage() {
                       value={userData.email}
                       disabled
                       onChange={handleChange}
+                      sx={{ minWidth: "300px", width:"100%"}}
                     />
                   </div>
                   <div>
@@ -167,13 +168,14 @@ export default function ProfilePage() {
                       label="Workplace"
                       variant="outlined"
                       value={userData.workplace}
+                      sx={{ minWidth: "300px", width:"100%"}}
                       onChange={handleChange}
                     />
                   </div>
                 </Stack>
               </Grid>
-              <Grid item xs={5}>
-                <Stack spacing={3} sx={{ maxWidth: "450px" }}>
+              <Grid item xs={12} md={6}>
+                <Stack spacing={3} >
                   {/* Function */}
                   <TextField
                     id="standard-select-currency"
@@ -219,6 +221,8 @@ export default function ProfilePage() {
                     options={allSpecializations.map(
                       (specialization) => specialization.name
                     )}
+                    // classes={{ inputRoot: "autocompleteContainer" }}
+
                     limitTags={2}
                     value={userData.specializations} //TODO Change
                     renderInput={(params) => (
@@ -252,6 +256,7 @@ export default function ProfilePage() {
                     options={[""]}
                     size="small"
                     freeSolo
+                    open={false}
                     classes={{ inputRoot: "autocompleteContainer" }}
                     ListboxProps={{ style: { maxHeight: 150 } }}
                     limitTags={3}
