@@ -113,7 +113,7 @@ export default function ProfilePage() {
             <Grid container direction="row" gap={2} style={{ 'justify-content': 'center' }}>
               <Grid item xs={5}>
                 {/* Basic Profile information */}
-                <Stack spacing={3}>
+                <Stack spacing={4.5}>
                   <div>
                     <InputLabel>First Name</InputLabel>
                     <TextField
@@ -170,7 +170,7 @@ export default function ProfilePage() {
                 </Stack>
               </Grid>
               <Grid item xs={5}>
-                <Stack spacing={3} sx={{ maxWidth: '360px', maxHeight: '360px' }}>
+                <Stack spacing={3} sx={{ maxWidth: '450px' }}>
                   {/* Function */}
                   <Select
                     id="standard-select-currency"
@@ -245,6 +245,7 @@ export default function ProfilePage() {
                     onChange={handleSelectHobbiesChange}
                     options={[""]}
                     freeSolo
+                    classes={{ inputRoot: 'autocompleteContainer' }} 
                     ListboxProps={{ style: { maxHeight: 150 } }}
                     renderTags={(value, getTagProps) =>
                       value.map((option, index) => (

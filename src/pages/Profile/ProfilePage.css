@@ -104,3 +104,11 @@
   display: flex;
   align-items: center;
 }
+.MuiAutocomplete-paper {
+  max-height: 300px; /* Adjust this value as needed */
+  overflow-y: auto;
+}
+.autocompleteContainer {
+  max-height: 135px; /* Set a maximum height for the Autocomplete */
+  overflow-y: auto;
+}
