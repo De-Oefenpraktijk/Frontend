@@ -110,7 +110,12 @@ export default function ProfilePage() {
             />
           </div>
           <div className="personal_details">
-            <Grid container direction="row" gap={2} style={{ 'justify-content': 'center' }}>
+            <Grid
+              container
+              direction="row"
+              gap={2}
+              style={{ justifyContent: "center" }}
+            >
               <Grid item xs={5}>
                 {/* Basic Profile information */}
                 <Stack spacing={4.5}>
@@ -170,22 +175,23 @@ export default function ProfilePage() {
                 </Stack>
               </Grid>
               <Grid item xs={5}>
-                <Stack spacing={3} sx={{ maxWidth: '450px' }}>
+                <Stack spacing={3} sx={{ maxWidth: "450px" }}>
                   {/* Function */}
-                  <Select
+                  <TextField
                     id="standard-select-currency"
+                    labelId="select-label"
                     name="function"
-                    label="Function"
                     value={userData.function}
+                    select
+                    label="Function"
                     onChange={handleChange}
-                    variant="standard"
                   >
                     {allFunctions.map((option) => (
                       <MenuItem key={option.id} value={option.name}>
                         {option.name}
                       </MenuItem>
                     ))}
-                  </Select>
+                  </TextField>
 
                   {/* Educations */}
                   <Autocomplete
@@ -195,10 +201,11 @@ export default function ProfilePage() {
                     options={allEducations.map((education) => education.name)}
                     onChange={handleSelectEducationsChange}
                     value={userData.educations}
+                    limitTags={2}
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        variant="standard"
+                        variant="outlined"
                         label="Educations"
                         placeholder="Favorites"
                       />
@@ -214,11 +221,12 @@ export default function ProfilePage() {
                     options={allSpecializations.map(
                       (specialization) => specialization.name
                     )}
+                    limitTags={2}
                     value={userData.specializations} //TODO Change
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        variant="standard"
+                        variant="outlined"
                         label="Specializations"
                         placeholder="Favorites"
                       />
@@ -244,9 +252,11 @@ export default function ProfilePage() {
                     name="hobbies"
                     onChange={handleSelectHobbiesChange}
                     options={[""]}
+                    size="small"
                     freeSolo
-                    classes={{ inputRoot: 'autocompleteContainer' }} 
+                    classes={{ inputRoot: "autocompleteContainer" }}
                     ListboxProps={{ style: { maxHeight: 150 } }}
+                    limitTags={3}
                     renderTags={(value, getTagProps) =>
                       value.map((option, index) => (
                         <Chip
@@ -259,7 +269,7 @@ export default function ProfilePage() {
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        variant="filled"
+                        variant="outlined"
                         label="Hobbies"
                         placeholder="Your hobbies"
                       />
@@ -269,7 +279,9 @@ export default function ProfilePage() {
               </Grid>
             </Grid>
             <div className="buttons" v-if="isOwnProfile()">
-              <Button variant="outlined" onClick={updateProfileData}>Update</Button>
+              <Button variant="outlined" onClick={updateProfileData}>
+                Update
+              </Button>
             </div>
           </div>
         </div>
