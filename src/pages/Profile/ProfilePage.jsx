@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
-  InputLabel,
   TextField,
   Button,
   Autocomplete,
   MenuItem,
   Stack,
-  Select,
   Chip,
   Grid,
 } from "@mui/material";
@@ -120,20 +118,20 @@ export default function ProfilePage() {
                 {/* Basic Profile information */}
                 <Stack spacing={4.5}>
                   <div>
-                    <InputLabel>First Name</InputLabel>
                     <TextField
                       name="firstName"
                       id="outlined-basic"
+                      label="First name"
                       variant="outlined"
                       value={userData.firstName}
                       onChange={handleChange}
                     />
                   </div>
                   <div>
-                    <InputLabel>Last Name</InputLabel>
                     <TextField
                       name="lastName"
                       id="outlined-basic"
+                      label="Last name"
                       variant="outlined"
                       value={userData.lastName}
                       onChange={handleChange}
@@ -141,10 +139,10 @@ export default function ProfilePage() {
                   </div>
 
                   <div>
-                    <InputLabel>Username</InputLabel>
                     <TextField
                       name="username"
                       id="outlined-basic"
+                      label="Username"
                       variant="outlined"
                       disabled
                       value={userData.username}
@@ -152,10 +150,10 @@ export default function ProfilePage() {
                     />
                   </div>
                   <div>
-                    <InputLabel>Email</InputLabel>
                     <TextField
                       name="email"
                       id="outlined-basic"
+                      label="Email"
                       variant="outlined"
                       value={userData.email}
                       disabled
@@ -163,10 +161,10 @@ export default function ProfilePage() {
                     />
                   </div>
                   <div>
-                    <InputLabel>Workplace</InputLabel>
                     <TextField
                       name="workplace"
                       id="outlined-basic"
+                      label="Workplace"
                       variant="outlined"
                       value={userData.workplace}
                       onChange={handleChange}
@@ -179,12 +177,12 @@ export default function ProfilePage() {
                   {/* Function */}
                   <TextField
                     id="standard-select-currency"
-                    labelId="select-label"
                     name="function"
                     value={userData.function}
-                    select
                     label="Function"
                     onChange={handleChange}
+                    variant="outlined"
+                    select
                   >
                     {allFunctions.map((option) => (
                       <MenuItem key={option.id} value={option.name}>
