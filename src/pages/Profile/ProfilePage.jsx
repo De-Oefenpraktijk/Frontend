@@ -108,10 +108,10 @@ export default function ProfilePage() {
             <Grid
               container
               direction="row"
-              gap={4}
+              gap={10}
               style={{ justifyContent: "center" }}
             >
-              <Grid item xs={12} md={4}>
+              <Grid item md={12} lg={4}>
                 {/* Basic Profile information */}
                 <Stack spacing={4.9}>
                   <div>
@@ -122,7 +122,7 @@ export default function ProfilePage() {
                       variant="outlined"
                       value={userData.firstName}
                       onChange={handleChange}
-                      sx={{ minWidth: "300px", width:"100%"}}
+                      sx={{ minWidth: "300px", width: "100%" }}
                     />
                   </div>
                   <div>
@@ -133,7 +133,7 @@ export default function ProfilePage() {
                       variant="outlined"
                       value={userData.lastName}
                       onChange={handleChange}
-                      sx={{ minWidth: "300px", width:"100%"}}
+                      sx={{ minWidth: "300px", width: "100%" }}
                     />
                   </div>
 
@@ -146,7 +146,7 @@ export default function ProfilePage() {
                       disabled
                       value={userData.username}
                       onChange={handleChange}
-                      sx={{ minWidth: "300px", width:"100%"}}
+                      sx={{ minWidth: "300px", width: "100%" }}
                     />
                   </div>
                   <div>
@@ -158,7 +158,7 @@ export default function ProfilePage() {
                       value={userData.email}
                       disabled
                       onChange={handleChange}
-                      sx={{ minWidth: "300px", width:"100%"}}
+                      sx={{ minWidth: "300px", width: "100%" }}
                     />
                   </div>
                   <div>
@@ -168,14 +168,14 @@ export default function ProfilePage() {
                       label="Workplace"
                       variant="outlined"
                       value={userData.workplace}
-                      sx={{ minWidth: "300px", width:"100%"}}
+                      sx={{ minWidth: "300px", width: "100%" }}
                       onChange={handleChange}
                     />
                   </div>
                 </Stack>
               </Grid>
-              <Grid item xs={12} md={6}>
-                <Stack spacing={3} >
+              <Grid item md={12} lg={6}>
+                <Stack spacing={3}>
                   {/* Function */}
                   <TextField
                     id="standard-select-currency"
