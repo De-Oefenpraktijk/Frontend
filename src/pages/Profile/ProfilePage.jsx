@@ -115,20 +115,20 @@ export default function ProfilePage() {
                 {/* Basic Profile information */}
                 <Stack spacing={3}>
                   <div>
-                    <InputLabel>First Name</InputLabel>
                     <TextField
                       name="firstName"
                       id="outlined-basic"
+                      label="First name"
                       variant="outlined"
                       value={userData.firstName}
                       onChange={handleChange}
                     />
                   </div>
                   <div>
-                    <InputLabel>Last Name</InputLabel>
                     <TextField
                       name="lastName"
                       id="outlined-basic"
+                      label="Last name"
                       variant="outlined"
                       value={userData.lastName}
                       onChange={handleChange}
@@ -136,10 +136,10 @@ export default function ProfilePage() {
                   </div>
 
                   <div>
-                    <InputLabel>Username</InputLabel>
                     <TextField
                       name="username"
                       id="outlined-basic"
+                      label="Username"
                       variant="outlined"
                       disabled
                       value={userData.username}
@@ -147,10 +147,10 @@ export default function ProfilePage() {
                     />
                   </div>
                   <div>
-                    <InputLabel>Email</InputLabel>
                     <TextField
                       name="email"
                       id="outlined-basic"
+                      label="Email"
                       variant="outlined"
                       value={userData.email}
                       disabled
@@ -158,10 +158,10 @@ export default function ProfilePage() {
                     />
                   </div>
                   <div>
-                    <InputLabel>Workplace</InputLabel>
                     <TextField
                       name="workplace"
                       id="outlined-basic"
+                      label="Workplace"
                       variant="outlined"
                       value={userData.workplace}
                       onChange={handleChange}
@@ -172,20 +172,21 @@ export default function ProfilePage() {
               <Grid item xs={5}>
                 <Stack spacing={3} sx={{ maxWidth: '360px', maxHeight: '360px' }}>
                   {/* Function */}
-                  <Select
+                  <TextField
                     id="standard-select-currency"
                     name="function"
-                    label="Function"
                     value={userData.function}
                     onChange={handleChange}
-                    variant="standard"
+                    label="Function"
+                    variant="outlined"
+                    select
                   >
                     {allFunctions.map((option) => (
                       <MenuItem key={option.id} value={option.name}>
                         {option.name}
                       </MenuItem>
                     ))}
-                  </Select>
+                  </TextField>
 
                   {/* Educations */}
                   <Autocomplete
