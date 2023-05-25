@@ -12,6 +12,8 @@ import "./WorkspacePage.css";
 import getPublicRooms from "../../service/getPublicRooms";
 import jwt from "jwt-decode";
 
+import BasicTabs from "../../components/Workspaces/TabPanel";
+
 // Table imports
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -83,6 +85,7 @@ export default function WorkspacePage() {
   useEffect(() => {
     fetchPublicRooms();
     fetchPrivateRooms();
+    console.log(meetingRooms);
   }, []);
 
   useEffect(() => {
@@ -103,6 +106,7 @@ export default function WorkspacePage() {
   return (
     <div id="workspace-info">
       <h1>{workspaceName}</h1>
+      <BasicTabs workspaceName={workspaceName}></BasicTabs>
 
       <div id="room-options" style={{ textAlign: "right" }}>
         <Button variant="outlined" onClick={handlePrivateOpen}>
@@ -130,7 +134,7 @@ export default function WorkspacePage() {
       </div>
 
       <div id="room-list">
-        <Form.Label>Meeting names</Form.Label>
+        {/* <Form.Label>Meeting names</Form.Label>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
@@ -165,9 +169,9 @@ export default function WorkspacePage() {
               ))}
             </TableBody>
           </Table>
-        </TableContainer>
+        </TableContainer> */}
 
-        <Box paddingTop={2}>
+        {/* <Box paddingTop={2}>
           <Form.Label>Available Webinars</Form.Label>
           {publicRooms.length > 0 && (
             <Paper elevation={3}>
@@ -221,7 +225,7 @@ export default function WorkspacePage() {
               </Box>
             </Paper>
           )}
-        </Box>
+        </Box> */}
       </div>
     </div>
   );
