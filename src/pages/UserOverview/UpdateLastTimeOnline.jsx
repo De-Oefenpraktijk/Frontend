@@ -5,12 +5,11 @@ import { useAuth0 } from "@auth0/auth0-react";
 const UpdateLastTimeOnline = () => {
   const TIME_INTERVAL = 60000;
   const { user } = useAuth0();
-  const userId = user.sub.split("|")[1];
-
+  const email = user.email;
   useEffect(() => {
     const interval = setInterval(() => {
       axios
-        .put(`https://oefenpraktijkapi.westeurope.cloudapp.azure.com/profile/api/v1/User/UpdateActivityStatus/${userId}`)
+        .put(`https://oefenpraktijkapi.westeurope.cloudapp.azure.com/profile/api/v1/User/UpdateActivityStatus/${email}`)
         .then(response => {
           console.log("PUT request sent successfully. User is online.");
           // Handle response or perform additional actions if needed
