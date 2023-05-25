@@ -13,6 +13,7 @@ import Chip from "@mui/material/Chip";
 import TextField from "@mui/material/TextField";
 import Switch from "@mui/material/Switch";
 import { FormControlLabel } from "@mui/material";
+import {getUsersActivityStatuses} from "../../service/userProfileService"
 
 const sample = [
   ["FrozenYoghurt", false],
@@ -125,9 +126,18 @@ function rowContent(_index, row) {
 export default function ReactVirtualizedTable() {
     const [searchQuery, setSearchQuery] = React.useState(""); // State variable for search query
     const [showOnlineOnly, setShowOnlineOnly] = React.useState(false); // State variable for online-only switch
+
+    const [users, setUsers] = React.useState([]);
+    const dataFetch = async () => {
+      getWorkspaces(setUsers);
+    };
+  
+    useEffect(() => {
+      dataFetch();
+    }, []);
   
     // Filter the rows based on the search query
-    const filteredRows = rows.filter((row) =>
+    const filteredRows = users.filter((row) =>
       row.username.toLowerCase().includes(searchQuery.toLowerCase())
     );
   

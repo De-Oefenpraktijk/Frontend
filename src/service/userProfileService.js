@@ -3,7 +3,8 @@ import {
   GET_USER_URL, 
   GET_USER_BY_EMAIL_URL, 
   UPDATE_USER_URL, 
-  UPDATE_USER_BY_EMAIL_URL } 
+  UPDATE_USER_BY_EMAIL_URL,
+  GET_USER_ACTIVITY } 
   from "./ConnectionStrings";
 
 function getUserById(userId) {
@@ -76,9 +77,27 @@ function updateUserByEmail(userEmail, userData) {
     });
 }
 
+function getUsersActivityStatuses() {
+  const config = {
+    method: "get",
+    url: GET_USER_ACTIVITY,
+    headers: {
+      contentType: "application/json",
+    },
+  };
+
+  return axios(config)
+    .then((response) => response.data)
+    .catch(() => {
+      console.error("Error updating the user");
+      alert("Error updating the user");
+    });
+}
+
 export default {
   getUserById,
   getUserByEmail,
   updateUserById,
-  updateUserByEmail
+  updateUserByEmail,
+  getUsersActivityStatuses
 };
