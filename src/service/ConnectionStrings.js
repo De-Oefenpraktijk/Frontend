@@ -33,6 +33,10 @@ export const GET_ALL_SPECIALIZATIONS_URL = PROFILESERVICEURL + "Specialization/G
 
 export const GET_USER_BY_EMAIL_URL = PROFILESERVICEURL + "User/GetUserByEmail/";
 
+export const GET_USER_ACTIVITY = PROFILESERVICEURL + "User/GetEveryonesActivityStatus/";
+
 export const UPDATE_USER_URL = PROFILESERVICEURL + "User/UpdateUser/";
 
 export const UPDATE_USER_BY_EMAIL_URL = PROFILESERVICEURL + "User/UpdateUserByEmail/";
+
+export const UPDATE_USER_ACTIVITY = PROFILESERVICEURL + "User/UpdateActivityStatus/";
