@@ -10,7 +10,7 @@ const UpdateLastTimeOnline = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       axios
-        .put(`https://localhost:7147/api/v1/User/UpdateActivityStatus/${userId}`)
+        .put(`https://oefenpraktijkapi.westeurope.cloudapp.azure.com/profile/api/v1/User/UpdateActivityStatus/${userId}`)
         .then(response => {
           console.log("PUT request sent successfully. User is online.");
           // Handle response or perform additional actions if needed
