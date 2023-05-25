@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
+import { UPDATE_USER_ACTIVITY } from "../../service/ConnectionStrings";
+
 
 const UpdateLastTimeOnline = () => {
   const TIME_INTERVAL = 60000;
@@ -9,7 +11,7 @@ const UpdateLastTimeOnline = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       axios
-        .put(`https://oefenpraktijkapi.westeurope.cloudapp.azure.com/profile/api/v1/User/UpdateActivityStatus/${email}`)
+        .put(`${UPDATE_USER_ACTIVITY}${email}`)
         .then(response => {
           console.log("PUT request sent successfully. User is online.");
           // Handle response or perform additional actions if needed
