@@ -4,13 +4,13 @@ import {
   GET_USER_BY_EMAIL_URL, 
   UPDATE_USER_URL, 
   UPDATE_USER_BY_EMAIL_URL,
-  GET_USER_ACTIVITY,
+  GET_USERS_ACTIVITY_URL,
   UPDATE_USER_ACTIVITY,
-  GET_ALL_FUNCTION_URL,
+  GET_ALL_FUNCTIONS_URL,
   GET_ALL_SPECIALIZATIONS_URL,
   GET_ALL_EDUCATIONS_URL
 } 
-  from "./ConnectionStrings";
+from "./ConnectionStrings";
 
 // ====== Auth middleware ======
 // Middleware function to fetch and add token to request headers
@@ -103,7 +103,7 @@ async function updateUserByEmail(userEmail, getAccessTokenSilently, userData) {
 async function getAllFunctions(getAccessTokenSilently) {
   let config = {
     method: "get",
-    url: GET_ALL_FUNCTION_URL,
+    url: GET_ALL_FUNCTIONS_URL,
     headers: {
       contentType: "application/json",
     },
@@ -160,7 +160,7 @@ async function getAllSpecializations(getAccessTokenSilently) {
 async function getUsersActivityStatuses(getAccessTokenSilently) {
   let config = {
     method: "get",
-    url: GET_USER_ACTIVITY,
+    url: GET_USERS_ACTIVITY_URL,
     headers: {
       contentType: "application/json",
     },

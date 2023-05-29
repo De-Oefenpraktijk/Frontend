@@ -16,14 +16,6 @@ import { FormControlLabel } from "@mui/material";
 import userProfileService from "../../service/userProfileService";
 import { useAuth0 } from "@auth0/auth0-react";
 
-const sample = [
-  ["FrozenYoghurt", false],
-  ["IceCreamSandwich", true],
-  ["Eclair", false],
-  ["Cupcake", false],
-  ["Gingerbread", true],
-];
-
 function createData(data) {
   console.log(data);
   const username = data.username;
@@ -55,11 +47,6 @@ const columns = [
     numeric: true,
   },
 ];
-
-// const rows = Array.from({ length: 200 }, (_, index) => {
-//   const randomSelection = sample[Math.floor(Math.random() * sample.length)];
-//   return ;
-// });
 
 const VirtuosoTableComponents = {
   Scroller: React.forwardRef((props, ref) => (
@@ -133,7 +120,7 @@ export default function ReactVirtualizedTable() {
     const [users, setUsers] = React.useState([]);
     const dataFetch = async () => {
       const result = await userProfileService.getUsersActivityStatuses(getAccessTokenSilently);
-      const rows = result.map(createData);
+      const rows = await result.map(createData);
       setUsers(rows);
     };
   

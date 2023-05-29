@@ -59,8 +59,8 @@ export default function ProfilePage() {
       if (response) {
         console.log("Successful profile update!");
       }
-    } catch (e) {
-      console.log("Problem occured while updating the profile information!");
+    } catch (err) {
+      console.log(err);
       alert("Problem occured while updating the profile information!");
     }
   };

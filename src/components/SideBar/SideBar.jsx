@@ -1,14 +1,9 @@
-import React, { useMemo } from "react";
-import { Link, Route, Routes, useLocation } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
 
 import "./SideBar.css";
 
 export default function SideBar() {
-  const sideBarItems = [];
-
-  const menuItems = useMemo(() => {
-    //todo
-  });
   return (
       <div className="sidebar">
         <div className="sidebar__menu">

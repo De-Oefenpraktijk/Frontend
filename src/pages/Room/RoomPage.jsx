@@ -1,7 +1,6 @@
 import { JitsiMeeting } from "@jitsi/react-sdk";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState, useEffect } from "react";
-
 import { useNavigate, useLocation } from "react-router-dom";
 
 export default function RoomPage() {

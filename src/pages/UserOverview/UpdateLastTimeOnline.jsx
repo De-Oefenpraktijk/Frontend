@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import userProfileService from "../../service/userProfileService";
 import getUserEmail from "../../utils/getUserEmail";
