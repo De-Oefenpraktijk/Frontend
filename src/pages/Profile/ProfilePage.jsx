@@ -10,10 +10,8 @@ import {
   Grid,
 } from "@mui/material";
 import userProfileService from "../../service/userProfileService";
-import getAllFunctions from "../../service/getAllFunctions";
-import getAllEducations from "../../service/getAllEducations";
-import getAllSpecializations from "../../service/getAllSpecializations";
 import "./ProfilePage.css";
+import getUserEmail from "../../utils/getUserEmail";
 
 const userDataSkeleton = {
   firstName: "",
@@ -34,7 +32,7 @@ export default function ProfilePage() {
   const [allEducations, setAllEducations] = useState([""]);
   const [allSpecializations, setAllSpecializations] = useState([""]);
 
-  const { user } = useAuth0();
+  const { user, getAccessTokenSilently } = useAuth0();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,18 +48,17 @@ export default function ProfilePage() {
   const handleSelectHobbiesChange = (event, values) => {
     setUserData({ ...userData, ["hobbies"]: values });
   };
-  const getUserEmail = () => {
-    return process.env.NODE_ENV === "production"
-      ? user.email
-      : "example@gmail.com";
-  };
 
   const updateProfileData = async () => {
     try {
       const response = await userProfileService.updateUserByEmail(
-        getUserEmail(),
+        getUserEmail(user),
+        getAccessTokenSilently,
         userData
       );
+      if (response) {
+        console.log("Successful profile update!");
+      }
     } catch (e) {
       console.log("Problem occured while updating the profile information!");
       alert("Problem occured while updating the profile information!");
@@ -70,24 +67,25 @@ export default function ProfilePage() {
 
   useEffect(() => {
     const getUserData = async () => {
-      const response = await userProfileService.getUserByEmail(getUserEmail());
+      const response = await userProfileService.getUserByEmail(getUserEmail(user), getAccessTokenSilently);
       setUserData(response);
     };
 
     const getAllFunctionsData = async () => {
-      const response = await getAllFunctions();
+      const response = await userProfileService.getAllFunctions(getAccessTokenSilently);
       setAllFunctions(response);
     };
 
     const getAllSpecializationsData = async () => {
-      const response = await getAllSpecializations();
+      const response = await userProfileService.getAllSpecializations(getAccessTokenSilently);
       setAllSpecializations(response);
     };
 
     const getAllEducationsData = async () => {
-      const response = await getAllEducations();
+      const response = await userProfileService.getAllEducations(getAccessTokenSilently);
       setAllEducations(response);
     };
+
     getAllEducationsData();
     getAllFunctionsData();
     getAllSpecializationsData();

@@ -14,6 +14,7 @@ import TextField from "@mui/material/TextField";
 import Switch from "@mui/material/Switch";
 import { FormControlLabel } from "@mui/material";
 import userProfileService from "../../service/userProfileService";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const sample = [
   ["FrozenYoghurt", false],
@@ -127,10 +128,11 @@ function rowContent(_index, row) {
 export default function ReactVirtualizedTable() {
     const [searchQuery, setSearchQuery] = React.useState(""); // State variable for search query
     const [showOnlineOnly, setShowOnlineOnly] = React.useState(false); // State variable for online-only switch
+    const { getAccessTokenSilently } = useAuth0();
 
     const [users, setUsers] = React.useState([]);
     const dataFetch = async () => {
-      const result = await userProfileService.getUsersActivityStatuses();
+      const result = await userProfileService.getUsersActivityStatuses(getAccessTokenSilently);
       const rows = result.map(createData);
       setUsers(rows);
     };
