@@ -17,8 +17,7 @@ function App() {
         <Route path="/" element={<Blank />} />
         <Route path="/overview" element={<Blank />} />
         <Route path="/search" element={<Blank />} />
-        <Route path="/social" element={<Blank />} />
-        <Route path="/users" element={<UserOverviewPage />} />
+        <Route path="/social" element={<UserOverviewPage />} />
         <Route path="/calendar" element={<Blank />} />
         <Route path="/articles" element={<Blank />} />
         <Route path="/forum" element={<Blank />} />

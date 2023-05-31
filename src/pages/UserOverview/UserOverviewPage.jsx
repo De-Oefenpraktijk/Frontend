@@ -13,6 +13,7 @@ import Chip from "@mui/material/Chip";
 import TextField from "@mui/material/TextField";
 import Switch from "@mui/material/Switch";
 import { FormControlLabel } from "@mui/material";
+import userProfileService from "../../service/userProfileService";
 
 const sample = [
   ["FrozenYoghurt", false],
@@ -22,14 +23,15 @@ const sample = [
   ["Gingerbread", true],
 ];
 
-function createData(id, username, status) {
-  const avatarLetter = username.charAt(0).toUpperCase();
-  const chipColor = status ? "success" : "error";
+function createData(data) {
+  console.log(data);
+  const username = data.username;
+  const avatarLetter = data.username.charAt(0).toUpperCase();
+  const chipColor = data.isOnline ? "success" : "error";
   return {
-    id,
     picture: <Avatar sx={{ bgcolor: deepOrange[500] }}>{avatarLetter}</Avatar>,
     username,
-    status: <Chip label={status ? "online" : "offline"} color={chipColor} />,
+    status: <Chip label={data.isOnline ? "online" : "offline"} color={chipColor} />,
   };
 }
 
@@ -53,10 +55,10 @@ const columns = [
   },
 ];
 
-const rows = Array.from({ length: 200 }, (_, index) => {
-  const randomSelection = sample[Math.floor(Math.random() * sample.length)];
-  return createData(index, ...randomSelection);
-});
+// const rows = Array.from({ length: 200 }, (_, index) => {
+//   const randomSelection = sample[Math.floor(Math.random() * sample.length)];
+//   return ;
+// });
 
 const VirtuosoTableComponents = {
   Scroller: React.forwardRef((props, ref) => (
@@ -125,9 +127,20 @@ function rowContent(_index, row) {
 export default function ReactVirtualizedTable() {
     const [searchQuery, setSearchQuery] = React.useState(""); // State variable for search query
     const [showOnlineOnly, setShowOnlineOnly] = React.useState(false); // State variable for online-only switch
+
+    const [users, setUsers] = React.useState([]);
+    const dataFetch = async () => {
+      const result = await userProfileService.getUsersActivityStatuses();
+      const rows = result.map(createData);
+      setUsers(rows);
+    };
+  
+    React.useEffect(() => {
+      dataFetch();
+    }, []);
   
     // Filter the rows based on the search query
-    const filteredRows = rows.filter((row) =>
+    const filteredRows = users.filter((row) =>
       row.username.toLowerCase().includes(searchQuery.toLowerCase())
     );
   
@@ -148,7 +161,8 @@ export default function ReactVirtualizedTable() {
     };
   
     return (
-      <Paper style={{ height: "80vh", width: "100%" }}>
+      users && 
+        <Paper style={{ height: "80vh", width: "100%" }}>
         <TextField
           label="Search"
           variant="outlined"
