@@ -124,14 +124,7 @@ function stableSort(array, comparator) {
 }
 
 function EnhancedTableHead(props) {
-  const {
-    // onSelectAllClick,
-    order,
-    orderBy,
-    numSelected,
-    rowCount,
-    onRequestSort,
-  } = props;
+  const { order, orderBy, numSelected, rowCount, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -143,8 +136,6 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            // align={headCell.numeric ? "right" : "left"}
-            // padding={"normal"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -169,7 +160,6 @@ function EnhancedTableHead(props) {
 EnhancedTableHead.propTypes = {
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
-  // onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.oneOf(["asc", "desc"]).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
@@ -184,9 +174,6 @@ export default function BasicWorkspaceTabs2() {
   const [publicRooms, setPublicRooms] = useState([]); //maybe move to workspace page
   const userId = user.sub.split("|")[1];
 
-  // const fetchPublicRooms = async () => {
-  //   // await getPublicRooms(workspaceId, setPublicRooms);
-  // };
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -305,7 +292,7 @@ export default function BasicWorkspaceTabs2() {
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - meetingRooms.length) : 0;
 
   const handleDateDifference = (date) => {
     const meetingStarts = new Date(Moment(date).toDate());
@@ -346,14 +333,12 @@ export default function BasicWorkspaceTabs2() {
         {" "}
         <Box sx={{ width: "100%" }}>
           <Paper sx={{ width: "100%", mb: 2 }}>
-            {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
             <TableContainer>
               <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
                 <EnhancedTableHead
                   numSelected={selected.length}
                   order={order}
                   orderBy={orderBy}
-                  // onSelectAllClick={handleSelectAllClick}
                   onRequestSort={handleRequestSort}
                   rowCount={rows.length}
                   sx={{ display: "table-header-group" }}
@@ -406,7 +391,13 @@ export default function BasicWorkspaceTabs2() {
                     );
                   })}
                   {emptyRows > 0 && (
-                    <TableRow>{/* <TableCell colSpan={6} /> */}</TableRow>
+                    <TableRow
+                      style={{
+                        height: 69.5 * emptyRows, //to figure out how not to be so random
+                      }}
+                    >
+                      <TableCell colSpan={6} />
+                    </TableRow>
                   )}
                 </TableBody>
               </Table>
@@ -444,23 +435,8 @@ export default function BasicWorkspaceTabs2() {
 
       <TabPanel value={value} index={1}>
         <Box paddingTop={2}>
-          {/* <Form.Label>Available Webinars</Form.Label> */}
           {publicRooms.length > 0 && (
             <div>
-              {/* <Paper elevation={3}> */}
-              {/* <Box
-                padding={0}
-                sx={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  alignSelf: "flex-end",
-                  "& > :not(style)": {
-                    m: 1,
-                    width: "100%",
-                    height: "100%",
-                  },
-                }}
-              > */}
               <div id="room-options" style={{ textAlign: "right" }}>
                 {isAuthenticated && userCanCreatePublicRooms && (
                   <Button
