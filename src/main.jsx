@@ -12,8 +12,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       clientId="NxfCO50lGG6Vc0jfJJFTd9OodstbIvSU"
       authorizationParams={{
         redirect_uri: window.location.origin,
-        audience: "http://localhost:5137",
-        scope: "profile email create:public-rooms"
+        audience: "https://oefenpraktijk.online",
+        scope: "profile email create:public-rooms manage:profile"
       }}
     >
       <App />

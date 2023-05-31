@@ -1,42 +1,50 @@
-export const ROOMURL = "https://oefenpraktijkapi.westeurope.cloudapp.azure.com/room/api/v1/";
+// ===== BASE URLs =====
+export const ROOM_SERVICE_URL = 
+    process.env.NODE_ENV === "production" ?
+    "https://oefenpraktijkapi.westeurope.cloudapp.azure.com/room/api/v1/"
+    : "http://localhost:5137/api/v1/"
 
-export const SOCIALSERVICEURL = "https://oefenpraktijkapi.westeurope.cloudapp.azure.com/social/";
+export const SOCIAL_SERVICE_URL = 
+    process.env.NODE_ENV === "production" ?
+    "https://oefenpraktijkapi.westeurope.cloudapp.azure.com/social/"
+    : "http://localhost:5672/"
 
-export const PROFILESERVICEURL = "https://oefenpraktijkapi.westeurope.cloudapp.azure.com/profile/api/v1/";
+export const PROFILE_SERVICE_URL = 
+    process.env.NODE_ENV === "production" ? 
+    "https://oefenpraktijkapi.westeurope.cloudapp.azure.com/profile/api/v1/"
+    : "https://localhost:7147/api/v1/"
 
-export const GETWORKSPACESURL = ROOMURL + "Workspace";
+// ===== Workspace =====
+export const WORKSPACES_URL = ROOM_SERVICE_URL + "Workspace/";
 
-export const GETROOMURL = ROOMURL + "Room/";
+// ===== Room =====
+// export const ROOM_URL = ROOM_SERVICE_URL + "Room/";
+// export const ROOM_URL = ROOM_SERVICE_URL + "Room/";
+export const ROOM_URL = ROOM_SERVICE_URL + "Room/";
 
-export const GETUSERROOMSBYWORKSPACEURL = ROOMURL + "Room/";
 
-export const GETROOMROOMURL = ROOMURL + "Room/room/";
+// ===== Public Room =====
+export const PUBLIC_ROOM_URL = ROOM_SERVICE_URL + "PublicRoom/";
 
-export const POSTROOMURL = ROOMURL + "Room";
 
-export const GETPUBLICROOMURL = ROOMURL + "PublicRoom";
+// ===== Social service: Invite users =====
+export const GET_INVITED_USERS_URL = SOCIAL_SERVICE_URL + "Person/dtos/emailandid/";
 
-// TODO: Change it ROOMURL
-export const POSTPUBLICROOMURL = ROOMURL + "PublicRoom";
 
-export const POSTWORKSPACEURL = ROOMURL + "Workspace";
+// ===== User =====
 
-export const GETINVITEDUSERSURL = SOCIALSERVICEURL + "Person/dtos/emailandid/";
+// GET
+export const GET_USER_URL = PROFILE_SERVICE_URL + "User/GetUserById/";
+export const GET_USER_BY_EMAIL_URL = PROFILE_SERVICE_URL + "User/GetUserByEmail/";
 
-export const GET_USER_URL = PROFILESERVICEURL + "User/GetUserById/";
 
-export const GET_ALL_FUNCTION_URL = PROFILESERVICEURL + "Function/GetAllFunctions";
+export const GET_ALL_FUNCTIONS_URL = PROFILE_SERVICE_URL + "Function/GetAllFunctions";
+export const GET_ALL_EDUCATIONS_URL = PROFILE_SERVICE_URL + "Education/GetEducations";
+export const GET_ALL_SPECIALIZATIONS_URL = PROFILE_SERVICE_URL + "Specialization/GetAllSpecializations";
+export const GET_USERS_ACTIVITY_URL = PROFILE_SERVICE_URL + "User/GetEveryonesActivityStatus/";
 
-export const GET_ALL_EDUCATIONS_URL = PROFILESERVICEURL + "Education/GetEducations";
 
-export const GET_ALL_SPECIALIZATIONS_URL = PROFILESERVICEURL + "Specialization/GetAllSpecializations";
-
-export const GET_USER_BY_EMAIL_URL = PROFILESERVICEURL + "User/GetUserByEmail/";
-
-export const GET_USER_ACTIVITY = PROFILESERVICEURL + "User/GetEveryonesActivityStatus/";
-
-export const UPDATE_USER_URL = PROFILESERVICEURL + "User/UpdateUser/";
-
-export const UPDATE_USER_BY_EMAIL_URL = PROFILESERVICEURL + "User/UpdateUserByEmail/";
-
-export const UPDATE_USER_ACTIVITY = PROFILESERVICEURL + "User/UpdateActivityStatus/";
+// Update
+export const UPDATE_USER_URL = PROFILE_SERVICE_URL + "User/UpdateUser/";
+export const UPDATE_USER_BY_EMAIL_URL = PROFILE_SERVICE_URL + "User/UpdateUserByEmail/";
+export const UPDATE_USER_ACTIVITY = PROFILE_SERVICE_URL + "User/UpdateActivityStatus/";
