@@ -91,7 +91,7 @@ const headCells = [
     id: "join",
     numeric: true,
     disablePadding: false,
-    label: "Join",
+    label: "",
   },
 ];
 
@@ -139,12 +139,12 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox"></TableCell>
+        <TableCell></TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
-            padding={headCell.disablePadding ? "none" : "normal"}
+            // align={headCell.numeric ? "right" : "left"}
+            // padding={"normal"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -201,7 +201,6 @@ export default function BasicWorkspaceTabs2() {
   const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [workspaceName, setWorkspaceName] = useState([]);
   const [rows, setRows] = useState([]);
@@ -349,11 +348,7 @@ export default function BasicWorkspaceTabs2() {
           <Paper sx={{ width: "100%", mb: 2 }}>
             {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
             <TableContainer>
-              <Table
-                sx={{ minWidth: 750 }}
-                aria-labelledby="tableTitle"
-                size={dense ? "small" : "medium"}
-              >
+              <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
                 <EnhancedTableHead
                   numSelected={selected.length}
                   order={order}
@@ -361,6 +356,7 @@ export default function BasicWorkspaceTabs2() {
                   // onSelectAllClick={handleSelectAllClick}
                   onRequestSort={handleRequestSort}
                   rowCount={rows.length}
+                  sx={{ display: "table-header-group" }}
                 />
                 <TableBody>
                   {rows.map((row, index) => {
@@ -383,21 +379,22 @@ export default function BasicWorkspaceTabs2() {
                           id={labelId}
                           scope="row"
                           padding="none"
+                          align="center"
                         >
                           {row.name}
                         </TableCell>
                         <TableCell component="th" scope="row">
                           {row["roomName"]}
                         </TableCell>
-                        <TableCell align="center">
+                        <TableCell>
                           {Moment(row["scheduledDate"]).format(
                             "DD-MM-YYYY hh:mm A"
                           )}
                         </TableCell>
-                        <TableCell align="center">
+                        <TableCell>
                           {handleDateDifference(row["scheduledDate"])}
                         </TableCell>
-                        <TableCell align="center">
+                        <TableCell>
                           <Button
                             variant="outlined"
                             onClick={() => joinRoom(row)}
@@ -409,49 +406,9 @@ export default function BasicWorkspaceTabs2() {
                     );
                   })}
                   {emptyRows > 0 && (
-                    <TableRow
-                      style={{
-                        height: (dense ? 33 : 53) * emptyRows,
-                      }}
-                    >
-                      <TableCell colSpan={6} />
-                    </TableRow>
+                    <TableRow>{/* <TableCell colSpan={6} /> */}</TableRow>
                   )}
                 </TableBody>
-                {/* <TableBody>
-                  {(rowsPerPage > 0
-                    ? rows.slice(
-                        page * rowsPerPage,
-                        page * rowsPerPage + rowsPerPage
-                      )
-                    : rows
-                  ).map((room) => (
-                    <TableRow
-                      key={room.roomId}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        {room["roomName"]}
-                      </TableCell>
-                      <TableCell align="center">
-                        {Moment(room["scheduledDate"]).format(
-                          "DD-MM-YYYY hh:mm A"
-                        )}
-                      </TableCell>
-                      <TableCell align="center">
-                        {handleDateDifference(room["scheduledDate"])}
-                      </TableCell>
-                      <TableCell align="center">
-                        <Button
-                          variant="outlined"
-                          onClick={() => joinRoom(room)}
-                        >
-                          Join meeting
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody> */}
               </Table>
             </TableContainer>
             <TablePagination
@@ -466,14 +423,14 @@ export default function BasicWorkspaceTabs2() {
           </Paper>
 
           <div id="room-options" style={{ textAlign: "right" }}>
-            <Button variant="outlined" onClick={handlePrivateOpen}>
+            <Button
+              variant="outlined"
+              onClick={handlePrivateOpen}
+              sx={{ margin: "10" }}
+            >
               Create a private meeting
             </Button>
-            {isAuthenticated && userCanCreatePublicRooms && (
-              <Button variant="outlined" onClick={handlePublicOpen}>
-                Create a public meeting
-              </Button>
-            )}
+
             <CreatePrivateRoomModal
               handleClose={handleClose}
               open={open}
@@ -481,24 +438,17 @@ export default function BasicWorkspaceTabs2() {
               userId={userId}
               fetchPrivateRooms={fetchPrivateRooms}
             />
-            <CreatePublicRoomModal
-              handleClose={handlePublicClose}
-              open={openPublic}
-              workspaceId={workspaceId}
-              userId={userId}
-              fetchPublicRooms={fetchPublicRooms}
-            />
           </div>
         </Box>
       </TabPanel>
 
       <TabPanel value={value} index={1}>
-        Public Meetings
         <Box paddingTop={2}>
-          <Form.Label>Available Webinars</Form.Label>
+          {/* <Form.Label>Available Webinars</Form.Label> */}
           {publicRooms.length > 0 && (
-            <Paper elevation={3}>
-              <Box
+            <div>
+              {/* <Paper elevation={3}> */}
+              {/* <Box
                 padding={0}
                 sx={{
                   display: "flex",
@@ -510,43 +460,64 @@ export default function BasicWorkspaceTabs2() {
                     height: "100%",
                   },
                 }}
-              >
-                <Box padding={0}>
-                  {publicRooms.map((publicRoom) => (
-                    <div key={publicRoom.roomId}>
-                      <Card sx={{ maxWidth: "100%" }}>
-                        <CardContent>
-                          <Typography gutterBottom variant="h4" component="div">
-                            {publicRoom.roomName}
-                          </Typography>
-                          <Typography variant="body2" color="text.secondary">
-                            {publicRoom.description}
-                          </Typography>
-                          <Typography
-                            variant="body2"
-                            color="text.secondary"
-                            sx={{ fontWeight: "bold", m: 0 }}
-                          >
-                            Webinar starts in:{" "}
-                            {handleDateDifference(publicRoom.scheduledDate)}
-                          </Typography>
-                          <CardActions sx={{ float: "right", paddingRight: 0 }}>
-                            <Button
-                              variant="outlined"
-                              size="large"
-                              onClick={() => joinRoom(publicRoom)}
-                            >
-                              Join
-                            </Button>
-                          </CardActions>
-                        </CardContent>
-                      </Card>
-                      <br></br>
-                    </div>
-                  ))}
-                </Box>
-              </Box>
-            </Paper>
+              > */}
+              <div id="room-options" style={{ textAlign: "right" }}>
+                {isAuthenticated && userCanCreatePublicRooms && (
+                  <Button
+                    variant="outlined"
+                    onClick={handlePublicOpen}
+                    sx={{ marginBottom: "10px" }}
+                  >
+                    Create a public meeting
+                  </Button>
+                )}
+
+                <CreatePublicRoomModal
+                  handleClose={handlePublicClose}
+                  open={openPublic}
+                  workspaceId={workspaceId}
+                  userId={userId}
+                  fetchPublicRooms={fetchPublicRooms}
+                />
+              </div>
+              {/* <Box padding={0}> */}
+              {publicRooms.map((publicRoom) => (
+                <div key={publicRoom.roomId}>
+                  <Card sx={{ maxWidth: "100%" }}>
+                    <CardContent>
+                      <Typography gutterBottom variant="h4" component="div">
+                        {publicRoom.roomName}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {publicRoom.description}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ fontWeight: "bold", m: 0 }}
+                      >
+                        Webinar starts in:{" "}
+                        {handleDateDifference(publicRoom.scheduledDate)}
+                      </Typography>
+                      <CardActions sx={{ float: "right", paddingRight: 0 }}>
+                        <Button
+                          variant="outlined"
+                          size="large"
+                          onClick={() => joinRoom(publicRoom)}
+                        >
+                          Join
+                        </Button>
+                      </CardActions>
+                    </CardContent>
+                  </Card>
+
+                  <br></br>
+                </div>
+              ))}
+              {/* </Box> */}
+              {/* </Box> */}
+              {/* </Paper> */}
+            </div>
           )}
         </Box>
       </TabPanel>
