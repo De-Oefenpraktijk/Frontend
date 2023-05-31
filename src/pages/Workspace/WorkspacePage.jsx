@@ -75,16 +75,16 @@ export default function WorkspacePage() {
         setMeetingRooms(response.rooms);
         setWorkspaceName(response.name);
       }
-    } catch(err) {
+    } catch (err) {
       console.log(err);
     }
-
   };
   const fetchPublicRooms = async () => {
     try {
       const response = await roomService.getPublicRooms(
-        workspaceId, 
-        getAccessTokenSilently);
+        workspaceId,
+        getAccessTokenSilently
+      );
       if (response) {
         setPublicRooms(response);
       }
@@ -122,8 +122,10 @@ export default function WorkspacePage() {
   return (
     <div id="workspace-info">
       <h1>{workspaceName}</h1>
-      <BasicWorkspaceTabs2 workspaceName={workspaceName}></BasicWorkspaceTabs2>
-
+      <BasicWorkspaceTabs2
+      // currentWorkspaceName={currentWorkspaceName}
+      ></BasicWorkspaceTabs2>
+      {/* 
       <div id="room-options" style={{ textAlign: "right" }}>
         <Button variant="outlined" onClick={handlePrivateOpen}>
           Create a private meeting
@@ -147,7 +149,7 @@ export default function WorkspacePage() {
           userId={userId}
           fetchPublicRooms={fetchPublicRooms}
         />
-      </div>
+      </div> */}
 
       <div id="room-list">
         {/* <Form.Label>Meeting names</Form.Label>

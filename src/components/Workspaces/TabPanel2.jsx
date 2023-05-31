@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+import CreatePrivateRoomModal from "./CreatePrivateRoomModal";
+import CreatePublicRoomModal from "./CreatePublicRoomModal";
+import Form from "react-bootstrap/Form";
+import jwt from "jwt-decode";
 
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
@@ -15,19 +19,21 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
-import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
 
 import { visuallyHidden } from "@mui/utils";
 import Moment from "moment-timezone";
 import { formatDistanceToNowStrict } from "date-fns";
 
 import roomService from "../../service/roomService";
-import { CropLandscapeOutlined } from "@mui/icons-material";
+const CREATE_PUBLIC_ROOM_PERMISSION = "create:public-rooms";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -178,14 +184,17 @@ export default function BasicWorkspaceTabs2() {
   const [publicRooms, setPublicRooms] = useState([]); //maybe move to workspace page
   const userId = user.sub.split("|")[1];
 
-  const fetchPublicRooms = async () => {
-    // await getPublicRooms(workspaceId, setPublicRooms);
-  };
+  // const fetchPublicRooms = async () => {
+  //   // await getPublicRooms(workspaceId, setPublicRooms);
+  // };
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const navigate = useNavigate();
+  const [openPublic, setOpenPublic] = useState(false); //Used for the Modal
 
   //table
   const [order, setOrder] = React.useState("asc");
@@ -196,19 +205,64 @@ export default function BasicWorkspaceTabs2() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [workspaceName, setWorkspaceName] = useState([]);
   const [rows, setRows] = useState([]);
+  const [userCanCreatePublicRooms, setUserCanCreatePublicRooms] =
+    useState(false);
 
-  useEffect(() => {
-    const fetchPrivateRooms = async () => {
+  const fetchPrivateRooms = async () => {
+    try {
       const response = await roomService.getUserRoomsByWorkspace(
         workspaceId,
         userId,
         getAccessTokenSilently
       );
-      console.log(response.rooms);
+      if (response) {
+        setMeetingRooms(response.rooms);
+        setWorkspaceName(response.name);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const fetchPublicRooms = async () => {
+    try {
+      const response = await roomService.getPublicRooms(
+        workspaceId,
+        getAccessTokenSilently
+      );
+      if (response) {
+        setPublicRooms(response);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    const fetchPrivateRoomsOnLoad = async () => {
+      const response = await roomService.getUserRoomsByWorkspace(
+        workspaceId,
+        userId,
+        getAccessTokenSilently
+      );
       setMeetingRooms(response.rooms);
     };
-    // fetchPublicRooms();
-    fetchPrivateRooms();
+
+    const fetchPublicRoomsOnLoad = async () => {
+      try {
+        const response = await roomService.getPublicRooms(
+          workspaceId,
+          getAccessTokenSilently
+        );
+        if (response) {
+          setPublicRooms(response);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchPublicRoomsOnLoad();
+    fetchPrivateRoomsOnLoad();
+    console.log(publicRooms);
   }, []);
 
   useEffect(() => {
@@ -219,6 +273,21 @@ export default function BasicWorkspaceTabs2() {
 
     setRows(visibleRows);
   }, [meetingRooms, order, orderBy, rowsPerPage, page]);
+
+  useEffect(() => {
+    const canCreatePublicRooms = async () => {
+      const token = await getAccessTokenSilently();
+      const decoded_token = jwt(token);
+      const { permissions } = decoded_token;
+      if (permissions.includes(CREATE_PUBLIC_ROOM_PERMISSION)) {
+        console.log("Has permissions");
+        setUserCanCreatePublicRooms(true);
+      } else {
+        setUserCanCreatePublicRooms(false);
+      }
+    };
+    canCreatePublicRooms();
+  }, [getAccessTokenSilently]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -251,6 +320,16 @@ export default function BasicWorkspaceTabs2() {
     return result;
   };
 
+  const handlePrivateOpen = () => setOpen(true);
+  const handlePublicOpen = () => setOpenPublic(true);
+  const handleClose = () => setOpen(false);
+  const handlePublicClose = () => setOpenPublic(false);
+  const [open, setOpen] = useState(false); //Used for the Modal
+
+  const joinRoom = (room) => {
+    navigate(`/workspace/join-room`, { state: { room } });
+  };
+
   return (
     <Box sx={{ width: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -259,18 +338,12 @@ export default function BasicWorkspaceTabs2() {
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          <Tab label="Item One" {...a11yProps(0)} />
-          <Tab label="Item Two" {...a11yProps(1)} />
-          <Tab label="Item Three" {...a11yProps(2)} />
+          <Tab label="Private Rooms" {...a11yProps(0)} />
+          <Tab label="Public Rooms" {...a11yProps(1)} />
         </Tabs>
       </Box>
+
       <TabPanel value={value} index={0}>
-        Item One
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        Item Two
-      </TabPanel>
-      <TabPanel value={value} index={2}>
         {" "}
         <Box sx={{ width: "100%" }}>
           <Paper sx={{ width: "100%", mb: 2 }}>
@@ -391,6 +464,90 @@ export default function BasicWorkspaceTabs2() {
               onRowsPerPageChange={handleChangeRowsPerPage}
             />
           </Paper>
+
+          <div id="room-options" style={{ textAlign: "right" }}>
+            <Button variant="outlined" onClick={handlePrivateOpen}>
+              Create a private meeting
+            </Button>
+            {isAuthenticated && userCanCreatePublicRooms && (
+              <Button variant="outlined" onClick={handlePublicOpen}>
+                Create a public meeting
+              </Button>
+            )}
+            <CreatePrivateRoomModal
+              handleClose={handleClose}
+              open={open}
+              workspaceId={workspaceId}
+              userId={userId}
+              fetchPrivateRooms={fetchPrivateRooms}
+            />
+            <CreatePublicRoomModal
+              handleClose={handlePublicClose}
+              open={openPublic}
+              workspaceId={workspaceId}
+              userId={userId}
+              fetchPublicRooms={fetchPublicRooms}
+            />
+          </div>
+        </Box>
+      </TabPanel>
+
+      <TabPanel value={value} index={1}>
+        Public Meetings
+        <Box paddingTop={2}>
+          <Form.Label>Available Webinars</Form.Label>
+          {publicRooms.length > 0 && (
+            <Paper elevation={3}>
+              <Box
+                padding={0}
+                sx={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  alignSelf: "flex-end",
+                  "& > :not(style)": {
+                    m: 1,
+                    width: "100%",
+                    height: "100%",
+                  },
+                }}
+              >
+                <Box padding={0}>
+                  {publicRooms.map((publicRoom) => (
+                    <div key={publicRoom.roomId}>
+                      <Card sx={{ maxWidth: "100%" }}>
+                        <CardContent>
+                          <Typography gutterBottom variant="h4" component="div">
+                            {publicRoom.roomName}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {publicRoom.description}
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            color="text.secondary"
+                            sx={{ fontWeight: "bold", m: 0 }}
+                          >
+                            Webinar starts in:{" "}
+                            {handleDateDifference(publicRoom.scheduledDate)}
+                          </Typography>
+                          <CardActions sx={{ float: "right", paddingRight: 0 }}>
+                            <Button
+                              variant="outlined"
+                              size="large"
+                              onClick={() => joinRoom(publicRoom)}
+                            >
+                              Join
+                            </Button>
+                          </CardActions>
+                        </CardContent>
+                      </Card>
+                      <br></br>
+                    </div>
+                  ))}
+                </Box>
+              </Box>
+            </Paper>
+          )}
         </Box>
       </TabPanel>
     </Box>
