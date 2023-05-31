@@ -18,17 +18,16 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import Checkbox from "@mui/material/Checkbox";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
-import DeleteIcon from "@mui/icons-material/Delete";
-import FilterListIcon from "@mui/icons-material/FilterList";
-import { visuallyHidden } from "@mui/utils";
 
-import getUserRoomsByWorkspace from "../../service/getUserRoomsByWorkspace";
-import getPublicRooms from "../../service/getPublicRooms";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+
+import { visuallyHidden } from "@mui/utils";
+import Moment from "moment-timezone";
+import { formatDistanceToNowStrict } from "date-fns";
+
+import roomService from "../../service/roomService";
+import { CropLandscapeOutlined } from "@mui/icons-material";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -179,17 +178,8 @@ export default function BasicWorkspaceTabs2() {
   const [publicRooms, setPublicRooms] = useState([]); //maybe move to workspace page
   const userId = user.sub.split("|")[1];
 
-  const fetchPrivateRooms = async () => {
-    getUserRoomsByWorkspace(
-      setMeetingRooms,
-      setWorkspaceName,
-      workspaceId,
-      userId
-    );
-  };
-
   const fetchPublicRooms = async () => {
-    await getPublicRooms(workspaceId, setPublicRooms);
+    // await getPublicRooms(workspaceId, setPublicRooms);
   };
   const [value, setValue] = React.useState(0);
 
@@ -205,13 +195,30 @@ export default function BasicWorkspaceTabs2() {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [workspaceName, setWorkspaceName] = useState([]);
-  const rows = meetingRooms;
-  console.log(rows);
+  const [rows, setRows] = useState([]);
 
   useEffect(() => {
-    fetchPublicRooms();
+    const fetchPrivateRooms = async () => {
+      const response = await roomService.getUserRoomsByWorkspace(
+        workspaceId,
+        userId,
+        getAccessTokenSilently
+      );
+      console.log(response.rooms);
+      setMeetingRooms(response.rooms);
+    };
+    // fetchPublicRooms();
     fetchPrivateRooms();
   }, []);
+
+  useEffect(() => {
+    const visibleRows = stableSort(
+      meetingRooms,
+      getComparator(order, orderBy)
+    ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
+    setRows(visibleRows);
+  }, [meetingRooms, order, orderBy, rowsPerPage, page]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -232,14 +239,17 @@ export default function BasicWorkspaceTabs2() {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
-  const visibleRows = React.useMemo(
-    () =>
-      stableSort(rows, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage
-      ),
-    [order, orderBy, page, rowsPerPage]
-  );
+  const handleDateDifference = (date) => {
+    const meetingStarts = new Date(Moment(date).toDate());
+    const newHours = meetingStarts.getHours(); // Converts the start of the meeting to UTC. I couldn't find a better fix
+    meetingStarts.setHours(newHours);
+    const nowDate = new Date(meetingStarts).toISOString();
+    const result = formatDistanceToNowStrict(new Date(nowDate), {
+      addSuffix: true,
+    });
+
+    return result;
+  };
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -280,7 +290,7 @@ export default function BasicWorkspaceTabs2() {
                   rowCount={rows.length}
                 />
                 <TableBody>
-                  {visibleRows.map((row, index) => {
+                  {rows.map((row, index) => {
                     const isItemSelected = isSelected(row.name);
                     const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -295,15 +305,6 @@ export default function BasicWorkspaceTabs2() {
                         selected={isItemSelected}
                         sx={{ cursor: "pointer" }}
                       >
-                        {/* <TableCell padding="checkbox">
-                          <Checkbox
-                            color="primary"
-                            checked={isItemSelected}
-                            inputProps={{
-                              "aria-labelledby": labelId,
-                            }}
-                          />
-                        </TableCell> */}
                         <TableCell
                           component="th"
                           id={labelId}
@@ -312,10 +313,25 @@ export default function BasicWorkspaceTabs2() {
                         >
                           {row.name}
                         </TableCell>
-                        <TableCell align="right">{row.roomName}</TableCell>
-                        <TableCell align="right">{row.scheduledDate}</TableCell>
-                        {/* <TableCell align="right">{row.carbs}</TableCell>
-                        <TableCell align="right">{row.protein}</TableCell> */}
+                        <TableCell component="th" scope="row">
+                          {row["roomName"]}
+                        </TableCell>
+                        <TableCell align="center">
+                          {Moment(row["scheduledDate"]).format(
+                            "DD-MM-YYYY hh:mm A"
+                          )}
+                        </TableCell>
+                        <TableCell align="center">
+                          {handleDateDifference(row["scheduledDate"])}
+                        </TableCell>
+                        <TableCell align="center">
+                          <Button
+                            variant="outlined"
+                            onClick={() => joinRoom(row)}
+                          >
+                            Join meeting
+                          </Button>
+                        </TableCell>
                       </TableRow>
                     );
                   })}
@@ -329,22 +345,52 @@ export default function BasicWorkspaceTabs2() {
                     </TableRow>
                   )}
                 </TableBody>
+                {/* <TableBody>
+                  {(rowsPerPage > 0
+                    ? rows.slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                    : rows
+                  ).map((room) => (
+                    <TableRow
+                      key={room.roomId}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {room["roomName"]}
+                      </TableCell>
+                      <TableCell align="center">
+                        {Moment(room["scheduledDate"]).format(
+                          "DD-MM-YYYY hh:mm A"
+                        )}
+                      </TableCell>
+                      <TableCell align="center">
+                        {handleDateDifference(room["scheduledDate"])}
+                      </TableCell>
+                      <TableCell align="center">
+                        <Button
+                          variant="outlined"
+                          onClick={() => joinRoom(room)}
+                        >
+                          Join meeting
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody> */}
               </Table>
             </TableContainer>
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
-              count={rows.length}
+              count={meetingRooms.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
             />
           </Paper>
-          {/* <FormControlLabel
-            // control={<Switch checked={dense} onChange={handleChangeDense} />}
-            label="Dense padding"
-          /> */}
         </Box>
       </TabPanel>
     </Box>

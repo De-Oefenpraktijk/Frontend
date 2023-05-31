@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Moment from "moment-timezone";
 import { formatDistanceToNowStrict } from "date-fns";
-import getUserRoomsByWorkspace from "../../service/getUserRoomsByWorkspace";
+// import getUserRoomsByWorkspace from "../../service/getUserRoomsByWorkspace";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useTheme } from "@mui/material/styles";
 
@@ -39,7 +39,7 @@ import { Pagination } from "@mui/material";
 import TablePagination from "@mui/material/TablePagination";
 import TableFooter from "@mui/material/TableFooter";
 
-import getPublicRooms from "../../service/getPublicRooms";
+// import getPublicRooms from "../../service/getPublicRooms";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -192,18 +192,18 @@ export default function BasicWorkspaceTabs() {
 
   const [value, setValue] = React.useState(0);
 
-  const fetchPrivateRooms = async () => {
-    getUserRoomsByWorkspace(
-      setMeetingRooms,
-      setWorkspaceName,
-      workspaceId,
-      userId
-    );
-  };
+  // const fetchPrivateRooms = async () => {
+  //   getUserRoomsByWorkspace(
+  //     setMeetingRooms,
+  //     setWorkspaceName,
+  //     workspaceId,
+  //     userId
+  //   );
+  // };
   const rows = meetingRooms;
 
   const fetchPublicRooms = async () => {
-    getPublicRooms(workspaceId, setPublicRooms);
+    // getPublicRooms(workspaceId, setPublicRooms);
   };
 
   const handleChange = (event, newValue) => {
@@ -260,8 +260,8 @@ export default function BasicWorkspaceTabs() {
     setOrderBy(property);
   };
   useEffect(() => {
-    fetchPublicRooms();
-    fetchPrivateRooms();
+    // fetchPublicRooms();
+    // fetchPrivateRooms();
   }, []);
 
   TablePaginationActions.propTypes = {
