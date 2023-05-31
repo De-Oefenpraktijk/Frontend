@@ -1,7 +1,7 @@
 import axios from "axios";
 import { GETPUBLICROOMURL } from "./ConnectionStrings";
 
-export default function getPublicRooms(workspaceId, setPublicRooms) {
+export default async function getPublicRooms(workspaceId, setPublicRooms) {
   const config = {
     method: "get",
     url: GETPUBLICROOMURL + "/" + workspaceId,

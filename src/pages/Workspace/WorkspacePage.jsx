@@ -12,7 +12,8 @@ import "./WorkspacePage.css";
 import getPublicRooms from "../../service/getPublicRooms";
 import jwt from "jwt-decode";
 
-import BasicTabs from "../../components/Workspaces/TabPanel";
+import BasicWorkspaceTabs from "../../components/Workspaces/TabPanel";
+import BasicWorkspaceTabs2 from "../../components/Workspaces/TabPanel2";
 
 // Table imports
 import Table from "@mui/material/Table";
@@ -106,7 +107,7 @@ export default function WorkspacePage() {
   return (
     <div id="workspace-info">
       <h1>{workspaceName}</h1>
-      <BasicTabs workspaceName={workspaceName}></BasicTabs>
+      <BasicWorkspaceTabs2 workspaceName={workspaceName}></BasicWorkspaceTabs2>
 
       <div id="room-options" style={{ textAlign: "right" }}>
         <Button variant="outlined" onClick={handlePrivateOpen}>
