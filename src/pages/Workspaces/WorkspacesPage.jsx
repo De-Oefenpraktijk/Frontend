@@ -1,14 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import CreateWorkspace from "../../components/Workspaces/CreateWorkspace";
-import getWorkspaces from "../../service/getWorkspaces";
+import workspaceService from "../../service/workspaceService";
 import { Stack } from "@mui/system";
 import "./WorkspacesPage.css";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function WorkspacesOverview() {
   const [workspaces, setWorkspaces] = useState([]);
+  const { getAccessTokenSilently } = useAuth0();
+
   const dataFetch = async () => {
-    getWorkspaces(setWorkspaces);
+    try {
+      const response = await workspaceService.getWorkspaces(getAccessTokenSilently);
+      if (response) {
+        setWorkspaces(response);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    
   };
 
   useEffect(() => {

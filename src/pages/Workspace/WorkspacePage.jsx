@@ -6,11 +6,10 @@ import Button from "@mui/material/Button";
 import { formatDistanceToNowStrict } from "date-fns";
 import Moment from "moment-timezone";
 import CreatePrivateRoomModal from "../../components/Workspaces/CreatePrivateRoomModal";
-import getUserRoomsByWorkspace from "../../service/getUserRoomsByWorkspace";
 import Form from "react-bootstrap/Form";
 import "./WorkspacePage.css";
-import getPublicRooms from "../../service/getPublicRooms";
 import jwt from "jwt-decode";
+import roomService from "../../service/roomService";
 
 import BasicWorkspaceTabs from "../../components/Workspaces/TabPanel";
 import BasicWorkspaceTabs2 from "../../components/Workspaces/TabPanel2";
@@ -42,7 +41,6 @@ export default function WorkspacePage() {
   const [meetingRooms, setMeetingRooms] = useState([]);
   const [workspaceName, setWorkspaceName] = useState([]);
   const [publicRooms, setPublicRooms] = useState([]);
-  const [refreshRoomsPublic, setRefreshRoomsPublic] = useState(false);
   const [userCanCreatePublicRooms, setUserCanCreatePublicRooms] =
     useState(false);
 
@@ -67,15 +65,32 @@ export default function WorkspacePage() {
     return result;
   };
   const fetchPrivateRooms = async () => {
-    getUserRoomsByWorkspace(
-      setMeetingRooms,
-      setWorkspaceName,
-      workspaceId,
-      userId
-    );
+    try {
+      const response = await roomService.getUserRoomsByWorkspace(
+        workspaceId,
+        userId,
+        getAccessTokenSilently
+      );
+      if (response) {
+        setMeetingRooms(response.rooms);
+        setWorkspaceName(response.name);
+      }
+    } catch(err) {
+      console.log(err);
+    }
+
   };
   const fetchPublicRooms = async () => {
-    getPublicRooms(workspaceId, setPublicRooms);
+    try {
+      const response = await roomService.getPublicRooms(
+        workspaceId, 
+        getAccessTokenSilently);
+      if (response) {
+        setPublicRooms(response);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const joinRoom = (room) => {
