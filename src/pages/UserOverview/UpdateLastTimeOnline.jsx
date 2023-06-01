@@ -8,13 +8,30 @@ const UpdateLastTimeOnline = () => {
   const { user, getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
+    try {
+      const response = userProfileService.updateUserAcitvityStatus(
+        getUserEmail(user),
+        getAccessTokenSilently
+      );
+      if (response) {
+        console.log("User is online!");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
+
+  useEffect(() => {
     const interval = setInterval(async () => {
       try {
-        const response = await userProfileService.updateUserAcitvityStatus(getUserEmail(user), getAccessTokenSilently)
+        const response = await userProfileService.updateUserAcitvityStatus(
+          getUserEmail(user),
+          getAccessTokenSilently
+        );
         if (response) {
           console.log("User is online!");
         }
-      } catch(err) {
+      } catch (err) {
         console.log(err);
       }
     }, TIME_INTERVAL);
