@@ -6,11 +6,13 @@ import Button from "@mui/material/Button";
 import { formatDistanceToNowStrict, subHours, parseISO } from "date-fns";
 import Moment from "moment-timezone";
 import CreatePrivateRoomModal from "../../components/Workspaces/CreatePrivateRoomModal";
-import getUserRoomsByWorkspace from "../../service/getUserRoomsByWorkspace";
 import Form from "react-bootstrap/Form";
 import "./WorkspacePage.css";
-import getPublicRooms from "../../service/getPublicRooms";
 import jwt from "jwt-decode";
+import roomService from "../../service/roomService";
+
+import BasicWorkspaceTabs from "../../components/Workspaces/TabPanel";
+import BasicWorkspaceTabs2 from "../../components/Workspaces/TabPanel2";
 
 // Table imports
 import Table from "@mui/material/Table";
@@ -86,6 +88,19 @@ export default function WorkspacePage() {
         recentPrivateRooms.push(recentPrivateRoom);
       }
       setRecentMeetingRooms(recentPrivateRooms);
+      try {
+        const response = await roomService.getUserRoomsByWorkspace(
+          workspaceId,
+          userId,
+          getAccessTokenSilently
+        );
+        if (response) {
+          setMeetingRooms(response.rooms);
+          setWorkspaceName(response.name);
+        }
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
@@ -102,157 +117,52 @@ export default function WorkspacePage() {
         recentPublicRooms.push(recentPublicRoom);
       }
       setRecentMeetingRooms(recentPublicRooms);
-    }
-  };
-
-  const joinRoom = (room) => {
-    navigate(`/workspace/join-room`, { state: { room } });
-  };
-
-  //Effects
-  useEffect(() => {
-    fetchPublicRooms();
-    fetchPrivateRooms();
-  }, []);
-
-  useEffect(() => {
-    const canCreatePublicRooms = async () => {
-      const token = await getAccessTokenSilently();
-      const decoded_token = jwt(token);
-      const { permissions } = decoded_token;
-      if (permissions.includes(CREATE_PUBLIC_ROOM_PERMISSION)) {
-        console.log("Has permissions");
-        setUserCanCreatePublicRooms(true);
-      } else {
-        setUserCanCreatePublicRooms(false);
+      try {
+        const response = await roomService.getPublicRooms(
+          workspaceId,
+          getAccessTokenSilently
+        );
+        if (response) {
+          setPublicRooms(response);
+        }
+      } catch (err) {
+        console.log(err);
       }
+    }
+
+    const joinRoom = (room) => {
+      navigate(`/workspace/join-room`, { state: { room } });
     };
-    canCreatePublicRooms();
-  }, [getAccessTokenSilently]);
 
-  return (
-    <div id="workspace-info">
-      <h1>{workspaceName}</h1>
+    //Effects
+    useEffect(() => {
+      fetchPublicRooms();
+      fetchPrivateRooms();
+      console.log(meetingRooms);
+    }, []);
 
-      <div id="room-options" style={{ textAlign: "right" }}>
-        <Button variant="outlined" onClick={handlePrivateOpen}>
-          Create a private meeting
-        </Button>
-        {isAuthenticated && userCanCreatePublicRooms && (
-          <Button variant="outlined" onClick={handlePublicOpen}>
-            Create a public meeting
-          </Button>
-        )}
-        <CreatePrivateRoomModal
-          handleClose={handleClose}
-          open={open}
-          workspaceId={workspaceId}
-          userId={userId}
-          fetchPrivateRooms={fetchPrivateRooms}
-        />
-        <CreatePublicRoomModal
-          handleClose={handlePublicClose}
-          open={openPublic}
-          workspaceId={workspaceId}
-          userId={userId}
-          fetchPublicRooms={fetchPublicRooms}
-        />
+    useEffect(() => {
+      const canCreatePublicRooms = async () => {
+        const token = await getAccessTokenSilently();
+        const decoded_token = jwt(token);
+        const { permissions } = decoded_token;
+        if (permissions.includes(CREATE_PUBLIC_ROOM_PERMISSION)) {
+          console.log("Has permissions");
+          setUserCanCreatePublicRooms(true);
+        } else {
+          setUserCanCreatePublicRooms(false);
+        }
+      };
+      canCreatePublicRooms();
+    }, [getAccessTokenSilently]);
+
+    return (
+      <div id="workspace-info">
+        <h1>{workspaceName}</h1>
+        <BasicWorkspaceTabs2
+        // currentWorkspaceName={currentWorkspaceName}
+        ></BasicWorkspaceTabs2>
       </div>
-
-      <div id="room-list">
-        <Form.Label>Meeting names</Form.Label>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Meeting name:</TableCell>
-                <TableCell align="center">Schedule time</TableCell>
-                <TableCell align="center">Meeting starts in</TableCell>
-                <TableCell align="center">Join</TableCell>
-              </TableRow>
-            </TableHead>{" "}
-            <TableBody>
-              {recentMeetingRooms.map((room) => (
-                <TableRow
-                  key={room.roomId}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {room["roomName"]}
-                  </TableCell>
-                  <TableCell align="center">
-                    {Moment(room["scheduledDate"]).format("DD-MM-YYYY hh:mm A")}
-                  </TableCell>
-                  <TableCell align="center">
-                    {handleDateDifference(room["scheduledDate"])}
-                  </TableCell>
-                  <TableCell align="center">
-                    <Button variant="outlined" onClick={() => joinRoom(room)}>
-                      Join meeting
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-
-        <Box paddingTop={2}>
-          <Form.Label>Available Webinars</Form.Label>
-          {recentPublicRooms.length > 0 && (
-            <Paper elevation={3}>
-              <Box
-                padding={0}
-                sx={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  alignSelf: "flex-end",
-                  "& > :not(style)": {
-                    m: 1,
-                    width: "100%",
-                    height: "100%",
-                  },
-                }}
-              >
-                <Box padding={0}>
-                  {publicRooms.map((publicRoom) => (
-                    <div key={publicRoom.roomId}>
-                      <Card sx={{ maxWidth: "100%" }}>
-                        <CardContent>
-                          <Typography gutterBottom variant="h4" component="div">
-                            {publicRoom.roomName}
-                          </Typography>
-                          <Typography variant="body2" color="text.secondary">
-                            {publicRoom.description}
-                          </Typography>
-                          <Typography
-                            variant="body2"
-                            color="text.secondary"
-                            sx={{ fontWeight: "bold", m: 0 }}
-                          >
-                            Webinar starts in:{" "}
-                            {handleDateDifference(publicRoom.scheduledDate)}
-                          </Typography>
-                          <CardActions sx={{ float: "right", paddingRight: 0 }}>
-                            <Button
-                              variant="outlined"
-                              size="large"
-                              onClick={() => joinRoom(publicRoom)}
-                            >
-                              Join
-                            </Button>
-                          </CardActions>
-                        </CardContent>
-                      </Card>
-                      <br></br>
-                    </div>
-                  ))}
-                </Box>
-              </Box>
-            </Paper>
-          )}
-        </Box>
-      </div>
-    </div>
-  );
+    );
+  };
 }

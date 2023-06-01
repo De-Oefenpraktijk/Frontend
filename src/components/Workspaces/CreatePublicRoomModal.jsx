@@ -1,5 +1,5 @@
 import React from "react";
-import createPublicRoom from "../../service/createPublicRoom";
+import roomService from "../../service/roomService";
 import { Modal, Box } from "@mui/material";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -57,9 +57,22 @@ export default function CreatePublicRoomModal({
       description: room.description,
     };
 
-    createPublicRoom(body, getAccessTokenSilently).then(() =>
-      fetchPublicRooms()
-    );
+    console.log(body);
+
+    const createNewRoom = async () => {
+      try {
+        const response = await roomService.createPublicRoom(
+          getAccessTokenSilently,
+          body
+        );
+        if (response) {
+          fetchPublicRooms();
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    createNewRoom();
     handleClose();
   };
 

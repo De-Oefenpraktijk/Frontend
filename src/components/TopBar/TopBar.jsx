@@ -1,12 +1,13 @@
 import React from "react";
 import "./TopBar.css";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 
 export default function TopBar() {
   const location = useLocation();
   const { pathname } = location;
   const { user, logout } = useAuth0();
+  const navigate = useNavigate();
 
   function title() {
     switch (pathname) {
@@ -52,7 +53,7 @@ export default function TopBar() {
             </div>
             <div className="topbar__profile__dropdown__content">
               <ul>
-                <li>
+                <li onClick={() => navigate("/profile")}>
                   <font-awesome-icon icon="fa-solid fa-user" />
                   <span>Profile</span>
                 </li>
