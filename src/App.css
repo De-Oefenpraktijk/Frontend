@@ -26,12 +26,6 @@ body {
   display: flex;
 }
 
-.main {
-  padding: 0 30px;
-  margin-left: 300px;
-  flex: 1;
-}
-
 .mainCard__body {
   display: flex;
   flex-flow: row wrap;
