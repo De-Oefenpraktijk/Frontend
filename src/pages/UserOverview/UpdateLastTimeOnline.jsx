@@ -9,7 +9,6 @@ const UpdateLastTimeOnline = () => {
   const email = user.email;
 
   useEffect(() => {
-    console.log("TEST");
     axios
       .put(`${UPDATE_USER_ACTIVITY}${email}`)
       .then((response) => {
