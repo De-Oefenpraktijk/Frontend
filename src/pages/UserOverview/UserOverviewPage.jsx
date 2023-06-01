@@ -168,6 +168,7 @@ export default function ReactVirtualizedTable() {
             />
           }
           label="Online Only"
+          sx={{ margin: "10px" }}
         />
   
         <TableVirtuoso
