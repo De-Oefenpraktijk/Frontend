@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Moment from "moment-timezone";
 import { formatDistanceToNowStrict } from "date-fns";
-// import getUserRoomsByWorkspace from "../../service/getUserRoomsByWorkspace";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useTheme } from "@mui/material/styles";
-
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -29,17 +27,11 @@ import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import TableSortLabel from "@mui/material/TableSortLabel";
-
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import { styled } from "@mui/system";
-
-import { Pagination } from "@mui/material";
 import TablePagination from "@mui/material/TablePagination";
 import TableFooter from "@mui/material/TableFooter";
-
-// import getPublicRooms from "../../service/getPublicRooms";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -163,15 +155,6 @@ function TablePaginationActions(props) {
   );
 }
 
-// EnhancedTableHead.propTypes = {
-//   numSelected: PropTypes.number.isRequired,
-//   onRequestSort: PropTypes.func.isRequired,
-//   onSelectAllClick: PropTypes.func.isRequired,
-//   order: PropTypes.oneOf(["asc", "desc"]).isRequired,
-//   orderBy: PropTypes.string.isRequired,
-//   rowCount: PropTypes.number.isRequired,
-// };
-
 export default function BasicWorkspaceTabs() {
   const [workspaceName, setWorkspaceName] = useState([]);
   const [selected, setSelected] = React.useState([]);
@@ -191,15 +174,6 @@ export default function BasicWorkspaceTabs() {
   const { workspaceId } = useParams();
 
   const [value, setValue] = React.useState(0);
-
-  // const fetchPrivateRooms = async () => {
-  //   getUserRoomsByWorkspace(
-  //     setMeetingRooms,
-  //     setWorkspaceName,
-  //     workspaceId,
-  //     userId
-  //   );
-  // };
   const rows = meetingRooms;
 
   const fetchPublicRooms = async () => {
@@ -259,10 +233,6 @@ export default function BasicWorkspaceTabs() {
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
-  useEffect(() => {
-    // fetchPublicRooms();
-    // fetchPrivateRooms();
-  }, []);
 
   TablePaginationActions.propTypes = {
     count: PropTypes.number.isRequired,
@@ -363,17 +333,6 @@ export default function BasicWorkspaceTabs() {
     return (
       <TableHead>
         <TableRow>
-          {/* <TableCell padding="checkbox">
-            <Checkbox
-              color="primary"
-              indeterminate={numSelected > 0 && numSelected < rowCount}
-              checked={rowCount > 0 && numSelected === rowCount}
-              onChange={onSelectAllClick}
-              inputProps={{
-                "aria-label": "select all desserts",
-              }}
-            />
-          </TableCell> */}
           {headCells.map((headCell) => (
             <TableCell
               key={headCell.id}
@@ -437,16 +396,7 @@ export default function BasicWorkspaceTabs() {
 
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
-              {/* <EnhancedTableHead
-                  numSelected={selected.length}
-                  order={order}
-                  orderBy={orderBy}
-                  // onSelectAllClick={handleSelectAllClick}
-                  onRequestSort={handleRequestSort}
-                  rowCount={rows.length}
-                > */}
               <TableRow>
-                {console.log("head kletki " + JSON.stringify(headCells))}
                 {headCells.map((headCell) => (
                   <TableCell
                     key={headCell.id}
@@ -475,7 +425,6 @@ export default function BasicWorkspaceTabs() {
                 <TableCell align="center">Meeting starts in</TableCell>
                 <TableCell align="center">Join</TableCell>
               </TableRow>
-              {/* </EnhancedTableHead> */}
               <TableBody>
                 {(rowsPerPage > 0
                   ? rows.slice(
@@ -536,8 +485,6 @@ export default function BasicWorkspaceTabs() {
           </TableContainer>
         </div>
       </TabPanel>
-      {/* <Pagination></Pagination> */}
-
       <TabPanel value={value} index={1}>
         <Box paddingTop={2}>
           <Form.Label>Available Webinars</Form.Label>
@@ -603,41 +550,26 @@ export default function BasicWorkspaceTabs() {
               <Table
                 sx={{ minWidth: 750 }}
                 aria-labelledby="tableTitle"
-                // size={dense ? "small" : "medium"}
               >
                 <EnhancedTableHead
                   // numSelected={selected.length}
                   order={order}
                   orderBy={orderBy}
-                  // onSelectAllClick={handleSelectAllClick}
                   onRequestSort={handleRequestSort}
                   rowCount={rows.length}
                 />
                 <TableBody>
                   {visibleRows.map((row, index) => {
-                    // const isItemSelected = isSelected(row.name);
                     const labelId = `enhanced-table-checkbox-${index}`;
 
                     return (
                       <TableRow
                         hover
                         onClick={(event) => handleClick(event, row.name)}
-                        // role="checkbox"
-                        // aria-checked={isItemSelected}
                         tabIndex={-1}
                         key={row.name}
-                        // selected={isItemSelected}
                         sx={{ cursor: "pointer" }}
                       >
-                        {/* <TableCell padding="checkbox">
-                      <Checkbox
-                        color="primary"
-                        checked={isItemSelected}
-                        inputProps={{
-                          "aria-labelledby": labelId
-                        }}
-                      />
-                    </TableCell> */}
                         <TableCell
                           component="th"
                           id={labelId}
@@ -654,11 +586,7 @@ export default function BasicWorkspaceTabs() {
                     );
                   })}
                   {emptyRows > 0 && (
-                    <TableRow
-                    // style={{
-                    //   height: (dense ? 33 : 53) * emptyRows,
-                    // }}
-                    >
+                    <TableRow>
                       <TableCell colSpan={6} />
                     </TableRow>
                   )}
@@ -675,10 +603,6 @@ export default function BasicWorkspaceTabs() {
               onRowsPerPageChange={handleChangeRowsPerPage}
             />
           </Paper>
-          {/* <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      /> */}
         </Box>
       </TabPanel>
     </Box>

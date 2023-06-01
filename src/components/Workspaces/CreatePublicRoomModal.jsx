@@ -57,8 +57,6 @@ export default function CreatePublicRoomModal({
       description: room.description,
     };
 
-    console.log(body);
-
     const createNewRoom = async () => {
       try {
         const response = await roomService.createPublicRoom(

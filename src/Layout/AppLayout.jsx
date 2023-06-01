@@ -21,7 +21,6 @@ import {
   ChevronRight as ChevronRightIcon,
   People as PeopleIcon,
   Dashboard as DashboardIcon,
-  Search as SearchIcon,
   Groups as GroupsIcon,
   CalendarMonth as CalendarMonthIcon,
   LibraryBooks as LibraryBooksIcon,
@@ -48,8 +47,6 @@ export default function AppLayout() {
       case "/":
       case "/overview":
         return "OVERVIEW";
-      case "/search":
-        return "SEARCH";
       case "/workspaces":
         return "WORKSPACES";
       case "/social":
@@ -233,11 +230,6 @@ export default function AppLayout() {
                 label: "Overview",
                 link: "/overview",
                 icon: <DashboardIcon style={{ color: "white" }} />,
-              },
-              {
-                label: "Search",
-                link: "/search",
-                icon: <SearchIcon style={{ color: "white" }} />,
               },
               {
                 label: "Workspaces",

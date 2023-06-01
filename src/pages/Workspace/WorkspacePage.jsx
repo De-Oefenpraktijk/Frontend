@@ -101,7 +101,6 @@ export default function WorkspacePage() {
   useEffect(() => {
     fetchPublicRooms();
     fetchPrivateRooms();
-    console.log(meetingRooms);
   }, []);
 
   useEffect(() => {
