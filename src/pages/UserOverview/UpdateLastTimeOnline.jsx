@@ -1,25 +1,22 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { UPDATE_USER_ACTIVITY } from "../../service/ConnectionStrings";
-
+import userProfileService from "../../service/userProfileService";
+import getUserEmail from "../../utils/getUserEmail";
 
 const UpdateLastTimeOnline = () => {
   const TIME_INTERVAL = 60000;
-  const { user } = useAuth0();
-  const email = user.email;
+  const { user, getAccessTokenSilently } = useAuth0();
+
   useEffect(() => {
-    const interval = setInterval(() => {
-      axios
-        .put(`${UPDATE_USER_ACTIVITY}${email}`)
-        .then(response => {
-          console.log("PUT request sent successfully. User is online.");
-          // Handle response or perform additional actions if needed
-        })
-        .catch(error => {
-          console.error("Error sending PUT request:", error);
-          // Handle error if needed
-        });
+    const interval = setInterval(async () => {
+      try {
+        const response = await userProfileService.updateUserAcitvityStatus(getUserEmail(user), getAccessTokenSilently)
+        if (response) {
+          console.log("User is online!");
+        }
+      } catch(err) {
+        console.log(err);
+      }
     }, TIME_INTERVAL);
 
     return () => clearInterval(interval);

@@ -14,14 +14,7 @@ import TextField from "@mui/material/TextField";
 import Switch from "@mui/material/Switch";
 import { FormControlLabel } from "@mui/material";
 import userProfileService from "../../service/userProfileService";
-
-const sample = [
-  ["FrozenYoghurt", false],
-  ["IceCreamSandwich", true],
-  ["Eclair", false],
-  ["Cupcake", false],
-  ["Gingerbread", true],
-];
+import { useAuth0 } from "@auth0/auth0-react";
 
 function createData(data) {
   console.log(data);
@@ -54,11 +47,6 @@ const columns = [
     numeric: true,
   },
 ];
-
-// const rows = Array.from({ length: 200 }, (_, index) => {
-//   const randomSelection = sample[Math.floor(Math.random() * sample.length)];
-//   return ;
-// });
 
 const VirtuosoTableComponents = {
   Scroller: React.forwardRef((props, ref) => (
@@ -127,11 +115,12 @@ function rowContent(_index, row) {
 export default function ReactVirtualizedTable() {
     const [searchQuery, setSearchQuery] = React.useState(""); // State variable for search query
     const [showOnlineOnly, setShowOnlineOnly] = React.useState(false); // State variable for online-only switch
+    const { getAccessTokenSilently } = useAuth0();
 
     const [users, setUsers] = React.useState([]);
     const dataFetch = async () => {
-      const result = await userProfileService.getUsersActivityStatuses();
-      const rows = result.map(createData);
+      const result = await userProfileService.getUsersActivityStatuses(getAccessTokenSilently);
+      const rows = await result.map(createData);
       setUsers(rows);
     };
   
