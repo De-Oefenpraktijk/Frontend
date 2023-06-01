@@ -33,6 +33,7 @@ import {
 import { useLocation, useNavigate, Outlet as Outlet } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import "./AppLayout.css";
+import UpdateLastTimeOnline from "../pages/UserOverview/UpdateLastTimeOnline";
 
 export default function AppLayout() {
   const location = useLocation();
@@ -151,6 +152,7 @@ export default function AppLayout() {
 
   return (
     <main className="main">
+      <UpdateLastTimeOnline />
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
         <AppBar position="fixed" open={open} style={{ background: "#2E3B55" }}>

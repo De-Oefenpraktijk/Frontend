@@ -1,7 +1,8 @@
 import React from "react";
-import createRoom from "../../service/createRoom";
+import roomService from "../../service/roomService";
 import { Modal, Box } from "@mui/material";
 import InviteUsers from "./InviteUsersBar";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const style = {
   position: "absolute",
@@ -30,6 +31,8 @@ export default function CreatePrivateRoomModal({
 
   const [invitedUsers, setInvitedUsers] = React.useState([]);
 
+  const { getAccessTokenSilently } = useAuth0();
+
   const handleRoomChange = (e) => {
     const { name, value } = e.target;
     setRoom((prevState) => ({
@@ -56,9 +59,17 @@ export default function CreatePrivateRoomModal({
       workspaceId: workspaceId,
       roomName: room.roomName,
     };
-    createRoom(body).then(() => {
-      fetchPrivateRooms();
-    });
+    const createNewRoom = async () => {
+      try{
+        const response = await roomService.createRoom(getAccessTokenSilently, body)
+        if (response) {
+          fetchPrivateRooms()
+        }
+      } catch(err) {
+        console.log(err);
+      }
+    }
+    createNewRoom();
     handleClose();
   };
 

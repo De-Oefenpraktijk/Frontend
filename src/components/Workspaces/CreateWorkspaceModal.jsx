@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Box } from "@mui/material";
-import createWorkspace from "../../service/createWorkspace";
+import workspaceService from "../../service/workspaceService";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const style = {
   position: "absolute",
@@ -17,6 +18,8 @@ const style = {
 export default function CreateWorkspaceModal({ handleClose, open, dataFetch }) {
   const [workspaceName, setName] = useState("");
   const [imageFile, setImageFile] = useState(null);
+  
+  const { getAccessTokenSilently } = useAuth0();
 
   const handleNameChange = (e) => {
     const { name, value } = e.target;
@@ -34,9 +37,17 @@ export default function CreateWorkspaceModal({ handleClose, open, dataFetch }) {
     fd.append("name", workspaceName);
     fd.append("inputImageFile", imageFile);
 
-    createWorkspace(fd).then(() => {
-      dataFetch();
-    });
+    const createNewWorkspace = async () => {
+      try{
+        const response = await workspaceService.createWorkspace(getAccessTokenSilently, fd)
+        if (response) {
+          dataFetch();
+        }
+      } catch(err) {
+        console.log(err);
+      }
+    }
+    createNewWorkspace();
     handleClose();
   };
 

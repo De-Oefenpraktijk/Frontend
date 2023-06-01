@@ -1,6 +1,6 @@
 import axios from "axios";
-import { GETINVITEDUSERSURL } from "./ConnectionStrings";
+import { GET_INVITED_USERS_URL } from "./ConnectionStrings";
 
 export function getUserIdEmailDTO(substr) {
-  return axios.get(GETINVITEDUSERSURL + substr);
+  return axios.get(GET_INVITED_USERS_URL + substr);
 }
