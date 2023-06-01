@@ -57,16 +57,21 @@ export default function CreatePublicRoomModal({
       description: room.description,
     };
 
+    console.log(body);
+
     const createNewRoom = async () => {
-      try{
-        const response = await roomService.createPublicRoom(getAccessTokenSilently, body)
+      try {
+        const response = await roomService.createPublicRoom(
+          getAccessTokenSilently,
+          body
+        );
         if (response) {
-          fetchPublicRooms()
+          fetchPublicRooms();
         }
-      } catch(err) {
+      } catch (err) {
         console.log(err);
       }
-    }
+    };
     createNewRoom();
     handleClose();
   };

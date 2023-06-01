@@ -11,6 +11,9 @@ import "./WorkspacePage.css";
 import jwt from "jwt-decode";
 import roomService from "../../service/roomService";
 
+import BasicWorkspaceTabs from "../../components/Workspaces/TabPanel";
+import BasicWorkspaceTabs2 from "../../components/Workspaces/TabPanel2";
+
 // Table imports
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -72,16 +75,16 @@ export default function WorkspacePage() {
         setMeetingRooms(response.rooms);
         setWorkspaceName(response.name);
       }
-    } catch(err) {
+    } catch (err) {
       console.log(err);
     }
-
   };
   const fetchPublicRooms = async () => {
     try {
       const response = await roomService.getPublicRooms(
-        workspaceId, 
-        getAccessTokenSilently);
+        workspaceId,
+        getAccessTokenSilently
+      );
       if (response) {
         setPublicRooms(response);
       }
@@ -98,6 +101,7 @@ export default function WorkspacePage() {
   useEffect(() => {
     fetchPublicRooms();
     fetchPrivateRooms();
+    console.log(meetingRooms);
   }, []);
 
   useEffect(() => {
@@ -118,7 +122,10 @@ export default function WorkspacePage() {
   return (
     <div id="workspace-info">
       <h1>{workspaceName}</h1>
-
+      <BasicWorkspaceTabs2
+      // currentWorkspaceName={currentWorkspaceName}
+      ></BasicWorkspaceTabs2>
+      {/* 
       <div id="room-options" style={{ textAlign: "right" }}>
         <Button variant="outlined" onClick={handlePrivateOpen}>
           Create a private meeting
@@ -142,10 +149,10 @@ export default function WorkspacePage() {
           userId={userId}
           fetchPublicRooms={fetchPublicRooms}
         />
-      </div>
+      </div> */}
 
       <div id="room-list">
-        <Form.Label>Meeting names</Form.Label>
+        {/* <Form.Label>Meeting names</Form.Label>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
@@ -180,9 +187,9 @@ export default function WorkspacePage() {
               ))}
             </TableBody>
           </Table>
-        </TableContainer>
+        </TableContainer> */}
 
-        <Box paddingTop={2}>
+        {/* <Box paddingTop={2}>
           <Form.Label>Available Webinars</Form.Label>
           {publicRooms.length > 0 && (
             <Paper elevation={3}>
@@ -236,7 +243,7 @@ export default function WorkspacePage() {
               </Box>
             </Paper>
           )}
-        </Box>
+        </Box> */}
       </div>
     </div>
   );
