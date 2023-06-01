@@ -14,7 +14,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<AppLayout />}>
-        <Route path="/" element={<Blank />} />
+        <Route path="/" element={<WorkspacesPage />} />
         <Route path="/overview" element={<WorkspacesPage />} />
         <Route path="/search" element={<Blank />} />
         <Route path="/social" element={<UserOverviewPage />} />
