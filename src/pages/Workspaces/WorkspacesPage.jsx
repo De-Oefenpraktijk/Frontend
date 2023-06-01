@@ -5,6 +5,7 @@ import workspaceService from "../../service/workspaceService";
 import { Stack } from "@mui/system";
 import "./WorkspacesPage.css";
 import { useAuth0 } from "@auth0/auth0-react";
+import BasicWorkspaceTabs2 from "../../components/Workspaces/TabPanel2";
 
 export default function WorkspacesOverview() {
   const [workspaces, setWorkspaces] = useState([]);
@@ -12,14 +13,15 @@ export default function WorkspacesOverview() {
 
   const dataFetch = async () => {
     try {
-      const response = await workspaceService.getWorkspaces(getAccessTokenSilently);
+      const response = await workspaceService.getWorkspaces(
+        getAccessTokenSilently
+      );
       if (response) {
         setWorkspaces(response);
       }
     } catch (err) {
       console.log(err);
     }
-    
   };
 
   useEffect(() => {

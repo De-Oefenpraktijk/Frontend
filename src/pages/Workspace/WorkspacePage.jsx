@@ -14,20 +14,6 @@ import roomService from "../../service/roomService";
 import BasicWorkspaceTabs from "../../components/Workspaces/TabPanel";
 import BasicWorkspaceTabs2 from "../../components/Workspaces/TabPanel2";
 
-// Table imports
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
 // Const
 const CREATE_PUBLIC_ROOM_PERMISSION = "create:public-rooms";
 
@@ -105,7 +91,7 @@ export default function WorkspacePage() {
   };
 
   const fetchPublicRooms = async () => {
-    getPublicRooms(workspaceId, setPublicRooms);
+    // getPublicRooms(workspaceId, setPublicRooms);
     //sets to display only meetings within the last 2 hours
     let recentPublicRooms = [];
     const currentDate = Date();
@@ -135,34 +121,32 @@ export default function WorkspacePage() {
     };
 
     //Effects
-    useEffect(() => {
-      fetchPublicRooms();
-      fetchPrivateRooms();
-      console.log(meetingRooms);
-    }, []);
-
-    useEffect(() => {
-      const canCreatePublicRooms = async () => {
-        const token = await getAccessTokenSilently();
-        const decoded_token = jwt(token);
-        const { permissions } = decoded_token;
-        if (permissions.includes(CREATE_PUBLIC_ROOM_PERMISSION)) {
-          console.log("Has permissions");
-          setUserCanCreatePublicRooms(true);
-        } else {
-          setUserCanCreatePublicRooms(false);
-        }
-      };
-      canCreatePublicRooms();
-    }, [getAccessTokenSilently]);
-
-    return (
-      <div id="workspace-info">
-        <h1>{workspaceName}</h1>
-        <BasicWorkspaceTabs2
-        // currentWorkspaceName={currentWorkspaceName}
-        ></BasicWorkspaceTabs2>
-      </div>
-    );
   };
+
+  // useEffect(() => {
+  //   fetchPublicRooms();
+  //   fetchPrivateRooms();
+  //   console.log(meetingRooms);
+  // }, []);
+
+  // useEffect(() => {
+  //   const canCreatePublicRooms = async () => {
+  //     const token = await getAccessTokenSilently();
+  //     const decoded_token = jwt(token);
+  //     const { permissions } = decoded_token;
+  //     if (permissions.includes(CREATE_PUBLIC_ROOM_PERMISSION)) {
+  //       console.log("Has permissions");
+  //       setUserCanCreatePublicRooms(true);
+  //     } else {
+  //       setUserCanCreatePublicRooms(false);
+  //     }
+  //   };
+  //   canCreatePublicRooms();
+  // }, [getAccessTokenSilently]);
+  return (
+    <div id="workspace-info">
+      <h1>{workspaceName}</h1>
+      <BasicWorkspaceTabs2></BasicWorkspaceTabs2>
+    </div>
+  );
 }

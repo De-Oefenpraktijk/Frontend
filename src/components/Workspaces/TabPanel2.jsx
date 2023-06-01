@@ -30,7 +30,7 @@ import Button from "@mui/material/Button";
 
 import { visuallyHidden } from "@mui/utils";
 import Moment from "moment-timezone";
-import { formatDistanceToNowStrict } from "date-fns";
+import { formatDistanceToNowStrict, subHours } from "date-fns";
 
 import roomService from "../../service/roomService";
 const CREATE_PUBLIC_ROOM_PERMISSION = "create:public-rooms";
@@ -240,7 +240,20 @@ export default function BasicWorkspaceTabs2() {
           getAccessTokenSilently
         );
         if (response) {
-          setPublicRooms(response);
+          let recentPublicRooms = [];
+          const currentDate = Date();
+          for (const recentPublicRoom of response) {
+            if (
+              new Date(recentPublicRoom.scheduledDate) >
+              subHours(new Date(currentDate), 0)
+            ) {
+              recentPublicRooms.push(recentPublicRoom);
+            }
+          }
+          console.log(recentPublicRooms);
+          console.log(response);
+
+          setPublicRooms(recentPublicRooms);
         }
       } catch (err) {
         console.log(err);
@@ -248,7 +261,6 @@ export default function BasicWorkspaceTabs2() {
     };
     fetchPublicRoomsOnLoad();
     fetchPrivateRoomsOnLoad();
-    console.log(publicRooms);
   }, []);
 
   useEffect(() => {
