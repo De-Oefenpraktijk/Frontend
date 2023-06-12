@@ -8,7 +8,8 @@ import {
   UPDATE_USER_ACTIVITY,
   GET_ALL_FUNCTIONS_URL,
   GET_ALL_SPECIALIZATIONS_URL,
-  GET_ALL_EDUCATIONS_URL
+  GET_ALL_EDUCATIONS_URL,
+  GET_INVITED_USERS_URL
 } 
 from "./ConnectionStrings";
 
@@ -191,6 +192,23 @@ async function updateUserAcitvityStatus(userEmail, getAccessTokenSilently) {
   });
 }
 
+async function getUserIdEmailDTO(searchPattern, getAccessTokenSilently) {
+  let config = {
+    method: "get",
+    url: GET_INVITED_USERS_URL + searchPattern,
+    headers: {
+      contentType: "application/json",
+    },
+  };
+  config = await authMiddleware(config, getAccessTokenSilently);
+  return axios(config)
+    .then((response) => response.data)
+    .catch(() => {
+      console.error("Error retrieving users that start with");
+  });
+}
+
+
 export default {
   // ====== user ======
   getUserById,
@@ -205,5 +223,6 @@ export default {
   getAllSpecializations,
   // ====== user activity ======
   getUsersActivityStatuses,
-  updateUserAcitvityStatus
+  updateUserAcitvityStatus,
+  getUserIdEmailDTO
 };
