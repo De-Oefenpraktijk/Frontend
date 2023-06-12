@@ -2,20 +2,22 @@ import * as React from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { useState, useEffect } from "react";
-import {getUserIdEmailDTO} from "../../service/getUserIdEmailDTO";
+import userProfileService from "../../service/userProfileService";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const DEBOUNCE_DELAY = 250; // milliseconds
 
 export default function InviteUsersBar(props) {
   const [inputValue, setInputValue] = useState('*');
   const [options, setOptions] = useState([]);
+  const { getAccessTokenSilently } = useAuth0();
 
 
   useEffect(() => {
     const getData = async () => {
-      await getUserIdEmailDTO(inputValue).then((response) => {
+      await userProfileService.getUserIdEmailDTO(inputValue, getAccessTokenSilently).then((response) => {
         setInputValue('*');
-        setOptions(response.data.map(x => x.Values));
+        setOptions(response);
       });
     };
 
@@ -39,11 +41,11 @@ export default function InviteUsersBar(props) {
         multiple
         id="tags-outlined"
         options={options}
-        getOptionLabel={(option) => option["n.Email"]}
+        getOptionLabel={(option) => option["email"]}
         defaultValue={[]}
         filterSelectedOptions
         onChange={handleSelectedValuesChange}
-        isOptionEqualToValue={(option, value) => option["n.Email"] === value["n.Email"]}
+        isOptionEqualToValue={(option, value) => option["email"] === value["email"]}
         renderInput={(params) => (
           <TextField
             {...params}

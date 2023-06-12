@@ -23,14 +23,13 @@ export const ROOM_URL = ROOM_SERVICE_URL + "Room/";
 // ===== Public Room =====
 export const PUBLIC_ROOM_URL = ROOM_SERVICE_URL + "PublicRoom/";
 
-// ===== Social service: Invite users =====
-export const GET_INVITED_USERS_URL = SOCIAL_SERVICE_URL + "Person/dtos/emailandid/";
 
 // ===== User =====
 
 // GET
 export const GET_USER_URL = PROFILE_SERVICE_URL + "User/GetUserById/";
 export const GET_USER_BY_EMAIL_URL = PROFILE_SERVICE_URL + "User/GetUserByEmail/";
+export const GET_INVITED_USERS_URL = PROFILE_SERVICE_URL + "User/GetAllUsersStartsWith/";
 
 export const GET_ALL_FUNCTIONS_URL = PROFILE_SERVICE_URL + "Function/GetAllFunctions";
 export const GET_ALL_EDUCATIONS_URL = PROFILE_SERVICE_URL + "Education/GetEducations";
