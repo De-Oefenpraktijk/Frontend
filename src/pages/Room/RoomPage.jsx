@@ -37,7 +37,7 @@ export default function RoomPage() {
     <div className="room" style={{ height: "80vh" }}>
       {room && (
         <JitsiMeeting
-          // domain = { YOUR_DOMAIN }
+          domain="jitsivm04upscqlb9.westeurope.cloudapp.azure.com"
           roomName={room.roomName}
           configOverwrite={configSettings}
           interfaceConfigOverwrite={{
